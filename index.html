@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ReNewGenie Demo</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+<nav><div class="wrap">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 3c7 4 11 10 9 17-1.500 5-6 8-9 9-3-1-7.500-4-9-9-2-7 2-13 9-17z" fill="var(--accent)"/><path d="M16 9v18M16 15l-5-3M16 20l5-3" stroke="var(--accent-fg)" stroke-width="1.800" stroke-linecap="round"/></svg>
+    ReNewGenie
+  </div>
+  <div class="navtools"><button class="tool" id="palbtn" type="button">Quick search <kbd>Ctrl K</kbd></button><button class="tool" id="thbtn" type="button" aria-label="Switch colour theme">Theme</button></div>
+  <div class="tabs" id="tabs"></div>
+</div></nav>
+
+<main class="wrap">
+
+<section class="view" id="v-home">
+  <div class="hero">
+    <div>
+      <span class="badge">DEMO · B.Tech CSE (AI/ML) final-year project</span>
+      <h1 style="margin-top:14px">AI-powered assistant for smart recycling, reuse and carbon reduction</h1>
+      <p class="lead">Photograph a waste item, learn how to recycle it, compare scrap quotes from collectors, find the closest recycling centre across Delhi NCR, and see whether your recycling could ever earn carbon credits. All in one web platform.</p>
+      <div class="btnrow">
+        <button class="btn" data-go="classify">Start the demo</button>
+        <button class="btn ghost" data-go="report">Project report</button>
+      </div>
+      <div class="meta">Ajay Kumar Garg Engineering College, Ghaziabad<br>Group ID 26CSEAIML/1/GID-16 · Supervisor: Dr. Jaishree Jain</div>
+    </div>
+    <div class="cats" aria-label="The six classes the model predicts">
+      <div class="cat"><b>Cardboard</b><span>class 0</span></div>
+      <div class="cat"><b>Glass</b><span>class 1</span></div>
+      <div class="cat"><b>Metal</b><span>class 2</span></div>
+      <div class="cat"><b>Paper</b><span>class 3</span></div>
+      <div class="cat"><b>Plastic</b><span>class 4</span></div>
+      <div class="cat"><b>Trash</b><span>class 5</span></div>
+    </div>
+  </div>
+
+  <div class="panel" id="dash"></div>
+
+  <div>
+    <h2 style="margin-bottom:6px">Four modules</h2>
+    <p class="small" style="margin-bottom:14px">As described in Chapter 4 of the project report.</p>
+    <div class="grid4">
+      <button class="feat" data-go="classify"><span class="mod">MODULE 1</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.500"/></svg><h3>AI Waste Classification</h3><p>Upload a photo. A VGG16 model names the waste category.</p></button>
+      <button class="feat" data-go="guide"><span class="mod">MODULE 2</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M9 8h6M9 12h6"/></svg><h3>Recycling Education Hub</h3><p>Disposal steps, impact facts and videos for each material.</p></button>
+      <button class="feat" data-go="market"><span class="mod">MODULE 3</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9l1-5h14l1 5M4 9v11h16V9M4 9h16"/><path d="M9 20v-6h6v6"/></svg><h3>Waste-Collector Marketplace</h3><p>Sell recyclables to verified local collectors at posted rates.</p></button>
+      <button class="feat" data-go="centres"><span class="mod">MODULE 4</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.500"/></svg><h3>Recycling Centre Map</h3><p>Find drop-off points near you with Google Maps.</p></button>
+    </div>
+  </div>
+
+  <div>
+    <h2 style="margin-bottom:6px">Smart tools</h2>
+    <p class="small" style="margin-bottom:14px">Features listed in section 5.2.3 of the report, built as working prototypes for this demo.</p>
+    <div class="grid4">
+      <button class="feat" data-go="impact"><span class="mod">HABIT TRACKER + CARBON</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg><h3>Impact tracker</h3><p>Log recycling, build streaks, earn badges and see CO₂e avoided.</p></button>
+      <button class="feat" data-go="reuse"><span class="mod">NLP</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.500c.700.700 1 1.500 1 2.500h6c0-1 .300-1.800 1-2.500A6 6 0 0 0 12 3z"/></svg><h3>Reuse ideas</h3><p>Describe an item and get ranked reuse projects with steps.</p></button>
+      <button class="feat" data-go="life"><span class="mod">LIFESPAN PREDICTION</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><h3>Lifespan estimator</h3><p>Estimate remaining life and decide: keep, repair or recycle.</p></button>
+      <button class="feat" data-go="credits"><span class="mod">CARBON CREDITS</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8 12l3 3 5-6"/></svg><h3>Carbon credit desk</h3><p>Find your route (CCTS, EPR, Verra), size the money, and draft a deal.</p></button>
+    </div>
+  </div>
+
+  <div>
+    <h2 style="margin-bottom:6px">Two-minute demo path</h2>
+    <p class="small" style="margin-bottom:14px">A suggested order for presenting.</p>
+    <div class="steps3">
+      <div class="step"><span>STEP 1</span><h3>Classify an item</h3><p class="small">Upload any photo and run the classifier.</p><button class="btn ghost sm" data-go="classify">Open</button></div>
+      <div class="step"><span>STEP 2</span><h3>Sell the recyclables</h3><p class="small">Compare grade quotes, book a pickup, get a receipt.</p><button class="btn ghost sm" data-go="market">Open</button></div>
+      <div class="step"><span>STEP 3</span><h3>Track the impact</h3><p class="small">Log it and watch CO₂e and streak update.</p><button class="btn ghost sm" data-go="impact">Open</button></div>
+      <div class="step"><span>STEP 4</span><h3>Reuse or repair</h3><p class="small">Get reuse ideas, or estimate remaining life.</p><button class="btn ghost sm" data-go="reuse">Open</button></div>
+      <div class="step"><span>STEP 5</span><h3>Check carbon credits</h3><p class="small">Find your route and draft a term sheet.</p><button class="btn ghost sm" data-go="credits">Open</button></div>
+      <div class="step"><span>STEP 6</span><h3>Explain the build</h3><p class="small">Architecture, tools, results, SDGs.</p><button class="btn ghost sm" data-go="report">Open</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="v-classify" hidden>
+  <div>
+    <h2>Module 1: AI waste classification</h2>
+    <p class="small" style="margin-top:6px">Upload, classify, read the result. Same flow as the real page.</p>
+  </div>
+  <div class="note"><b>Real models, not your VGG16.</b> This page classifies your photo in the browser with two models trained here on all 2,527 TrashNet photos: a small convolutional neural network (CNN, trained from scratch) and a feature-based neural network. Together they score about 87% on 380 held-out photos (details in the Project report tab). Your VGG16 file is not in the GitHub repo, so it cannot run here. Plain TrashNet-style photos work best; cluttered phone photos will do worse.</div>
+  <div class="two">
+    <div class="panel">
+      <div class="drop" id="drop"><div><b>Drop a photo here</b><p class="small">or choose a file. It stays in your browser.</p></div></div>
+      <input type="file" id="file" accept="image/*" style="margin-top:12px;max-width:100%">
+      <p class="small" style="margin-top:14px">No photo handy? Try a random held-out TrashNet photo (never used for training). Some will be wrong; that is real.</p>
+      <div class="samples" id="samples"></div>
+      <div class="btnrow"><button class="btn" id="go">Classify</button><button class="btn ghost" id="clear">Reset</button></div>
+    </div>
+    <div class="panel" id="out"><p class="small">The result appears here.</p></div>
+  </div>
+</section>
+
+<section class="view" id="v-guide" hidden>
+  <div><h2>Module 2: Recycling education hub</h2><p class="small" style="margin-top:6px">Disposal tips by material, as listed on the app's recycling information page.</p></div>
+  <div class="acc" id="acc"></div>
+</section>
+
+<section class="view" id="v-market" hidden>
+  <div><h2>Module 3: Waste-collector marketplace</h2><p class="small" style="margin-top:6px">Choose a grade, weight and condition. The page compares what each collector would pay after deductions, books a pickup, tracks the order and issues a receipt.</p></div>
+  <div class="note"><b>Real reference rates, sample collectors.</b> Quotes start from public Delhi rates (scraprates.in, 6 Oct 2026, 20 materials). Grades with no published rate are estimated from a related one and tagged. Each collector then adds a small premium or discount taken from your project's sample data. Names, ratings, deductions and fees are demo values. Nothing is sent anywhere.</div>
+  <div class="panel">
+    <div class="fgrid4">
+      <label for="mgrade">Material grade<select id="mgrade"></select></label>
+      <label for="mqty">Weight (kg)<input id="mqty" type="number" min="1" step="1" value="25"></label>
+      <label for="mcond">Condition<select id="mcond"></select></label>
+      <label for="mpick">Handover<select id="mpick"><option value="door">Doorstep pickup</option><option value="drop">I drop it off</option></select></label>
+    </div>
+    <div class="btnrow" style="margin-top:14px"><button class="btn" id="mfind">Compare quotes</button></div>
+  </div>
+  <div id="msum"></div>
+  <div id="mout" class="coll"></div>
+  <div id="mbook"></div>
+  <div class="panel"><h3 style="margin-bottom:4px">Rate board</h3><p class="small" style="margin-bottom:12px">The reference rate for each grade, the spread of offers across the sample collectors, and the CO₂e avoided when recycled.</p><div class="tscroll"><table id="mboard"></table></div></div>
+  <div class="panel"><h3 style="margin-bottom:4px">Market intelligence: what the public price lists say</h3>
+    <p class="small" style="margin-bottom:12px">Two public Delhi lists for the same materials. Both are online price lists, not audited quotes. <a href="https://scraprates.in/delhi" target="_blank" rel="noopener">List A</a> is dated 6 October 2026 and says Delhi rates closely follow MCX commodity prices and sit about 3 to 5% above the national average. <a href="https://www.delhikabadiwala.com/rate-list/" target="_blank" rel="noopener">List B</a> has no date.</p>
+    <div class="tscroll"><table id="mintel"></table></div>
+    <ul class="small" style="margin:12px 0 0;padding-left:18px;display:grid;gap:4px"><li>Metals vary most between the lists: B asks 25% to 50% more for aluminium, brass and copper yet 23% less for iron. That spread is why the demo compares several collectors before you book.</li><li>Paper and plastic agree within about 7%, and e-waste within about 13%, so those quotes are the most dependable here.</li><li>Prices follow metal markets and moisture, dirt and mixing. Treat any list as a starting point and ask for a weighing slip.</li></ul>
+  </div>
+  <div class="panel" id="cboard" hidden>
+    <h3 style="margin-bottom:4px">Community board</h3>
+    <p class="small" style="margin-bottom:12px">A live board shared by everyone who opens this page. Post scrap you want to sell, or reserve someone else's pickup. It is stored in this page's own database, so it persists and updates for everyone. Asking rates are compared with the public reference rate. No payments or contact details are handled here.</p>
+    <div class="fgrid4">
+      <label for="cbg">Material grade<select id="cbg"></select></label>
+      <label for="cbkg">Weight (kg)<input id="cbkg" type="number" min="1" step="1" value="40"></label>
+      <label for="cbask">Asking rate (₹/kg)<input id="cbask" type="number" min="0.5" step="0.5"></label>
+      <label for="cbarea">Area<select id="cbarea"></select></label>
+    </div>
+    <label for="cbnote" style="display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--muted);margin-top:10px">Note (optional, 140 characters)<input id="cbnote" type="text" maxlength="140" placeholder="e.g. clean, tied bundles, pickup after 5 pm"></label>
+    <div class="btnrow" style="margin-top:12px"><button class="btn" id="cbpost">Post listing</button></div>
+    <p class="small" id="cbmsg" style="margin-top:8px"></p>
+    <div id="cblist" class="coll" style="margin-top:12px"></div>
+  </div>
+</section>
+
+<section class="view" id="v-centres" hidden>
+  <div><h2>Module 4: Recycling centre map</h2><p class="small" style="margin-top:6px">182 places across Delhi NCR from official and public sources, shown together on one map and sorted by distance from where you are.</p></div>
+  <div class="note"><b>How accurate are the pins?</b> The authorised e-waste recyclers come from the DPCC list, which gives the town but not a street address. Each pin sits at the centre of its town or locality (about 1 to 5 km of error), and the buttons search Google Maps by name so you land on the real listing. The map has no street background because this page cannot load map tiles. Check hours and acceptance by phone before you travel.</div>
+  <div class="panel">
+    <div class="chips" id="clegend" style="margin:0 0 12px"></div>
+    <div class="form" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));align-items:end">
+      <label for="csearch">Search<input id="csearch" type="search" placeholder="Name, town or type"></label>
+      <label for="cloc">I am near<select id="cloc"></select></label>
+      <label for="creg">State<select id="creg"><option value="">All</option><option value="DL">Delhi</option><option value="UP">Uttar Pradesh</option><option value="HR">Haryana</option><option value="RJ">Rajasthan</option></select></label>
+    </div>
+    <div class="btnrow"><a class="btn sm" id="cgoall" target="_blank" rel="noopener" href="#" hidden>Open stops in Google Maps</a><button class="btn ghost sm" id="czoom" type="button">Map zoom</button><a class="btn ghost sm" id="cnear" target="_blank" rel="noopener" href="#">Search Google Maps</a></div>
+  </div>
+  <div class="panel"><p class="small" id="cstat" style="margin-bottom:8px"></p><div id="cmap"></div><p class="small" style="margin-top:8px">Circle size and number = places at that town. Click a circle to list only those places. Pin colours match the filter buttons.</p></div>
+  <div class="small" id="csel" hidden></div>
+  <div class="acc" id="cent"></div>
+  <div class="panel"><h3 style="margin-bottom:8px">Where the data comes from</h3><ul class="small" style="margin:0;padding-left:18px"><li>156 e-waste dismantlers and recyclers: <a href="https://dpcc.delhi.gov.in/sites/default/files/DPCC/generic_multiple_files/updated-list-of-e-waste-recyclers-dismantlers.pdf" target="_blank" rel="noopener">DPCC updated list</a> (Uttar Pradesh, Haryana and Rajasthan units as listed, with authorised capacity). Two units with no town in the list are left out.</li><li>5 open and 8 planned MCD material recovery facilities: <a href="https://www.constructionworld.in/urban-infrastructure/wastewater-and-sewage-treatment/delhi-to-add-eight-material-recovery-facilities/96239" target="_blank" rel="noopener">Construction World</a>.</li><li>Waste-to-energy and construction-waste plants and three informal scrap hubs: public reports linked on each card.</li><li>6 collectors: the sample marketplace data in your project.</li></ul></div>
+  <div class="panel"><h3 style="margin-bottom:10px">How the map works in the app</h3>
+    <ol class="steps"><li>Opening the map asks the browser for your location.</li><li>Your coordinates become the map centre.</li><li>Registered recycling and collection centres are loaded from the database.</li><li>Each centre appears as a marker. Clicking one shows its details.</li></ol>
+  </div>
+</section>
+
+<section class="view" id="v-forecast" hidden>
+  <div><h2>Price forecast</h2><p class="small" style="margin-top:6px">Scrap rates move with world metal prices, so this lab forecasts them with three methods, tests each on the past, and shows how uncertain the future really is.</p></div>
+  <div class="note"><b>What this is, and is not.</b> There is no public history of Delhi scrap rates, so the lab runs on real monthly world prices for six metals (World Bank commodity data, 1980 to June 2017, USD per tonne, via the open datasets/commodity-prices repository). The data ends in 2017, so it shows the method, not today's market. Paste your own monthly rates (at least 48) and the same tests run on them.</div>
+  <div class="panel">
+    <div class="fgrid4">
+      <label for="fcs">Series<select id="fcs"></select></label>
+      <label for="fch">Look ahead: <span id="fchv">6 months</span><input id="fch" type="range" min="1" max="12" value="6"></label>
+    </div>
+    <div id="fcown" hidden style="margin-top:12px"><label for="fcin">Your monthly prices, oldest first<textarea id="fcin" class="ta" rows="4" placeholder="e.g. 112, 115, 118, 117, ... (48 or more numbers)" style="width:100%"></textarea></label></div>
+    <div class="btnrow" style="margin-top:14px"><button class="btn" id="fcgo">Run backtest and forecast</button></div>
+  </div>
+  <div id="fcout" style="display:flex;flex-direction:column;gap:16px"></div>
+  <div class="note"><b>Method.</b> Naive repeats the last price. Damped Holt fits a level and a fading trend to log prices. The ridge model regresses the next h-month return on the last six monthly returns. The shaded range is the 10th to 90th percentile of each method's own backtest errors at that horizon, so it reflects real past misses, not a textbook formula. I did not add a neural network: with one price per month and about 450 points it would overfit.</div>
+</section>
+
+<section class="view" id="v-report" hidden>
+  <div>
+    <h2>Project report summary</h2>
+    <p class="small" style="margin-top:6px">ReNewGenie: AI-Powered Assistant for Smart Recycling, Reuse and Carbon Reduction. Bachelor of Technology in Computer Science and Engineering, May 2026.</p>
+  </div>
+
+  <div class="panel">
+    <h3 style="margin-bottom:10px">Problem and objective</h3>
+    <p>Waste generation is projected to rise 70% by 2050, yet recycling rates in developing countries often stay below 20%. Existing tools either classify waste or give disposal advice or locate centres, but not all three. ReNewGenie combines image-based classification, education, a collector marketplace and a centre locator in one web platform.</p>
+    <div class="tscroll" style="margin-top:12px"><table>
+      <tr><th>Gap 1</th><td>Classification models work in isolation, with no user guidance.</td></tr>
+      <tr><th>Gap 2</th><td>Disposal advice portals lack an intelligent image front end.</td></tr>
+      <tr><th>Gap 3</th><td>No single platform joins classification, education, location services and a market.</td></tr>
+    </table></div>
+  </div>
+
+  <div>
+    <h3 style="margin-bottom:12px">System architecture</h3>
+    <div>
+      <div class="tier"><b>Presentation</b><div>React single-page app with Material-UI styling. Axios sends requests to the back end.</div></div>
+      <div class="tier"><b>Application</b><div>Flask REST API. Receives images, runs the TensorFlow model, returns the class with recycling steps, video links and impact data.</div></div>
+      <div class="tier"><b>AI inference</b><div>VGG16 transfer-learning model saved as <code>classifyWaste.h5</code>, loaded once when the server starts.</div></div>
+      <div class="tier"><b>Data</b><div>SQLite database through SQLAlchemy for user accounts, blog posts and recycling-centre records.</div></div>
+    </div>
+  </div>
+
+  <div class="flow">
+    <div class="node"><b>1. Upload</b>React page <span>WasteClassifier.js</span></div>
+    <div class="node"><b>2. API call</b>POST with login token <span>/api/classify</span></div>
+    <div class="node"><b>3. Preprocess</b>Resize to 224×224, VGG16 normalisation <span>preprocess_input</span></div>
+    <div class="node"><b>4. Predict</b>VGG16 plus custom head, softmax <span>classifyWaste.h5</span></div>
+    <div class="node"><b>5. Respond</b>Class, confidence, tips, two video IDs <span>JSON</span></div>
+  </div>
+
+  <div class="panel">
+    <h3 style="margin-bottom:10px">Tools and technologies</h3>
+    <div class="tscroll"><table>
+      <tr><th>Category</th><th>Tool</th><th>Purpose</th></tr>
+      <tr><td>Languages</td><td>Python 3.10, JavaScript (ES6+)</td><td>Back end and model training, front end</td></tr>
+      <tr><td>ML framework</td><td>TensorFlow / Keras</td><td>CNN training and inference</td></tr>
+      <tr><td>Front end</td><td>React 18.2, Material-UI 5.13</td><td>Single-page app and component library</td></tr>
+      <tr><td>Back end</td><td>Flask 3.1</td><td>REST API and routing</td></tr>
+      <tr><td>Database</td><td>SQLite + SQLAlchemy</td><td>Users and recycling centres</td></tr>
+      <tr><td>Maps</td><td>Google Maps API</td><td>Recycling-centre locator</td></tr>
+      <tr><td>Animation and charts</td><td>Framer Motion, Lottie, Recharts</td><td>Micro-interactions and data visualisation</td></tr>
+      <tr><td>Deployment</td><td>AWS Elastic Beanstalk</td><td>Cloud hosting</td></tr>
+      <tr><td>Tooling</td><td>Git + GitHub, Visual Studio Code</td><td>Source control and IDE</td></tr>
+    </table></div>
+  </div>
+
+  <div class="two">
+    <div class="panel"><h3 style="margin-bottom:10px">Frontend libraries</h3><div class="tscroll"><table>
+      <tr><th>Library</th><th>Version</th><th>Used for</th></tr>
+      <tr><td><code>react</code></td><td>18</td><td>UI framework</td></tr>
+      <tr><td><code>@mui/material</code></td><td>5</td><td>UI components</td></tr>
+      <tr><td><code>framer-motion</code></td><td>12</td><td>Page animations</td></tr>
+      <tr><td><code>axios</code></td><td>1.4</td><td>HTTP requests</td></tr>
+      <tr><td><code>react-router-dom</code></td><td>6</td><td>Routing</td></tr>
+      <tr><td><code>@react-google-maps/api</code></td><td>2</td><td>Google Maps</td></tr>
+      <tr><td><code>react-player</code></td><td>2</td><td>YouTube player</td></tr>
+      <tr><td><code>lottie-react</code></td><td>2</td><td>JSON animations</td></tr>
+      <tr><td><code>recharts</code></td><td>2</td><td>Charts</td></tr>
+      <tr><td><code>react-dropzone</code></td><td>14</td><td>Drag and drop upload</td></tr>
+    </table></div></div>
+    <div class="panel"><h3 style="margin-bottom:10px">Backend libraries</h3><div class="tscroll"><table>
+      <tr><th>Library</th><th>Version</th><th>Used for</th></tr>
+      <tr><td><code>flask</code></td><td>3.1.0</td><td>Web framework</td></tr>
+      <tr><td><code>flask-cors</code></td><td>4.0.0</td><td>React to Flask access</td></tr>
+      <tr><td><code>flask-sqlalchemy</code></td><td>3.1.1</td><td>Database access</td></tr>
+      <tr><td><code>flask-jwt-extended</code></td><td>4.6.0</td><td>JWT login</td></tr>
+      <tr><td><code>flask-limiter</code></td><td>3.5.0</td><td>Rate limiting</td></tr>
+      <tr><td><code>werkzeug</code></td><td>3.1.3</td><td>Password hashing</td></tr>
+      <tr><td><code>tensorflow</code></td><td>2.15.0</td><td>Runs VGG16</td></tr>
+      <tr><td><code>pillow</code></td><td>10.2.0</td><td>Image loading</td></tr>
+      <tr><td><code>numpy</code></td><td>1.26.4</td><td>Array maths</td></tr>
+      <tr><td><code>python-dotenv</code></td><td>1.0.1</td><td>.env secrets</td></tr>
+      <tr><td><code>gunicorn</code></td><td>21.2.0</td><td>Production server</td></tr>
+    </table></div></div>
+  </div>
+
+  <div class="two">
+    <div class="panel">
+      <h3 style="margin-bottom:10px">Model and training</h3>
+      <div class="tscroll"><table>
+        <tr><th>Dataset</th><td>TrashNet (Gary Thung, Stanford): 2,527 images, 6 classes, 80/20 split</td></tr>
+        <tr><th>Base</th><td>VGG16, ImageNet weights, 224×224×3 input</td></tr>
+        <tr><th>Head</th><td>GlobalAveragePooling, BatchNorm, Dense 512, Dropout 0.5, Dense 256, Dropout 0.3, Softmax</td></tr>
+        <tr><th>Augmentation</th><td>Rotation, shift, shear, zoom, brightness, horizontal flip</td></tr>
+        <tr><th>Optimiser</th><td>Adam, with EarlyStopping and ModelCheckpoint</td></tr>
+        <tr><th>Training rig</th><td>Intel Core i7 (11th gen), 16 GB RAM, GTX 1650 4 GB</td></tr>
+      </table></div>
+    </div>
+    <div class="panel">
+      <h3 style="margin-bottom:12px">Validation accuracy by phase</h3>
+      <div class="bars">
+        <div class="bar"><span>Phase 1: frozen VGG16<br><span class="small">20 epochs, LR 1e-3</span></span><div class="track"><div class="fill" style="width:81.71%"></div></div><b>81.71%</b></div>
+        <div class="bar"><span>Phase 2: fine-tune block 5<br><span class="small">30 epochs, LR 1e-5</span></span><div class="track"><div class="fill" style="width:84.29%"></div></div><b>84.29%</b></div>
+      </div>
+      <p class="small" style="margin-top:14px">Evaluation metrics: accuracy, precision, recall and F1 score.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3 style="margin-bottom:6px">Classifier used in this demo</h3>
+    <p class="small" style="margin-bottom:12px">Your VGG16 file (classifyWaste.h5) is not in the repo, so this demo ships two smaller models I trained here on the same TrashNet photos. They are not a re-creation of your 84.29% model.</p>
+    <div class="kpis"><div class="kpi"><b>86.8%</b><span>ensemble, 380 held-out photos</span></div><div class="kpi"><b>83.4%</b><span>CNN alone</span></div><div class="kpi"><b>81.8%</b><span>feature network alone</span></div><div class="kpi"><b>0.84</b><span>macro F1, ensemble</span></div></div>
+    <div class="tscroll" style="margin-top:14px"><table>
+      <tr><th>Model</th><th>What it is</th><th>Size</th><th>Test accuracy</th></tr>
+      <tr><td>CNN</td><td>8 convolution layers in 4 blocks with batch normalisation, trained from scratch on 96 by 72 photos with flips, rotation, zoom and brightness augmentation</td><td>about 210,000 weights</td><td>83.4%</td></tr>
+      <tr><td>Feature network</td><td>5 small neural networks on 453 colour, edge and texture features</td><td>about 590,000 weights</td><td>81.8%</td></tr>
+      <tr><td>Ensemble</td><td>60% CNN (also run on the mirrored photo) plus 40% feature network. The weight was chosen on the validation set, not the test set.</td><td>both</td><td><b>86.8%</b></td></tr>
+    </table></div>
+    <h3 style="margin:16px 0 8px">Ensemble confusion matrix (test set)</h3>
+    <div class="tscroll"><table>
+      <tr><th>True class</th><th>Card.</th><th>Glass</th><th>Metal</th><th>Paper</th><th>Plastic</th><th>Trash</th><th>Recall</th><th>Precision</th></tr>
+      <tr><td>Cardboard</td><td>59</td><td>0</td><td>1</td><td>2</td><td>0</td><td>2</td><td>92%</td><td>91%</td></tr><tr><td>Glass</td><td>1</td><td>50</td><td>4</td><td>0</td><td>3</td><td>1</td><td>85%</td><td>81%</td></tr><tr><td>Metal</td><td>0</td><td>6</td><td>61</td><td>2</td><td>4</td><td>1</td><td>82%</td><td>91%</td></tr><tr><td>Paper</td><td>1</td><td>0</td><td>0</td><td>88</td><td>2</td><td>1</td><td>96%</td><td>91%</td></tr><tr><td>Plastic</td><td>2</td><td>6</td><td>1</td><td>4</td><td>60</td><td>2</td><td>80%</td><td>86%</td></tr><tr><td>Trash</td><td>2</td><td>0</td><td>0</td><td>1</td><td>1</td><td>12</td><td>75%</td><td>63%</td></tr>
+    </table></div>
+    <h3 style="margin:16px 0 8px">CNN learning curve</h3>
+    <div id="lcurve"></div>
+    <p class="small" style="margin-top:6px">Training accuracy reaches about 97% while validation accuracy stays near 80%: the network has begun to memorise the 1,770 training photos, which is why augmentation and the ensemble help.</p>
+    <ol class="steps" style="margin-top:14px">
+      <li>The split is by photo: 70% train, 15% validation, 15% test, random seed 7. A photo and its mirror always stay on the same side.</li>
+      <li>The CNN checkpoint with the best validation accuracy was kept. The test set was used once, at the end.</li>
+      <li>Training ran on a 2-core CPU in about 20 minutes. No pretrained weights were available, so there is no transfer learning here, unlike your VGG16.</li>
+      <li>Both models run in your browser in plain JavaScript. I checked that it gives the same probabilities as the Python code.</li>
+    </ol>
+    <p class="small" style="margin-top:12px">Limits: one split, and only 16 Trash photos in the test set, so the Trash numbers are noisy. TrashNet photos are single objects on plain backgrounds, so cluttered phone photos will score lower. Your report's 84.29% is a validation figure for a different model; the numbers are not directly comparable.</p>
+  </div>
+
+  <div class="two">
+    <div class="panel"><h3 style="margin-bottom:10px">Security features</h3><div class="tscroll"><table>
+      <tr><td>JWT authentication</td><td>7-day token login</td></tr>
+      <tr><td>pbkdf2:sha256 hashing</td><td>Plain passwords are never stored</td></tr>
+      <tr><td>Rate limiting</td><td>200 requests per day, 50 per hour per IP</td></tr>
+      <tr><td>CORS restriction</td><td>Only the frontend origin is allowed</td></tr>
+      <tr><td>File validation</td><td>Image types only, 10 MB cap</td></tr>
+      <tr><td>UUID filenames</td><td>Random name for every upload</td></tr>
+      <tr><td>Auto deletion</td><td>Photo removed after classification</td></tr>
+    </table></div></div>
+    <div class="panel"><h3 style="margin-bottom:10px">Sustainable Development Goals</h3><div class="tscroll"><table>
+      <tr><td><b>SDG 12</b></td><td>Responsible consumption and production, target 12.5: reduce waste through prevention, recycling and reuse</td></tr>
+      <tr><td>SDG 9</td><td>Industry, innovation and infrastructure</td></tr>
+      <tr><td>SDG 11</td><td>Sustainable cities and communities</td></tr>
+      <tr><td>SDG 13</td><td>Climate action</td></tr>
+    </table></div></div>
+  </div>
+
+  <div class="two">
+    <div class="panel"><h3 style="margin-bottom:10px">Limitations</h3><ol class="steps">
+      <li>Classes such as clothes and organic waste vary widely in appearance, which lowers accuracy.</li>
+      <li>The training set is small compared with industry datasets.</li>
+      <li>Collector information is entered manually, so it can go out of date.</li>
+      <li>One image at a time. No multi-view or live video analysis.</li>
+      <li>A single server limits speed under heavy load.</li>
+    </ol></div>
+    <div class="panel"><h3 style="margin-bottom:10px">Future scope</h3><ol class="steps">
+      <li>Train on a larger and more balanced dataset.</li>
+      <li>Optimise the ML pipeline to cut response time.</li>
+      <li>Add product condition assessment and marketplace recommendations.</li>
+      <li>Add blockchain traceability for reusable goods.</li>
+    </ol></div>
+  </div>
+
+  <div class="panel"><h3 style="margin-bottom:10px">Team</h3><div class="tscroll"><table>
+    <tr><th>Name</th><th>Role</th></tr>
+    <tr><td>Gaurav Shukla</td><td>Full-stack development, ML model training</td></tr>
+    <tr><td>Anchal Singh</td><td>Frontend development, UI/UX</td></tr>
+    <tr><td>Devansh Tomar</td><td>Backend development, database</td></tr>
+    <tr><td>Abhisekh Chaurasiya</td><td>Research, documentation, testing</td></tr>
+    <tr><td>Dr. Jaishree Jain</td><td>Project supervisor, Associate Professor, CSE</td></tr>
+  </table></div></div>
+
+  <div class="panel">
+    <h3 style="margin-bottom:10px">Extended features from §5.2.3</h3>
+    <p class="small" style="margin-bottom:10px">The report lists these features. They are implemented in this demo as working prototypes and are not part of the GitHub codebase.</p>
+    <div class="tscroll"><table>
+      <tr><th>Feature</th><th>Method in this demo</th></tr>
+      <tr><td>Recycling habit tracker</td><td>Activity log with daily streak, points, levels, badges and a weekly goal</td></tr>
+      <tr><td>Carbon footprint tracker</td><td>Weight × emission-avoided factor per material (US EPA WARM v16 results), with a driving-distance equivalent</td></tr>
+      <tr><td>NLP reuse suggestions</td><td>Tokenise, remove stop words, lemmatise, TF-IDF vectors, cosine similarity against a library of reuse ideas</td></tr>
+      <tr><td>Product lifespan prediction</td><td>Typical life adjusted by usage, care, age and condition, with a keep, repair, plan or recycle verdict</td></tr>
+    </table></div>
+  </div>
+
+  <div class="panel">
+    <h3 style="margin-bottom:10px">Response shape of <code>/api/classify</code></h3>
+    <pre class="json">{
+  "class": "Plastic",
+  "confidence": 0.0,        // real value comes from the model
+  "details": "Plastic recycling is the process of ...",
+  "video1": "zO3jFKiqmHo",
+  "video2": "Z3Ava2TUSC8"
+}</pre>
+  </div>
+</section>
+
+<section class="view" id="v-impact" hidden>
+  <div><h2>Impact tracker</h2><p class="small" style="margin-top:6px">Recycling habit tracker with streaks, points and badges, plus a carbon footprint estimate for everything you log.</p></div>
+  <div class="note"><b>Prototype.</b> Built for this demo from the report's §5.2.3 feature list. It is not in the GitHub code. Entries marked <i>sample</i> are example data, so log your own or reset. Entries stay in this browser only.</div>
+  <div class="kpis" id="kpis"></div>
+  <div class="two">
+    <div class="panel">
+      <h3 style="margin-bottom:12px">Log recycling</h3>
+      <div class="fgrid">
+        <label for="imat">Material<select id="imat"></select></label>
+        <label for="ikg">Weight (kg)<input id="ikg" type="number" min="0.1" step="0.1" value="1"></label>
+        <label for="idate">Date<input id="idate" type="date"></label>
+      </div>
+      <p id="iprev" class="small" style="margin-top:12px"></p>
+      <div class="btnrow" style="margin-top:12px"><button class="btn" id="iadd">Add to log</button><button class="btn ghost" id="isave" hidden>Save to my account</button><button class="btn ghost" id="iload" hidden>Restore from my account</button></div><p class="small" id="isync" hidden></p>
+    </div>
+    <div class="panel">
+      <h3>Last 7 days: CO₂e avoided (kg)</h3>
+      <div class="wk" id="wk"></div>
+      <p class="small" style="margin-top:12px" id="goaltxt"></p>
+      <div class="prog"><i id="goalbar" style="width:0"></i></div>
+    </div>
+  </div>
+  <div class="panel"><h3 style="margin-bottom:12px">Level and badges</h3><div id="lvl" style="margin-bottom:14px"></div><div class="badges" id="badges"></div></div>
+  <div class="panel">
+    <div class="rowx" style="justify-content:space-between;margin-bottom:10px"><h3>Activity log</h3><div class="rowx"><button class="btn ghost sm" id="isample">Load sample data</button><button class="btn ghost sm" id="ireset">Clear all</button></div></div>
+    <div class="tscroll"><table id="ilog"></table></div>
+  </div>
+  <div class="panel">
+    <h3 style="margin-bottom:10px">How the carbon figures are calculated</h3>
+    <p class="small" style="margin-bottom:10px">CO₂e avoided = weight × factor, where the factor is the emissions avoided by recycling a kilogram instead of landfilling it. Factors are derived by dividing the reported emission reductions by the tons recycled in the <a href="https://dwee.nebraska.gov/sites/default/files/publications/2025%20Nebraska%20Material%20WARM%20Analysis%20Report.pdf" target="_blank" rel="noopener">Nebraska DWEE 2025 analysis</a>, which uses the US EPA Waste Reduction Model (WARM v16), and converting short tons to kilograms. They are US-based and indicative, so Indian values will differ. Driving equivalent uses about 0.25 kg CO₂e per km (US EPA average passenger car, about 400 g per mile). Points are 10 per kg CO₂e avoided plus 5 per entry.</p>
+    <div class="tscroll"><table id="ftable"></table></div>
+  </div>
+</section>
+
+<section class="view" id="v-reuse" hidden>
+  <div><h2>Reuse ideas</h2><p class="small" style="margin-top:6px">Describe an item in plain words. A text-matching engine ranks reuse ideas for it.</p></div>
+  <div class="note"><b>Prototype.</b> Built for this demo from the report's NLP reuse recommendation feature. It uses classical text processing (tokenising, stop-word removal, lemmatising, TF-IDF) plus pretrained word vectors (spaCy en_core_web_md, GloVe-based, cut to 64 dimensions) so that "old denim trousers" can find the jeans idea without sharing a word. On 36 paraphrased test queries I wrote, the blend ranked the right idea first 27 times against 26 for keywords alone (top 3: 33 against 30). That gain is small and within noise, because the library is small and keyword-rich; it would grow with a bigger library. It is not a trained language model, and it is not in the GitHub code.</div>
+  <div class="panel">
+    <div class="fgrid" style="grid-template-columns:2fr 1fr auto">
+      <label for="rq">What do you want to reuse?<input id="rq" type="text" value="empty glass jar with lid" autocomplete="off"></label>
+      <label for="rm">Material (optional)<select id="rm"><option value="">Any</option><option value="glass">Glass</option><option value="plastic">Plastic</option><option value="paper">Paper</option><option value="cardboard">Cardboard</option><option value="metal">Metal</option><option value="textile">Clothes and textile</option><option value="ewaste">E-waste</option><option value="organic">Organic</option></select></label>
+      <button class="btn" id="rgo">Suggest ideas</button>
+    </div>
+    <div class="chips" id="rex"></div>
+  </div>
+  <div class="two" style="grid-template-columns:1fr 2fr">
+    <div class="panel"><h3 style="margin-bottom:10px">Text processing</h3><div class="pipe" id="rpipe"></div></div>
+    <div id="rout" class="acc"></div>
+  </div>
+  <div class="panel aionly" hidden><h3 style="margin-bottom:4px">Generate ideas with AI</h3><p class="small" style="margin-bottom:10px">Uses the item typed above. The TF-IDF search stays the fast, offline method; this adds open-ended ideas from Claude.</p><div class="btnrow" style="margin-top:0"><button class="btn" id="aireuse" type="button">Generate 4 ideas</button></div><div id="aireuseout" class="coll" style="margin-top:12px"></div></div>
+</section>
+
+<section class="view" id="v-life" hidden>
+  <div><h2>Product lifespan estimator</h2><p class="small" style="margin-top:6px">Estimate how much useful life an item has left, and whether to keep, repair or recycle it.</p></div>
+  <div class="note"><b>Prototype.</b> Built for this demo from the report's lifespan prediction feature. It is a transparent formula over typical lifespans, not a trained regression model, and it is not in the GitHub code.</div>
+  <div class="panel">
+    <div class="fgrid">
+      <label for="lp">Product<select id="lp"></select></label>
+      <label for="la">Age (years)<input id="la" type="number" min="0" step="0.5" value="2"></label>
+      <label for="lu">Usage<select id="lu"><option value="light">Light</option><option value="normal" selected>Normal</option><option value="heavy">Heavy</option></select></label>
+      <label for="lc">Care<select id="lc"><option value="careful">Careful</option><option value="average" selected>Average</option><option value="rough">Rough</option></select></label>
+      <label for="ld">Condition<select id="ld"><option value="good" selected>Working well</option><option value="minor">Minor issues</option><option value="major">Major fault or damaged</option></select></label>
+    </div>
+    <div class="btnrow"><button class="btn" id="lgo">Estimate</button></div>
+  </div>
+  <div id="lout"></div>
+  <div class="panel">
+    <h3 style="margin-bottom:10px">How it is estimated</h3>
+    <p class="small" style="margin-bottom:10px">Effective life = typical life × usage factor × care factor (light 1.15, normal 1.00, heavy 0.75; careful 1.10, average 1.00, rough 0.85). Remaining life = (effective life − age) × condition factor (working 1.0, minor issues 0.7, major fault 0.3), shown with a ±25% band. Typical lifespans are planning assumptions from common industry ranges, so adjust your judgement for the specific model.</p>
+    <div class="tscroll"><table id="ltable"></table></div>
+  </div>
+</section>
+
+<section class="view" id="v-credits" hidden>
+  <div><h2>Carbon credits: can your recycling earn them?</h2><p class="small" style="margin-top:6px">What a credit is, who can issue one, which route fits you, what it could be worth, and how a deal is structured. Built from India's current rules and the main international standard for plastic.</p></div>
+  <div class="note"><b>Honest starting point.</b> One carbon credit equals one tonne of CO₂e. A household that recycles 17 kg avoids about 0.056 tonnes, so you cannot register or sell credits on your own. Credits are earned at scale by registered recyclers, project developers and obligated companies. Individuals and small collectors take part by joining an aggregator or a project. Prices, fees and rule details below marked "assumption" are editable placeholders, not market quotes.</div>
+
+  <div class="panel">
+    <h3 style="margin-bottom:10px">Where you stand</h3>
+    <div class="kpis" id="cpos"></div>
+    <div class="prog" style="margin-top:12px"><i id="cprog" style="width:0"></i></div><p class="small" id="cprogt" style="margin-top:6px"></p>
+    <div class="tscroll" style="margin-top:12px"><table id="cneed"></table></div>
+  </div>
+
+  <div class="panel">
+    <h3 style="margin-bottom:4px">Step 1. Find your route</h3>
+    <p class="small" style="margin-bottom:12px">Tell the page who you are and what you handle.</p>
+    <div class="fgrid4">
+      <label for="cwho">I am a<select id="cwho"><option value="hh">Household or housing society</option><option value="col">Kabadiwala or collector</option><option value="rec">Registered recycler or processor</option><option value="brand">Brand or producer with EPR duty</option><option value="ind">Company in a CCTS sector</option></select></label>
+      <label for="cwhat">Main material<select id="cwhat"><option value="plastic">Plastic</option><option value="paper">Paper and cardboard</option><option value="metal">Metal</option><option value="ewaste">E-waste</option><option value="organic">Organic waste (compost)</option></select></label>
+    </div>
+    <div id="croute" class="routes"></div>
+  </div>
+
+  <div class="two">
+    <div class="panel">
+      <h3 style="margin-bottom:4px">Step 2. Credit calculator</h3>
+      <p class="small" style="margin-bottom:12px">Why scale matters. Change the assumptions to match a quote you have actually received.</p>
+      <div class="fgrid4" style="grid-template-columns:1fr 1fr">
+        <label for="cmat">Material<select id="cmat"></select></label>
+        <label for="ctpm">Tonnes per month<input id="ctpm" type="number" min="0.01" step="0.1" value="5"></label>
+        <label for="cprice">Price per credit (₹) <small>assumption</small><input id="cprice" type="number" min="0" step="50" value="600"></label>
+        <label for="cfixed">Fixed yearly cost (₹) <small>assumption</small><input id="cfixed" type="number" min="0" step="10000" value="200000"></label>
+        <label for="cvar">Share lost to fees (%) <small>assumption</small><input id="cvar" type="number" min="0" max="90" step="1" value="15"></label>
+      </div>
+      <div class="kpis" id="cout" style="margin-top:14px"></div>
+      <div id="cchart" style="margin-top:12px"></div>
+      <p class="small" id="cverd" style="margin-top:8px"></p>
+    </div>
+    <div class="panel">
+      <h3 style="margin-bottom:4px">Plastic EPR certificate value</h3>
+      <p class="small" style="margin-bottom:12px">Registered plastic recyclers generate EPR certificates on the CPCB portal and sell them to brands. Indicative prices below come from one broker's list dated 23 July 2025 (<a href="https://epr.enviraj.com/plastic-epr-credit-prices-live-rates-india.html" target="_blank" rel="noopener">Enviraj</a>) and move with quantity and the market.</p>
+      <div class="fgrid4" style="grid-template-columns:1fr 1fr">
+        <label for="ecat">Packaging category<select id="ecat"></select></label>
+        <label for="etype">Certificate type<select id="etype"><option value="1">Recycling</option><option value="2">End of life</option></select></label>
+        <label for="etons">Tonnes processed per year<input id="etons" type="number" min="1" step="10" value="120"></label>
+      </div>
+      <div class="kpis" id="eout" style="margin-top:14px"></div>
+      <p class="small" style="margin-top:8px">The legal band is 30% to 100% of the environmental compensation rate, and the first-year rate quoted by one source is ₹5,000 per tonne, which would put the floor at ₹1,500 per tonne. These indicative trades sit at or under that, so the compensation rate for your category matters. Check the notified figure on the CPCB portal.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3 style="margin-bottom:4px">Step 3. Deal simulator</h3>
+    <p class="small" style="margin-bottom:12px">Build an illustrative term sheet for selling credits or certificates, with the risks a buyer will raise.</p>
+    <div class="fgrid4">
+      <label for="dinst">Instrument<select id="dinst"><option value="vcu">Voluntary carbon credit (1 t CO₂e)</option><option value="plc">Plastic credit (1 t plastic)</option><option value="epr">Plastic EPR certificate (1 t)</option><option value="ccc">Carbon Credit Certificate, CCTS (1 t CO₂e)</option></select></label>
+      <label for="dsell">Seller<select id="dsell"><option>Aggregator of collectors</option><option>Registered recycler</option><option>Project developer</option></select></label>
+      <label for="dbuy">Buyer<select id="dbuy"><option>Corporate buyer</option><option>Brand with EPR duty</option><option>Broker or trader</option></select></label>
+      <label for="dtype">Delivery<select id="dtype"><option value="spot">Spot (already issued)</option><option value="fwd">Forward (12 months)</option><option value="off">Offtake (3 years)</option></select></label>
+      <label for="dvol">Volume (units)<input id="dvol" type="number" min="1" step="10" value="500"></label>
+      <label for="dprice">Price per unit (₹)<input id="dprice" type="number" min="0" step="50" value="1500"></label>
+      <label for="dvint">Vintage year<input id="dvint" type="number" min="2020" max="2030" step="1" value="2026"></label>
+    </div>
+    <div class="btnrow" style="margin-top:14px"><button class="btn" id="dgo">Generate term sheet</button><button class="btn ghost" id="dcopy">Copy term sheet</button></div>
+    <div class="two" style="margin-top:14px"><pre class="ts" id="dts"></pre><div><h3 style="margin-bottom:8px">Flags a buyer will raise</h3><ul class="flags" id="dflags"></ul></div></div>
+    <p class="small" style="margin-top:10px">Illustrative template only. It is not a legal document, an offer, or advice. Have a lawyer review any real contract.</p>
+  </div>
+
+  <div class="panel">
+    <h3 style="margin-bottom:4px">Step 4. Integrity check</h3>
+    <p class="small" style="margin-bottom:12px">Answer for a project or certificate you are thinking of buying or selling. Each question matches a failure that has actually happened (see the case file below).</p>
+    <div id="iq" class="iq"></div>
+    <div id="iout" style="margin-top:14px"></div>
+    <div class="aionly" hidden style="margin-top:18px;border-top:1px solid var(--line);padding-top:16px">
+      <h3 style="margin-bottom:4px">AI project reviewer</h3>
+      <p class="small" style="margin-bottom:8px">Paste a project description, broker offer or email. Claude checks it against the case file and lists what to ask. Your text is sent to Claude.</p>
+      <textarea id="rvtext" rows="5" class="ta" placeholder="Example: We sell plastic credits from our collection drive in Ghaziabad, 2,000 tonnes a year, verified by our own team, price Rs 900 per credit, delivery next year."></textarea>
+      <div class="btnrow" style="margin-top:10px"><button class="btn" id="rvgo" type="button">Review with AI</button></div>
+      <div id="rvout" style="margin-top:12px"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3 style="margin-bottom:4px">Case file: what has actually gone wrong</h3>
+    <p class="small" style="margin-bottom:12px">Documented problems in carbon, plastic and EPR markets, with sources. Filter by the kind of failure.</p>
+    <div class="chips" id="casef" style="margin:0 0 14px"></div>
+    <div id="cases" class="routes"></div>
+  </div>
+
+  <div class="panel">
+    <h3 style="margin-bottom:8px">Where this comes from</h3>
+    <ul class="small" style="margin:0;padding-left:18px">
+      <li>India's Carbon Credit Trading Scheme: <a href="https://www.orennow.com/blog/carbon-credit-trading-scheme-ccts-india" target="_blank" rel="noopener">explainer</a> and the <a href="https://unfccc.int/sites/default/files/resource/Session_02_02_India_CCTS.pdf" target="_blank" rel="noopener">UNFCCC presentation on India CCTS</a>. One certificate is one tonne of CO₂e; the scheme is run by the Bureau of Energy Efficiency, with 490 obligated entities in the listed sectors. Trading was expected to start around October 2026, so check the current status with BEE.</li>
+      <li>Plastic EPR rules, categories, targets and compensation: <a href="https://greensutra.in/?p=236768" target="_blank" rel="noopener">GreenSutra, Plastic EPR 2026</a>.</li>
+      <li>E-waste EPR certificates and targets: <a href="https://greensutra.in/news/e-waste-epr-explained-2026/" target="_blank" rel="noopener">GreenSutra, E-waste EPR 2026</a>. The price band was under challenge in the Delhi High Court as of June 2026.</li>
+      <li>Plastic credits: <a href="https://verra.org/programs/plastic-waste-reduction-standard/plastic-program-details/plastic-frequently-asked-questions/" target="_blank" rel="noopener">Verra Plastic Waste Reduction Standard FAQ</a>. One plastic credit is one tonne of plastic collected or recycled, and projects must show additionality.</li>
+      <li>The first two are trade explainers, not the legal texts. Read the official notifications before relying on any figure.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="view" id="v-ai" hidden>
+  <div><h2>AI assistant</h2><p class="small" style="margin-top:6px">Ask in plain language. The assistant calls this page's own data: Delhi scrap rates, collector quotes, the 182-place map, CO₂e factors and the credit case file.</p></div>
+  <div class="note ainote" hidden><b>Not available in this view.</b> The AI features need to be opened inside Claude with access allowed. Everything else on the page works without them.</div>
+  <div class="panel aionly" hidden>
+    <div class="chat" id="chatlog" aria-live="polite"><div class="msg bot">Hi. I can compare scrap quotes, find places near you, size a carbon credit, or review a credit deal. What would you like to know?</div></div>
+    <div class="chips" id="chatsug" style="margin-top:12px"></div>
+    <form id="chatform" class="chatform"><input id="chatq" type="text" placeholder="Ask about prices, places, credits…" autocomplete="off" aria-label="Ask the assistant"><button class="btn" id="chatgo" type="submit">Send</button><button class="btn ghost" id="chatstop" type="button" hidden>Stop</button></form>
+    <p class="small" style="margin-top:8px">Your question and the data it needs are sent to Claude. Answers can be wrong; check figures against the sources linked on each tab.</p>
+  </div>
+  <div class="panel"><h3 style="margin-bottom:8px">How the AI features work</h3>
+    <ol class="steps"><li>The assistant is a language model with tools. When you ask for a quote or a place, it calls a function in this page and reads the real numbers instead of guessing.</li><li>The photo second opinion on the Classifier tab sends your image to a vision model and compares its answer with the local CNN.</li><li>The credit project reviewer checks a pasted description against the documented cases on the Carbon credits tab.</li><li>Prices and credit figures always come from the page's data, with sources. The model explains; it does not set the numbers.</li></ol>
+  </div>
+</section>
+
+</main>
+<div class="pal" id="pal" hidden role="dialog" aria-modal="true" aria-label="Quick search"><div class="palbox"><input id="palq" type="search" placeholder="Jump to a tab or action" autocomplete="off" aria-label="Quick search"><ul id="pall" role="listbox"></ul></div></div>
+<footer>Ajay Kumar Garg Engineering College, Ghaziabad (Dr. A.P.J. Abdul Kalam Technical University, Lucknow). Source code: github.com/mrgauravshukla81/ReNewGenie</footer>
+
+<script src="model.js"></script>
+<script src="samples.js"></script>
+<script src="places.js"></script>
+<script src="cnn_model.js"></script>
+<script src="embeddings.js"></script>
+<script src="forecast_data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
