@@ -30,8 +30,8 @@ var $=function(i){return document.getElementById(i)};
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 
 /* ---------- app shell: nav groups, theme, quick search, home dashboard ---------- */
-var ICON={analytics:"M4 20V10M10 20V4M16 20v-7M22 20H2",forecast:"M3 17l5-5 4 4 8-9M15 7h5v5",home:"M3 11l9-8 9 8v10H3z",classify:"M4 8h3l2-3h6l2 3h3v11H4zM12 11a3 3 0 1 0 .01 0",guide:"M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z",market:"M4 9l1-5h14l1 5M4 9v11h16V9M4 9h16",credits:"M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8 12l3 3 5-6",centres:"M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11zM12 12a2 2 0 1 0 .01 0",impact:"M4 20V10M10 20V4M16 20v-8M22 20H2",reuse:"M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z",life:"M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2",ai:"M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8zM18 15l.9 2.1L21 18l-2.1.9L18 21l-.9-2.1L15 18l2.1-.9z",report:"M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h7"};
-var VIEWS=[["home","Home","Start"],["classify","Identify waste","Waste AI"],["guide","How to recycle","Waste AI"],["market","Sell scrap","Sell and earn"],["credits","Carbon credits","Sell and earn"],["forecast","Price forecast","Sell and earn"],["centres","Find a centre","Sell and earn"],["impact","My impact","Reduce and reuse"],["analytics","Analytics","Reduce and reuse"],["reuse","Reuse ideas","Reduce and reuse"],["life","Repair or recycle?","Reduce and reuse"],["ai","AI assistant","AI"],["report","Project report","About"]];
+var ICON={aiinside:"M12 2a7 7 0 0 0-4 12.7V18h8v-3.3A7 7 0 0 0 12 2zM9 21h6",analytics:"M4 20V10M10 20V4M16 20v-7M22 20H2",forecast:"M3 17l5-5 4 4 8-9M15 7h5v5",home:"M3 11l9-8 9 8v10H3z",classify:"M4 8h3l2-3h6l2 3h3v11H4zM12 11a3 3 0 1 0 .01 0",guide:"M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z",market:"M4 9l1-5h14l1 5M4 9v11h16V9M4 9h16",credits:"M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8 12l3 3 5-6",centres:"M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11zM12 12a2 2 0 1 0 .01 0",impact:"M4 20V10M10 20V4M16 20v-8M22 20H2",reuse:"M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z",life:"M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2",ai:"M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8zM18 15l.9 2.1L21 18l-2.1.9L18 21l-.9-2.1L15 18l2.1-.9z",report:"M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h7"};
+var VIEWS=[["home","Home","Start"],["classify","Identify waste","Waste AI"],["guide","How to recycle","Waste AI"],["market","Sell scrap","Sell and earn"],["credits","Carbon credits","Sell and earn"],["forecast","Price forecast","Sell and earn"],["centres","Find a centre","Sell and earn"],["impact","My impact","Reduce and reuse"],["analytics","Analytics","Reduce and reuse"],["reuse","Reuse ideas","Reduce and reuse"],["life","Repair or recycle?","Reduce and reuse"],["ai","AI Copilot","AI"],["aiinside","How the AI works","AI"],["report","Project report","About"]];
 var tabs=$("tabs"),lastG="";
 VIEWS.forEach(function(v){
   if(v[2]!==lastG){var gl=document.createElement("div");gl.className="tgroup";gl.textContent=v[2];tabs.appendChild(gl);lastG=v[2]}
@@ -39,10 +39,24 @@ VIEWS.forEach(function(v){
   b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="'+ICON[v[0]]+'"/></svg><span>'+v[1]+'</span>';
   b.onclick=function(){show(v[0])};tabs.appendChild(b);
 });
+(function(){
+  var nv=document.querySelector("nav .wrap"),G=[],gn=document.createElement("div");gn.className="gnav";gn.setAttribute("role","tablist");
+  VIEWS.forEach(function(v){if(G.indexOf(v[2])<0)G.push(v[2])});
+  var LBL={"Start":"Home"};
+  G.forEach(function(g){var b=document.createElement("button");b.type="button";b.className="gtab";b.dataset.g=g;b.textContent=LBL[g]||g;b.onclick=function(){show(VIEWS.filter(function(v){return v[2]===g})[0][0])};gn.appendChild(b)});
+  nv.insertBefore(gn,nv.querySelector(".navtools"));
+  VIEWS.forEach(function(v){var b=tabs.querySelector('[data-v="'+v[0]+'"]');if(b)b.dataset.g=v[2]});
+  document.querySelector("nav").after(tabs);
+  window.gSync=function(id){var g=(VIEWS.filter(function(v){return v[0]===id})[0]||[])[2],n=0;
+    Array.prototype.forEach.call(tabs.children,function(b){if(!b.dataset||!b.dataset.v)return;var on=b.dataset.g===g;b.classList.toggle("gon",on);if(on)n++});
+    tabs.classList.toggle("solo",n<2);
+    Array.prototype.forEach.call(gn.children,function(b){if(b.dataset.g===g)b.setAttribute("aria-current","true");else b.removeAttribute("aria-current")})};
+})();
 function bindGo(root){(root||document).querySelectorAll("[data-go]").forEach(function(b){b.onclick=function(){show(b.dataset.go)}})}
 function show(id){
   VIEWS.forEach(function(v){$("v-"+v[0]).hidden=v[0]!==id});
   Array.prototype.forEach.call(tabs.children,function(b){if(b.dataset&&b.dataset.v===id){b.setAttribute("aria-current","page");try{b.scrollIntoView({block:"nearest",inline:"nearest"})}catch(e){}}else b.removeAttribute("aria-current")});
+  if(window.gSync)gSync(id);
   if(id==="home")renderHome();
   if(id==="credits")drawPos();
   window.scrollTo(0,0);
@@ -82,6 +96,7 @@ $("thbtn").onclick=function(){THEME=THEME===null?"light":THEME==="light"?"dark":
 applyTheme();
 /* quick search */
 var ACTS=[
+ {t:"Ask the AI Copilot",k:"ai assistant chat ask question",f:function(){show("ai");setTimeout(function(){$("chatq").focus()},50)}},
  {t:"Classify a photo",k:"waste ai camera upload",f:function(){show("classify")}},
  {t:"Sell plastic scrap",k:"pet bottles market",f:function(){openMarketFor("Plastic")}},
  {t:"Compare aluminium quotes",k:"metal cans scrap",f:function(){mg.value="aluminium";show("market");findCollectors()}},
@@ -90,7 +105,6 @@ var ACTS=[
  {t:"Which carbon credit route fits me?",k:"ccts epr verra",f:function(){show("credits");revealSec($("cwho"));$("cwho").scrollIntoView({behavior:"smooth",block:"center"})}},
  {t:"Find recycling centres near me",k:"map delhi ncr dpcc",f:function(){show("centres")}},
  {t:"Log recycling",k:"habit tracker streak",f:function(){show("impact")}},
- {t:"Ask the AI assistant",k:"chat claude question ai",f:function(){show("ai");if(AI.ok)$("chatq").focus()}},
  {t:"Start the user tour",k:"guide walkthrough demo tour",f:function(){tourGo(0)}},
  {t:"Switch theme",k:"dark light",f:function(){$("thbtn").click()}}
 ];
@@ -225,7 +239,7 @@ function drawCentres(){
 /* classifier */
 /*CNN-START*/
 var CNN=(function(){
-  var P=null,W=96,H=72;
+  var P=null,W=96,H=72,LASTG=null;
   function f16(u){var s=(u>>15)?-1:1,e=(u>>10)&31,f=u&1023;if(e===0)return s*Math.pow(2,-14)*(f/1024);if(e===31)return f?NaN:s*Infinity;return s*Math.pow(2,e-15)*(1+f/1024)}
   function load(){
     if(P)return P;
@@ -264,6 +278,7 @@ var CNN=(function(){
     for(var l=0;l<8;l++){x=conv(x,h,w,p.layers[l]);if(l%2===1){x=pool(x,h,w,p.layers[l].co);h>>=1;w>>=1}}
     var c=96,g=new Float32Array(c),k;
     for(i=0;i<h*w;i++)for(k=0;k<c;k++)g[k]+=x[i*c+k]/(h*w);
+    LASTG=g;
     var o=[],mx=-1e9;
     for(k=0;k<6;k++){var s=p.db[k];for(i=0;i<c;i++)s+=g[i]*p.dw[i*6+k];o.push(s);if(s>mx)mx=s}
     var e=0;for(k=0;k<6;k++){o[k]=Math.exp(o[k]-mx);e+=o[k]}
@@ -283,9 +298,43 @@ var CNN=(function(){
     for(i=0;i<h*w;i++){var q=0;for(k=0;k<c;k++)q+=x[i*c+k]*p.dw[k*6+cls];v[i]=q}
     return {h:h,w:w,v:v};
   }
-  return {predict:predict,fromRGBA:fromRGBA,cam:cam};
+  /* the 96 numbers the dense layer sees (global average of the last conv layer): a compact fingerprint of the photo */
+  function feat(rgb){forward(rgb);return Float32Array.from(LASTG)}
+  return {predict:predict,fromRGBA:fromRGBA,cam:cam,feat:feat};
 })();
 /*CNN-END*/
+/*PERS-START*/
+/* Teach the AI: personalisation on the device. A correction stores the photo's 96-number CNN fingerprint and your label.
+   Later photos are compared with those fingerprints (cosine similarity after standardising with TrashNet statistics).
+   Only when the ensemble is unsure (top probability below GATE) and a stored fingerprint is close (similarity >= TAU)
+   is the answer pulled toward the labels of the nearest neighbours. Settings were chosen in simulation (see MODEL_REPORT). */
+var PERS=(function(){
+  var MU=[0.5015, 0.4088, 0.6093, 0.478, 0.3304, 0.5097, 0.6496, 0.5853, 0.4988, 0.3756, 0.5438, 0.6787, 0.5277, 0.5203, 0.4053, 0.6204, 0.4899, 0.4245, 0.3865, 0.4089, 0.51, 0.4328, 0.3541, 0.3868, 0.7503, 0.6563, 0.4392, 0.5014, 0.4546, 0.4762, 0.4732, 0.4116, 0.4613, 0.4267, 0.6291, 0.4266, 0.4739, 0.3992, 0.4247, 0.3837, 0.3867, 0.4898, 0.5332, 0.5173, 0.4797, 0.4791, 0.5913, 0.3434, 0.4546, 0.3959, 0.5824, 0.542, 0.7132, 0.6306, 0.4629, 0.3599, 0.4921, 0.4474, 0.4905, 0.4121, 0.6564, 0.5275, 0.4399, 0.4826, 0.5096, 0.4844, 0.2467, 0.4451, 0.3709, 0.6478, 0.457, 0.3359, 0.5346, 0.5457, 0.5121, 0.5685, 0.422, 0.4872, 0.3433, 0.5081, 0.4681, 0.4179, 0.5939, 0.4894, 0.3984, 0.4295, 0.4856, 0.4975, 0.5243, 0.3598, 0.4871, 0.5153, 0.409, 0.5328, 0.5449, 0.4428],SD=[0.4706, 0.4353, 0.4987, 0.3997, 0.3252, 0.4305, 0.4661, 0.5078, 0.458, 0.4546, 0.4095, 0.5639, 0.4352, 0.3764, 0.3945, 0.5783, 0.3558, 0.5961, 0.4165, 0.4023, 0.6184, 0.4449, 0.3302, 0.4253, 0.5548, 0.3808, 0.5549, 0.4724, 0.4129, 0.4899, 0.415, 0.4739, 0.5039, 0.4165, 0.5069, 0.4103, 0.4222, 0.5011, 0.4198, 0.4439, 0.4484, 0.4235, 0.4275, 0.4535, 0.4124, 0.4591, 0.4657, 0.3742, 0.4396, 0.3238, 0.5777, 0.5278, 0.5905, 0.4348, 0.4568, 0.3779, 0.4162, 0.4267, 0.4661, 0.4284, 0.4711, 0.4347, 0.47, 0.4896, 0.5, 0.3702, 0.3448, 0.371, 0.4324, 0.5059, 0.408, 0.373, 0.5042, 0.4149, 0.3796, 0.4826, 0.4003, 0.3943, 0.3878, 0.4472, 0.4687, 0.3772, 0.6829, 0.3437, 0.4109, 0.3894, 0.4934, 0.4567, 0.4108, 0.4036, 0.4499, 0.42, 0.4253, 0.4359, 0.5917, 0.3658],K=5,TAU=0.6,LAM=0.7,GATE=0.6,T=0.1,CAP=200,KEY="rg_teach_v1";
+  function prep(f){var o=new Float32Array(96),n=0,i;for(i=0;i<96;i++){o[i]=(f[i]-MU[i])/SD[i];n+=o[i]*o[i]}n=Math.sqrt(n)||1;for(i=0;i<96;i++)o[i]/=n;return o}
+  function load(){try{var a=JSON.parse(localStorage.getItem(KEY)||"[]");return Array.isArray(a)?a.filter(function(x){return x&&x.z&&x.z.length===96&&typeof x.l==="number"}):[]}catch(e){return []}}
+  function save(a){try{localStorage.setItem(KEY,JSON.stringify(a))}catch(e){}}
+  function item(f,label){var z=prep(f),r=[];for(var i=0;i<96;i++)r.push(Math.round(z[i]*1000)/1000);return {z:r,l:label}}
+  function add(f,label){var a=load();a.push(item(f,label));if(a.length>CAP)a=a.slice(a.length-CAP);save(a);return a.length}
+  function clear(){try{localStorage.removeItem(KEY)}catch(e){}}
+  /* P: class probabilities (length 6); f: 96-number fingerprint; items: stored corrections */
+  function adjust(P,f,items){
+    items=items||load();
+    var res={P:P,used:false,n:items.length,nn:[]};
+    if(!items.length||!f)return res;
+    var top=0;for(var i=1;i<P.length;i++)if(P[i]>P[top])top=i;
+    if(P[top]>=GATE)return res;
+    var q=prep(f),sims=items.map(function(it,j){var d=0;for(var k=0;k<96;k++)d+=q[k]*it.z[k];return {s:d,l:it.l}}).sort(function(a,b){return b.s-a.s}).slice(0,K).filter(function(x){return x.s>=TAU});
+    if(!sims.length)return res;
+    var best=sims[0].s,V=new Array(P.length).fill(0),den=0;
+    sims.forEach(function(x){var w=Math.exp((x.s-best)/T);V[x.l]+=w;den+=w});
+    var lam=LAM*Math.min(1,(best-TAU)/(1-TAU)*3);
+    res.P=P.map(function(p,j){return (1-lam)*p+lam*V[j]/den});res.used=true;res.nn=sims;res.lam=lam;
+    return res;
+  }
+  return {load:load,save:save,add:add,clear:clear,adjust:adjust,item:item,prep:prep,PARAMS:{K:K,TAU:TAU,LAM:LAM,GATE:GATE,CAP:CAP}};
+})();
+/*PERS-END*/
+
 
 /*CLF-START*/
 var CLF=(function(){
@@ -412,7 +461,8 @@ var WHAT={
  analytics:"Your impact log as charts, plus a simulator that scales it to a year, a street or a city.",
  reuse:"Describe an old item and get ranked ideas for giving it a second life.",
  life:"Enter a product's age and condition to see whether to keep, repair or recycle it.",
- ai:"Ask questions in plain words. Only available inside Claude.",
+ ai:"Type a request in plain words. An on-device AI works out what you want, runs the right tool on this site's data and shows how it understood you.",
+ aiinside:"Every AI component in the project, what it is built from, how it was measured and where it breaks.",
  report:"The written project report: how the system is built, what was measured, limits and SDG links."
 };
 Object.keys(WHAT).forEach(function(id){var v=$("v-"+id);if(!v||v.querySelector(".what"))return;var d=document.createElement("div");d.className="what";d.innerHTML="<span><b>What is this?</b> "+esc(WHAT[id])+"</span>";v.insertBefore(d,v.firstElementChild&&v.firstElementChild.nextSibling||null)});
@@ -469,7 +519,9 @@ Object.keys(SECS).forEach(function(id){
   if(anchor)anchor.after(bar);else v.insertBefore(bar,v.children[1]||null);
   SECMAP[id]=d;secShow(id,0);
 });
-document.querySelectorAll(".view>div:first-child h2").forEach(function(h){var v=h.closest(".view");var m={classify:"Waste AI",guide:"Waste AI",market:"Sell and earn",credits:"Sell and earn",forecast:"Sell and earn",centres:"Sell and earn",impact:"Reduce and reuse",analytics:"Reduce and reuse",reuse:"Reduce and reuse",life:"Reduce and reuse",ai:"AI",report:"About"}[v.id.slice(2)];if(m)h.setAttribute("data-kicker",m)});
+(function(){var B={classify:"neural network · learns from your corrections",forecast:"time-series ML",reuse:"semantic search",life:"rule-based model",market:"simulation tools",centres:"geo search"};
+  Object.keys(B).forEach(function(id){var h=document.querySelector("#v-"+id+">div:first-child h2");if(h&&!h.querySelector(".aibadge")){var b=document.createElement("span");b.className="aibadge";b.textContent=B[id];h.appendChild(document.createTextNode(" "));h.appendChild(b)}})})();
+document.querySelectorAll(".view>div:first-child h2").forEach(function(h){var v=h.closest(".view");var m={classify:"Waste AI",guide:"Waste AI",market:"Sell and earn",credits:"Sell and earn",forecast:"Sell and earn",centres:"Sell and earn",impact:"Reduce and reuse",analytics:"Reduce and reuse",reuse:"Reduce and reuse",life:"Reduce and reuse",ai:"AI",aiinside:"AI",report:"About"}[v.id.slice(2)];if(m)h.setAttribute("data-kicker",m)});
 /* ---------- Vision tools: tile scan, batch, camera ---------- */
 function runModels(img,crop,tta){
   var sw=img.naturalWidth||img.width,sh=img.naturalHeight||img.height,sx=0,sy=0;
@@ -616,6 +668,7 @@ $("go").onclick=function(){
   out.innerHTML='<p><span class="spin"></span> &nbsp;Running the model in your browser…</p>';
   setTimeout(function(){
     var R=runModels(curImg,null,true),Pm=R.Pm,Pc=R.Pc,P=R.P,rg=R.rg;
+    var FEAT=CNN.feat(rg),PA=PERS.adjust(P,FEAT);if(PA.used)P=PA.P;
     var mt=function(a){var j=0;a.forEach(function(v,i){if(v>a[j])j=i});return RG_MODEL.cls[j]+" "+(a[j]*100).toFixed(0)+"%"};
     var order=P.map(function(v,i){return i}).sort(function(a,b){return P[b]-P[a]});
     pick=RG_MODEL.cls[order[0]];var conf=P[order[0]];
@@ -625,6 +678,7 @@ $("go").onclick=function(){
     var amax=function(a){var j=0;a.forEach(function(v,i){if(v>a[j])j=i});return j};
     var agree=amax(Pc)===amax(Pm),bd=calibBand(conf),ag=agree?AGREE.yes:AGREE.no;
     var warn=unsure?'<div class="note"><b>Not sure.</b> Best guess is '+esc(pick)+' ('+(conf*100).toFixed(0)+'%), then '+esc(second)+' ('+(P[order[1]]*100).toFixed(0)+'%). Below 60% confidence, this ensemble was right only about 59% of the time on held-out photos, so check by eye or try a plainer background.</div>':'';
+    if(PA.used)warn+='<div class="note"><b>Adjusted by your corrections.</b> The model was unsure, and '+PA.nn.length+' photo'+(PA.nn.length===1?'':'s')+' you corrected earlier looked similar (closest: '+esc(RG_MODEL.cls[PA.nn[0].l])+', similarity '+PA.nn[0].s.toFixed(2)+'). The answer was pulled toward '+esc(pick)+'. This is the "Teach the AI" feature running on this device.</div>';
     var rel='<p class="small"><b>How far to trust it.</b> On the 380 held-out photos, answers with confidence '+Math.round(bd[0]*100)+'–'+Math.min(100,Math.round(bd[1]*100))+'% were right '+Math.round(bd[3]*100)+'% of the time (n='+bd[2]+'). The two models '+(agree?'agree':'disagree')+'; when that happens the ensemble was right '+Math.round(ag[1]*100)+'% of the time.</p>';
     var cnnPick=RG_MODEL.cls[amax(Pc)],cm=CNN.cam(rg,amax(Pc));
     var truth="";
@@ -635,11 +689,12 @@ $("go").onclick=function(){
       var res=out.querySelector(".result"),d=document.createElement("div");d.className="fbk";
       var FBK=[];try{FBK=JSON.parse(localStorage.getItem("rg_fb")||"[]")}catch(e){}
       function draw(){
-        d.innerHTML='<h3>Was this right?</h3><p class="small">Your answers build a labelled list you can export. This is how a model gets better on photos from your own city.</p><div class="btnrow" style="margin-top:6px"><button class="btn sm" id="fb_y">Yes, '+esc(pick)+'</button><select id="fb_c" aria-label="Correct label"><option value="">No, it is actually…</option>'+RG_MODEL.cls.map(function(c){return '<option>'+c+'</option>'}).join("")+'</select></div><p class="small" id="fb_n" style="margin-top:6px">'+FBK.length+' label'+(FBK.length===1?"":"s")+' saved in this browser'+(FBK.length?' · <a href="#" id="fb_e">export CSV</a>':'')+'</p>';
+        d.innerHTML='<h3>Was this right?</h3><p class="small">Your answers build a labelled list you can export. <b>Teach the AI:</b> each answer also stores this photo\'s numeric fingerprint (never the photo) on this device, and when the model is unsure about a similar photo later, your labels nudge it. '+PERS.load().length+' stored · <a href="#" id="fb_x">clear them</a></p><div class="btnrow" style="margin-top:6px"><button class="btn sm" id="fb_y">Yes, '+esc(pick)+'</button><select id="fb_c" aria-label="Correct label"><option value="">No, it is actually…</option>'+RG_MODEL.cls.map(function(c){return '<option>'+c+'</option>'}).join("")+'</select></div><p class="small" id="fb_n" style="margin-top:6px">'+FBK.length+' label'+(FBK.length===1?"":"s")+' saved in this browser'+(FBK.length?' · <a href="#" id="fb_e">export CSV</a>':'')+'</p>';
         var q=function(i){return d.querySelector("#"+i)};q("fb_y").onclick=function(){add(pick)};q("fb_c").onchange=function(){if(this.value)add(this.value)};
+        if(q("fb_x"))q("fb_x").onclick=function(e){e.preventDefault();PERS.clear();draw();q("fb_n").insertAdjacentHTML("afterbegin","Cleared. ")};
         if(q("fb_e"))q("fb_e").onclick=function(e){e.preventDefault();var csv="time,source,predicted,confidence,true_label,correct\n"+FBK.map(function(r){return [r.t,r.src,r.p,r.c,r.l,r.ok].join(",")}).join("\n");saveText("renewgenie_labels.csv",csv,"text/csv");try{navigator.clipboard.writeText(csv).then(function(){q("fb_n").textContent="CSV downloaded and copied to your clipboard."})}catch(x){}};
       }
-      function add(l){FBK.push({t:new Date().toISOString(),src:(curNote?"trashnet-sample":"user-photo"),p:pick,c:conf.toFixed(3),l:l,ok:l===pick});try{localStorage.setItem("rg_fb",JSON.stringify(FBK))}catch(e){}draw();d.querySelector("#fb_n").insertAdjacentHTML("afterbegin","Thanks. ")}
+      function add(l){try{var li=RG_MODEL.cls.indexOf(l);if(li>-1)PERS.add(FEAT,li)}catch(e){}FBK.push({t:new Date().toISOString(),src:(curNote?"trashnet-sample":"user-photo"),p:pick,c:conf.toFixed(3),l:l,ok:l===pick});try{localStorage.setItem("rg_fb",JSON.stringify(FBK))}catch(e){}draw();d.querySelector("#fb_n").insertAdjacentHTML("afterbegin","Thanks. ")}
       draw();res.insertBefore(d,res.querySelector("#aivisout"));
     })();
     var camOn=true,ccv=$("camc");drawCam(ccv,curImg,cm,true);
@@ -1599,7 +1654,7 @@ function scenario(){
 
 /* ---------- AI features (Claude via the page's sample capability) ---------- */
 var AI={s:null,ok:false,busy:false,ctl:null,hist:[]};
-function aiShow(){document.querySelectorAll(".aionly").forEach(function(e){e.hidden=!AI.ok});document.querySelectorAll(".ainote").forEach(function(e){e.hidden=AI.ok})}
+function aiShow(){document.querySelectorAll(".aionly").forEach(function(e){e.hidden=!AI.ok});var cm=document.getElementById("cpmode");if(cm&&!AI.ok)cm.value="local";document.querySelectorAll(".ainote").forEach(function(e){e.hidden=AI.ok})}
 function aiInit(){
   try{
     if(window.claude&&claude.use){claude.use("sample").then(function(x){AI.s=x;AI.ok=!!x;aiShow()},function(){AI.ok=false;aiShow()})}
@@ -1610,12 +1665,13 @@ function aiSys(){
   var cases=CASES.map(function(c){return "- "+c.y+" ["+c.tag+"] "+c.t+": "+c.what+" Lesson: "+c.lesson+" Source: "+c.u}).join("\n");
   return "You are the ReNewGenie assistant inside a recycling demo for Delhi NCR. Be concise and plain. Use tools for any number about prices, places or CO2e; do not invent figures. Scrap reference rates are from scraprates.in (6 Oct 2026) and are not live quotes; collector names and profiles are demo data. Carbon credits: one credit is 1 tonne CO2e; households cannot sell alone; say when something is an assumption. If a tool returns nothing, say so. Do not give legal or investment advice.\n\nDocumented credit-market problems you may cite (give the source link):\n"+cases;
 }
+function hav4(a,b,c,d){var R=6371,t=Math.PI/180,dl=(c-a)*t,dn=(d-b)*t,x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a*t)*Math.cos(c*t)*Math.sin(dn/2)*Math.sin(dn/2);return 2*R*Math.asin(Math.sqrt(x))}
 function aiTools(){
   function g(id){return gradeById(id)}
   return [
    {name:"get_scrap_rate",description:"Reference Delhi scrap rate and the spread of sample collector offers for a grade. Grade ids: "+GRADES.map(function(x){return x.id}).join(", "),inputSchema:{type:"object",properties:{grade:{type:"string"}},required:["grade"]},execute:function(i){var x=g(i.grade);if(!x)return {error:"unknown grade",valid:GRADES.map(function(y){return y.id})};var r=COLL.map(function(c){return rateOf(c,x)}).filter(function(v){return v!=null});return {grade:x.n,reference_inr_per_kg:x.ref,basis:basisText(x),offers_low:Math.min.apply(0,r),offers_high:Math.max.apply(0,r),co2e_kg_per_kg:x.co2?FACTORS[x.co2].f:null}}},
    {name:"compare_quotes",description:"Net payout from each sample collector for a grade and weight, best first.",inputSchema:{type:"object",properties:{grade:{type:"string"},kg:{type:"number"},condition:{type:"string",enum:["clean","dirty","wet"]},doorstep:{type:"boolean"}},required:["grade","kg"]},execute:function(i){var x=g(i.grade);if(!x)return {error:"unknown grade"};var cd={clean:0,dirty:.1,wet:.25}[i.condition||"clean"],door=i.doorstep!==false;return COLL.map(function(c){var r=rateOf(c,x);if(r==null)return null;var p=PROFILE[c.n],gr=r*i.kg,fee=(door&&i.kg<p.free)?p.fee:0;return {collector:c.n,area:c.a,rate:r,net_inr:Math.round(gr-gr*cd-fee),minimum_kg:c.min,meets_minimum:i.kg>=c.min}}).filter(Boolean).sort(function(a,b){return b.net_inr-a.net_inr})}},
-   {name:"find_places",description:"Nearest recycling places. near must be one of: "+LOCS.map(function(l){return l[0]}).join("; ")+". type: ew (e-waste recycler), mrf, mrfp (planned MRF), wte, hub, col (collector).",inputSchema:{type:"object",properties:{near:{type:"string"},type:{type:"string"},limit:{type:"number"}},required:["near"]},execute:function(i){var u=LOCS.filter(function(l){return l[0].toLowerCase()===String(i.near).toLowerCase()})[0];if(!u)return {error:"unknown location",valid:LOCS.map(function(l){return l[0]})};var out=PLACES.filter(function(p){return !i.type||p[0]===i.type}).map(function(p){return {name:p[1],type:PTYPE[p[0]][0],where:p[2],km:Math.round(hav(u[1],u[2],p[4],p[5])*10)/10,note:p[6]}}).sort(function(a,b){return a.km-b.km}).slice(0,Math.min(10,i.limit||5));return {note:"pins are town-level approximations; distances straight-line",results:out}}},
+   {name:"find_places",description:"Nearest recycling places. near must be one of: "+LOCS.map(function(l){return l[0]}).join("; ")+". type: ew (e-waste recycler), mrf, mrfp (planned MRF), wte, hub, col (collector).",inputSchema:{type:"object",properties:{near:{type:"string"},type:{type:"string"},limit:{type:"number"}},required:["near"]},execute:function(i){var u=LOCS.filter(function(l){return l[0].toLowerCase()===String(i.near).toLowerCase()})[0];if(!u)return {error:"unknown location",valid:LOCS.map(function(l){return l[0]})};var out=PLACES.filter(function(p){return !i.type||p[0]===i.type}).map(function(p){return {name:p[1],type:PTYPE[p[0]][0],where:p[2],km:Math.round(hav4(u[1],u[2],p[4],p[5])*10)/10,note:p[6]}}).sort(function(a,b){return a.km-b.km}).slice(0,Math.min(10,i.limit||5));return {note:"pins are town-level approximations; distances straight-line",results:out}}},
    {name:"estimate_credits",description:"CO2e avoided by recycling a weight of material, and how far that is from one carbon credit. material ids: "+Object.keys(FACTORS).join(", "),inputSchema:{type:"object",properties:{material:{type:"string"},kg:{type:"number"}},required:["material","kg"]},execute:function(i){var f=FACTORS[i.material];if(!f)return {error:"unknown material",valid:Object.keys(FACTORS)};var t=i.kg*f.f/1000;return {material:f.n,kg_co2e_per_kg:f.f,tonnes_co2e:t,share_of_one_credit_pct:t*100,kg_needed_for_one_credit:Math.round(1000/f.f),note:"US EPA WARM based factors, indicative"}}},
    {name:"list_credit_cases",description:"Documented problems in carbon and EPR markets, optionally filtered by tag: baseline, data, method, outcome, capacity, price, market.",inputSchema:{type:"object",properties:{tag:{type:"string"}}},execute:function(i){return CASES.filter(function(c){return !i.tag||c.tag===i.tag}).map(function(c){return {when:c.y,title:c.t,what:c.what,lesson:c.lesson,source:c.u}})}},
    {name:"forecast_metal",description:"Backtested forecast for a world metal price (aluminium, copper, lead, zinc, nickel, tin). Data ends June 2017, so it demonstrates method only. Returns central value, 80% range and typical error.",inputSchema:{type:"object",properties:{metal:{type:"string"},months:{type:"number"}},required:["metal"]},execute:function(i){return window.RG_FC(i.metal,i.months)}},
@@ -1623,10 +1679,10 @@ function aiTools(){
   ];
 }
 function chatAdd(cls,text){var d=document.createElement("div");d.className="msg "+cls;d.textContent=text;$("chatlog").appendChild(d);$("chatlog").scrollTop=$("chatlog").scrollHeight;return d}
-function chatAsk(q){
+function chatAsk(q,skipMe){
   if(!AI.ok||AI.busy||!q.trim())return;
   AI.busy=true;$("chatgo").disabled=true;$("chatstop").hidden=false;
-  chatAdd("me",q);var bot=chatAdd("bot","Thinking…");
+  if(!skipMe)chatAdd("me",q);var bot=chatAdd("bot","Thinking…");
   AI.hist.push({role:"user",content:q});
   var turns=AI.hist.slice(-8).map(function(m,i,a){return i===0&&m.role==="user"?{role:"user",content:aiSys()+"\n\nUser question:\n"+m.content}:m});
   if(turns[0].role!=="user")turns.shift();
@@ -1639,12 +1695,407 @@ function chatAsk(q){
     AI.hist.pop();
   }).then(function(){AI.busy=false;$("chatgo").disabled=false;$("chatstop").hidden=true;$("chatq").focus()});
 }
-(function(){
-  ["What would 40 kg of aluminium and 25 kg of newspaper fetch near me?","Where is the nearest DPCC e-waste recycler to Saket?","How many kg of plastic make one carbon credit?","Why did Verra suspend cookstove projects?","Is selling carbon credits worth it for a small kabadiwala?"].forEach(function(t){
-    var b=document.createElement("button");b.type="button";b.className="chip";b.textContent=t;b.onclick=function(){$("chatq").value="";chatAsk(t)};$("chatsug").appendChild(b)});
-  $("chatform").onsubmit=function(e){e.preventDefault();var q=$("chatq").value;$("chatq").value="";chatAsk(q)};
-  $("chatstop").onclick=function(){if(AI.ctl)AI.ctl.abort()};
+
+
+/*NLU-START*/
+/* On-device language understanding for the Copilot. No network, no language model: a hand-written lexicon,
+   regular expressions for quantities, and (optionally) word-vector similarity to example phrases. */
+var RGNLU=(function(){
+  var INTENTS={
+    quote:"Compare scrap quotes", rate:"Look up a scrap rate", places:"Find a recycling place", credits:"Estimate carbon credits",
+    forecast:"Forecast a metal price", life:"Repair or recycle?", reuse:"Find reuse ideas", cases:"Carbon-credit risks",
+    classify:"Identify waste from a photo", help:"What I can do"
+  };
+  /* keyword weights per intent: [regex source, weight] */
+  var KW={
+    quote:[["\\bgive me\\b",1.2],["\\bwhat do (dealers|kabadiwalas?|buyers) (give|pay|offer)\\b",2.5],["\\b(cash|money) for\\b",2],["\\boffers?\\b",1],["\\bsell(ing)?\\b",2],["\\bsale\\b",1],["\\bworth\\b",1],["\\bfetch(es)?\\b",2],["\\bearn\\b",1.5],["\\bpayout\\b",2],["\\bhow much\\b",1.2],["\\bquotes?\\b",2],["\\bpay(s|ing)?\\b",1],["\\bget for\\b",1.5],["\\bkabadi(wala)?\\b",1],["\\bbest (price|offer|deal)\\b",1.5],["\\bpick ?up\\b",1]],
+    rate:[["\\brates?\\b",2],["\\bprice\\b",1.2],["\\bper kg\\b",1.5],["\\bcost\\b",.8],["\\bgoing\\b",.6],["\\btoday\\b",.6],["\\bcurrent\\b",.6]],
+    places:[["\\bget rid of\\b",2],["\\bwho (takes|accepts|collects)\\b",2],["\\baccepts?\\b",1.5],["\\bspot\\b",1],["\\bwhere\\b",1.5],["\\bnearest\\b",2],["\\bnear(by)?\\b",1.2],["\\bclosest\\b",2],["\\bdrop( |-)?off\\b",2],["\\bcent(re|er)s?\\b",1.5],["\\brecyclers?\\b",1.5],["\\bdispose\\b",1.2],["\\blocation\\b",1.2],["\\bfind\\b",.6],["\\bplaces?\\b",1],["\\bmrf\\b",1.5],["\\bdealers?\\b",1]],
+    credits:[["\\bcarbon\\b",2],["\\bcredits?\\b",1.5],["\\bco2e?\\b",2.5],["\\bemissions?\\b",1.5],["\\bccts\\b",2],["\\bclimate\\b",1],["\\bgreenhouse\\b",1.5],["\\boffsets?\\b",1.5],["\\bone credit\\b",1.5],["\\bsave\\b",.4],["\\bavoid(ed)?\\b",1]],
+    forecast:[["\\b(costlier|cheaper|pricier|dearer)\\b",2],["\\bcoming (months|weeks)\\b",2],["\\b(rising|falling|getting (costlier|cheaper|expensive))\\b",1.5],["\\bsoon\\b",.5],["\\bwhat will happen\\b",2],["\\bheading\\b",1.5],["\\bforecast(s|ing)?\\b",3],["\\bpredict(ion|ions)?\\b",2.5],["\\bfuture\\b",1.5],["\\bnext (month|months|year|quarter)\\b",1.8],["\\btrend\\b",1.5],["\\boutlook\\b",2],["\\bwill .{0,25}(rise|fall|go up|go down|drop|increase)\\b",2.5],["\\bin \\d+ months?\\b",1.5],["\\bexpect(ed)?\\b",.8]],
+    life:[["\\brepair(ing|ed)?\\b",2.5],["\\breplace(ment)?\\b",2],["\\bstill (good|usable|worth|work)\\b",2],["\\bhow long\\b",1.5],["\\blife ?span\\b",3],["\\bworth (fixing|repair)",3],["\\bshould i (keep|throw|bin|change|buy)\\b",2],["\\byears? old\\b",2],["\\byr old\\b",2],["\\bnot working\\b",1.2],["\\bbroken\\b",1],["\\bold\\b",.4],["\\bfix(ing)?\\b",1.5],["\\bupgrade\\b",1]],
+    reuse:[["\\bcreative\\b",2],["\\buses? for\\b",2],["\\bwhat to do with\\b",2],["\\binstead of (throwing|binning|dumping)\\b",2],["\\bworn[- ]out\\b",.8],["\\breuse\\b",3],["\\bre-use\\b",3],["\\bupcycl\\w*",3],["\\bdiy\\b",2],["\\bcraft\\b",1.5],["\\bmake (something|a |an |use)",1.5],["\\bwhat can i (do|make)\\b",2],["\\bideas?\\b",1.5],["\\binto a\\b",1],["\\bturn .{0,20} into\\b",2],["\\brepurpose\\b",3],["\\bwaste to\\b",.5]],
+    cases:[["\\b(legit|legitimate|genuine|real or fake|trustworthy)\\b",2],["\\bfake\\b",1],["\\btrue\\?",1],["\\bscams?\\b",3],["\\bfraud\\b",3],["\\bverra\\b",3],["\\bcookstoves?\\b",3],["\\bsuspend(ed)?\\b",2],["\\bintegrity\\b",2],["\\bwhy did\\b",1.5],["\\bgreenwash\\w*",3],["\\bfake\\b",1.5],["\\brisky\\b",2],["\\brisks?\\b",1.5],["\\bover-?issu\\w*",3],["\\bepr\\b",1.5],["\\bworth it\\b",.8],["\\bcrash(ed)?\\b",1],["\\btrust\\b",1]],
+    classify:[["\\bphoto\\b",2],["\\bpicture\\b",2],["\\bimage\\b",2],["\\bidentify\\b",2.5],["\\bwhat is this\\b",2.5],["\\bscan\\b",2],["\\bcamera\\b",2],["\\bwhich bin\\b",2.5],["\\bis (this|it) recyclable\\b",2.5],["\\bclassif\\w*",2.5],["\\bheat ?map\\b",2],["\\bwhat kind of (waste|trash)\\b",2.5],["\\bupload\\b",1.5]],
+    help:[["^good (morning|evening|afternoon)\\b",3],["\\bable to help\\b",3],["^(hi|hello|hey|namaste)\\b",3],["\\bhelp\\b",2.5],["\\bwhat can you do\\b",4],["\\bwho are you\\b",4],["\\bthanks?\\b",2],["\\bhow do(es)? this work\\b",2],["\\bcapabilities\\b",3]]
+  };
+  var KWR={};Object.keys(KW).forEach(function(k){KWR[k]=KW[k].map(function(p){return [new RegExp(p[0],"i"),p[1]]})});
+
+  /* example sentences per intent, used for the (optional) word-vector similarity */
+  var EXAMPLES={
+    quote:["how much will I get if I sell scrap","what would a kabadiwala pay for my old metal","get the best offer for my waste paper","earn money selling bottles and cardboard"],
+    rate:["what is the rate of copper today","current price per kg of aluminium scrap","how much does newspaper scrap cost"],
+    places:["where can I drop off my broken electronics","nearest recycling centre to me","find a place to dispose of old batteries"],
+    credits:["how much carbon dioxide does recycling plastic save","how many kilograms make one carbon credit","emissions avoided by recycling aluminium"],
+    forecast:["will copper prices go up next month","forecast the aluminium price for six months","predict where zinc is heading"],
+    life:["is my old laptop worth repairing","should I replace my five year old phone","how long will my fridge last"],
+    reuse:["what can I make from an empty glass jar","ideas to reuse old jeans","upcycle plastic bottles into something useful"],
+    cases:["why did verra suspend cookstove projects","is the carbon credit market full of scams","what went wrong with plastic credits"],
+    classify:["what is this item in my photo","identify the waste in a picture","which bin does this go in"],
+    help:["what can you do","hello","help me get started"]
+  };
+
+  var GSYN={
+    newspaper:["newspaper","newspapers","magazine","magazines","raddi","old paper","waste paper","paper"],
+    whitepaper:["white paper","office paper","a4 paper","printer paper","a4 sheets"],
+    books:["books","book","notebooks","notebook","copies","mixed paper"],
+    cardboard:["cardboard","cardboards","carton","cartons","corrugated","gatta","boxes","box"],
+    pet:["pet bottles","pet bottle","plastic bottles","plastic bottle","water bottles","water bottle","pet","cold drink bottles","plastic"],
+    hdpe:["hdpe","hard plastic","buckets","bucket","drums","drum","crates","crate","pp plastic","plastic containers"],
+    film:["plastic bags","plastic bag","carry bags","carry bag","polythene","poly bags","soft plastic","wrappers","plastic film","film"],
+    iron:["iron","mixed steel","loha","scrap steel","steel","tin cans"],
+    stainless:["stainless steel","stainless","steel utensils","ss utensils"],
+    aluminium:["aluminium","aluminum","al cans","soda cans","beverage cans","drink cans","cans","can"],
+    copper:["copper wire","copper wires","copper pipes","copper pipe","copper","cable","cables","wire","wires"],
+    brass:["brass","taps","tap","fittings","pital"],
+    glass:["glass bottles","glass bottle","glass","beer bottles","bottles"],
+    ewaste:["e-waste","ewaste","e waste","electronics","electronic waste","chargers","charger","keyboards","keyboard","small appliances","circuit boards"],
+    laptop:["laptops","laptop","desktops","desktop","computers","computer","cpu","pc"],
+    battery:["inverter batteries","inverter battery","lead acid","lead-acid","car battery","car batteries","batteries","battery"],
+    clothes:["old clothes","clothes","clothing","garments","textiles","textile","saree","sarees"]
+  };
+  var PSYN={
+    phone:["smartphone","phone","mobile","iphone","android"],laptop:["laptop","notebook computer","macbook"],tv:["television","tv","led tv"],
+    fridge:["refrigerator","fridge"],washer:["washing machine","washer"],led:["led bulb","led light","led lamp"],cfl:["cfl","tube light","cfl bulb"],
+    battery:["power bank","battery pack","rechargeable battery"],tshirt:["t-shirt","tshirt","t shirt","shirt"],jeans:["jeans","denim"],
+    shoes:["shoes","footwear","sandals","chappals","sneakers"],tub:["plastic container","tupperware","container"],jar:["glass jar","jar"],
+    steelbottle:["steel bottle","aluminium bottle","flask","thermos"],box:["storage box","cardboard box"]
+  };
+  var PLACE_ALIAS={gurgaon:"Gurugram Cyber City",gurugram:"Gurugram Cyber City",noida:"Noida Sector 62",ghaziabad:"Ghaziabad Raj Nagar",faridabad:"Faridabad Sector 15",cp:"Connaught Place",connaught:"Connaught Place","nehru place":"Nehru Place",lajpat:"Lajpat Nagar",vasant:"Vasant Kunj",karol:"Karol Bagh",laxmi:"Laxmi Nagar",mayur:"Mayur Vihar",dwarka:"Dwarka",saket:"Saket",okhla:"Okhla",rohini:"Rohini",pitampura:"Pitampura",janakpuri:"Janakpuri",baghpat:"Baghpat"};
+  var METALS=["aluminium","copper","lead","zinc","nickel","tin"];
+  var MSYN={aluminum:"aluminium"};
+  var PTYPES=[["ew",/\b(e-?waste|electronics?|recyclers?)\b/i],["col",/\b(kabadi\w*|scrap dealers?|collectors?|dealers?)\b/i],["mrfp",/\bplanned\b/i],["mrf",/\b(mrf|material recovery)\b/i],["wte",/\b(waste[- ]to[- ]energy|wte|incinerat\w*)\b/i],["hub",/\bhubs?\b/i]];
+
+  function esc(s){return String(s).replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}
+  function phraseRe(p){return new RegExp("(^|[^a-z0-9])"+esc(p).replace(/\\ /g,"[ -]")+"(?=$|[^a-z0-9])","ig")}
+
+  /* quantity: number + unit -> kg */
+  var QRE=/(\d+(?:[.,]\d+)?|\bhalf\b|\bone\b|\btwo\b|\bthree\b|\bfive\b|\bten\b)\s*(kgs?|kilos?|kilograms?|quintals?|qtl|tonnes?|tons?|grams?|gms?|g)\b/ig;
+  var WORDS={half:.5,one:1,two:2,three:3,five:5,ten:10};
+  function quantities(t){
+    var out=[],m;QRE.lastIndex=0;
+    while((m=QRE.exec(t))){
+      var raw=m[1].toLowerCase(),n=WORDS[raw]!==undefined?WORDS[raw]:parseFloat(raw.replace(",","."));
+      var u=m[2].toLowerCase(),kg=/^(kg|kilo|kilogram)/.test(u)?n:/^(quintal|qtl)/.test(u)?n*100:/^(ton)/.test(u)?n*1000:n/1000;
+      out.push({kg:kg,pos:m.index,end:m.index+m[0].length,text:m[0]});
+    }
+    return out;
+  }
+  function matchAll(t,table,skipRanges){
+    /* longest phrase first; each text span is used once */
+    var cand=[];
+    Object.keys(table).forEach(function(id){table[id].forEach(function(p){cand.push({id:id,p:p})})});
+    cand.sort(function(a,b){return b.p.length-a.p.length});
+    var used=[],hits=[];
+    cand.forEach(function(c){
+      var re=phraseRe(c.p),m;
+      while((m=re.exec(t))){
+        var s=m.index+m[1].length,e=s+c.p.length;
+        if(used.some(function(u){return s<u[1]&&e>u[0]}))continue;
+        if(skipRanges&&skipRanges.some(function(u){return s<u[1]&&e>u[0]}))continue;
+        used.push([s,e]);hits.push({id:c.id,pos:s,end:e,text:c.p});
+      }
+    });
+    return hits.sort(function(a,b){return a.pos-b.pos});
+  }
+  function create(D){
+    var LOCN=(D.locs||[]).map(function(l){return l[0]});
+    function normalise(q){return String(q||"").toLowerCase().replace(/[’']/g,"'").replace(/\be\s?-?\s?waste\b/g,"e-waste").replace(/\s+/g," ").trim()}
+    function findPlace(t){
+      var best=null;
+      LOCN.forEach(function(n){var i=t.indexOf(n.toLowerCase());if(i>-1&&(!best||n.length>best.n.length))best={n:n,pos:i}});
+      if(best)return best.n;
+      var keys=Object.keys(PLACE_ALIAS).sort(function(a,b){return b.length-a.length});
+      for(var i=0;i<keys.length;i++){if(phraseRe(keys[i]).test(t))return PLACE_ALIAS[keys[i]]}
+      return null;
+    }
+    function parse(q){
+      var t=normalise(q),ent={},why=[];
+      var qs=quantities(t),qr=qs.map(function(x){return [x.pos,x.end]});
+      var gm=matchAll(t,GSYN,qr);
+      var pm=matchAll(t,PSYN,qr);
+      /* items: pair every grade with the nearest quantity, preferring a number written just before it */
+      var items=[],usedQ={};
+      gm.forEach(function(g){
+        var bestQ=-1,bestD=1e9;
+        qs.forEach(function(x,i){
+          if(usedQ[i])return;
+          var d=x.end<=g.pos?g.pos-x.end:x.pos>=g.end?(x.pos-g.end)*1.6+6:1e9;
+          if(d<bestD&&d<40){bestD=d;bestQ=i}
+        });
+        var kg=null;if(bestQ>-1){usedQ[bestQ]=true;kg=qs[bestQ].kg}
+        if(items.some(function(i){return i.grade===g.id}))return;
+        items.push({grade:g.id,kg:kg,said:g.text});
+      });
+      var loose=qs.filter(function(x,i){return !usedQ[i]});
+      if(items.length===1&&items[0].kg==null&&loose.length){items[0].kg=loose[0].kg}
+      ent.items=items;
+      if(!items.length&&loose.length)ent.kg=loose[0].kg;
+      var pl=findPlace(t);if(pl)ent.place=pl;
+      for(var i=0;i<PTYPES.length;i++){if(PTYPES[i][1].test(t)){ent.placeType=PTYPES[i][0];break}}
+      if(/\b(wet|soaked|oily|greasy|damp)\b/.test(t))ent.condition="wet";
+      else if(/\b(dirty|mixed|unsorted|muddy|dusty)\b/.test(t))ent.condition="dirty";
+      else if(/\b(clean|dry|sorted|washed)\b/.test(t))ent.condition="clean";
+      if(/\b(no pickup|i will (carry|bring)|drop it myself|self[- ]?drop)\b/.test(t))ent.doorstep=false;
+      var me=null;METALS.concat(["aluminum"]).forEach(function(m){if(!me&&phraseRe(m).test(t))me=MSYN[m]||m});
+      if(me)ent.metal=me;
+      var mo=/(\d+)\s*(?:-|\s)?months?\b(?!\s*old)/.exec(t);
+      if(mo)ent.months=Math.max(1,Math.min(12,parseInt(mo[1],10)));
+      else if(/next year|12 months|one year|a year/.test(t))ent.months=12;
+      else if(/next quarter/.test(t))ent.months=3;
+      if(pm.length)ent.product=pm[0].id;
+      var ag=/(\d+(?:\.\d+)?)\s*(?:-|\s)?(?:years?|yrs?|y)\b(?:\s*-?\s*old)?/.exec(t);
+      if(ag&&!/\bin \d+ years?\b/.test(t))ent.age=parseFloat(ag[1]);
+      else {var am=/(\d+)\s*(?:-|\s)?months?\s*-?\s*old/.exec(t);if(am)ent.age=parseInt(am[1],10)/12}
+      if(/\b(heavy(ly)?|gaming|every ?day|daily|rough|abuse)\b/.test(t))ent.use="heavy";else if(/\b(light|rarely|occasional(ly)?|seldom)\b/.test(t))ent.use="light";
+      if(/\b(careful|well[- ]maintained|case|cover)\b/.test(t))ent.care="careful";else if(/\b(dropped|rough|abused|neglected)\b/.test(t))ent.care="rough";
+      if(/\b(dead|not (working|turning|charging)|won'?t (turn|start|charge)|water damage\w*|burnt|major|shattered|motherboard)\b/.test(t))ent.faults="major";
+      else if(/\b(slow|battery (drain\w*|issue|problem|health|dies|life)|cracked|crack|scratch\w*|lag\w*|minor|small (issue|problem)|hang\w*|heats?|overheat\w*|sticky|loose)\b/.test(t))ent.faults="minor";
+      else if(/\b(works? (fine|well)|good condition|perfect)\b/.test(t))ent.faults="good";
+      /* intent scores */
+      var sc={};Object.keys(INTENTS).forEach(function(k){sc[k]=0});
+      Object.keys(KWR).forEach(function(k){KWR[k].forEach(function(p){if(p[0].test(t)){sc[k]+=p[1];why.push(k+": '"+p[0].source.replace(/\\b|\\w\*|\(\?:.*?\)/g,"").replace(/\\/g,"")+"'")}})});
+      var hasKg=ent.items.some(function(i){return i.kg!=null})||ent.kg!=null,hasG=ent.items.length>0;
+      /* entity evidence */
+      if(hasG&&hasKg){sc.quote+=1.8;sc.credits+=.4}
+      if(hasG&&!hasKg){sc.rate+=1.0;sc.quote+=.3;sc.reuse+=.2}
+      if(ent.place)sc.places+=1.2;
+      if(ent.placeType)sc.places+=1;
+      if(ent.metal)sc.forecast+=1.2;
+      if(ent.metal&&!/forecast|predict|future|next|trend|outlook|will/.test(t)){sc.rate+=1.2;sc.forecast-=.8}
+      if(ent.product&&ent.age!=null){sc.life+=2.4;sc.reuse-=.4}else if(ent.product){sc.life+=.4;sc.reuse+=.2}
+      if(ent.faults&&ent.product){sc.life+=1}
+      if(ent.age!=null&&!ent.product&&!hasG){sc.life+=.2}
+      if(/\bco2e?\b|\bcarbon\b|\bemissions?\b/.test(t)&&hasKg){sc.credits+=1.5;sc.quote-=1.2}
+      if(/\bhow (many|much) (kg|kilos?|tonnes?|tons?)\b/.test(t)&&/\b(credit|carbon)\b/.test(t)){sc.credits+=2.5;sc.quote-=2}
+      /* two-reading guards */
+      if(/\b(scams?|fraud|verra|cookstoves?|suspended|greenwash\w*)\b/.test(t)){sc.cases+=1.5;sc.credits-=1.5}
+      if(/\b(rate|price)\b/.test(t)&&/\bcarbon|credit/.test(t)){sc.credits+=1;sc.rate-=1.2}
+      if(/\bgreenhouse\b/.test(t)&&hasKg){sc.credits+=2;sc.quote-=2}
+      if(/\b(climate|carbon|offsets?|credits?)\b/.test(t)&&/\b(legit|legitimate|genuine|fake|true)\b/.test(t)){sc.cases+=2;sc.credits-=1.5}
+      if(/\b(carbon|credits?)\b/.test(t)&&!hasKg&&/\b(sell|selling|worth it|small)\b/.test(t)){sc.cases+=3.2;sc.quote-=2.2;sc.credits-=.5}
+      /* optional meaning similarity */
+      var sim=D.sim?D.sim(t):null,semBoost={},SB=D.simBase!=null?D.simBase:0.2,SG=D.simGain!=null?D.simGain:6;
+      if(sim){Object.keys(sim).forEach(function(k){var b=Math.max(0,sim[k]-SB)*SG;semBoost[k]=b;sc[k]+=b})}
+      /* pick */
+      var ks=Object.keys(sc).sort(function(a,b){return sc[b]-sc[a]}),top=ks[0],T=1.4,den=0;
+      ks.forEach(function(k){den+=Math.exp(Math.max(0,sc[k])/T)});
+      var conf=Math.exp(Math.max(0,sc[top])/T)/den;
+      var strength=sc[top];
+      var intent=strength<1.6?"unknown":top;
+      var missing=[],assumed={};
+      if(intent==="quote"){
+        if(!ent.items.length){missing.push("which material (for example copper wire, newspaper, PET bottles)")}
+        else ent.items.forEach(function(i){if(i.kg==null){i.kg=10;i.assumed=true;assumed.kg="10 kg (you did not give a weight)"}});
+      }
+      if(intent==="rate"&&!ent.items.length&&!ent.metal)missing.push("which material");
+      if(intent==="places"&&!ent.place){assumed.place="Connaught Place (you did not name an area)";ent.place="Connaught Place"}
+      if(intent==="credits"){
+        if(!ent.items.length&&!ent.materialWord){/* try plain material words */
+          var mm=/\b(aluminium|aluminum|steel|paper|cardboard|plastic|glass|e-?waste)\b/.exec(t);if(mm)ent.materialWord=mm[1]==="aluminum"?"aluminium":mm[1]==="ewaste"||mm[1]==="e-waste"?"ewaste":mm[1];
+        }
+        if(!ent.items.length&&!ent.materialWord)missing.push("which material");
+        if(!hasKg&&!/one credit|1 credit|make one|per credit/.test(t)){assumed.kg="1000 kg (you did not give a weight)";ent.kg=1000}
+      }
+      if(intent==="forecast"){if(!ent.metal)missing.push("which metal (aluminium, copper, lead, zinc, nickel or tin)");if(!ent.months){ent.months=6;assumed.months="6 months"}}
+      if(intent==="life"){
+        if(!ent.product)missing.push("what the item is (for example phone, laptop, fridge)");
+        else if(ent.age==null){ent.age=3;assumed.age="3 years (you did not give an age)"}
+      }
+      return {text:q,intent:intent,top:top,conf:conf,strength:strength,scores:sc,entities:ent,missing:missing,assumed:assumed,why:why.slice(0,6),semantic:semBoost};
+    }
+    /* similarity of a normalised text to each intent's example phrases, using the supplied embed function */
+    return {parse:parse,normalise:normalise};
+  }
+  /* word-vector similarity of a request to each intent's example phrases (centred, so unrelated text scores near 0) */
+  function makeSim(embed,tokenize,stop){
+    var cache=null;
+    function vec(txt){var tk=tokenize(txt).filter(function(w){return stop.indexOf(w)<0});return tk.length?embed(tk,null):null}
+    function build(){
+      var all=[],byI={};
+      Object.keys(EXAMPLES).forEach(function(k){byI[k]=EXAMPLES[k].map(vec).filter(Boolean);all=all.concat(byI[k])});
+      if(!all.length)return {};
+      var d=all[0].length,mu=new Float32Array(d),i,j;
+      all.forEach(function(v){for(i=0;i<d;i++)mu[i]+=v[i]/all.length});
+      function cen(v){var o=new Float32Array(d),n=0;for(i=0;i<d;i++){o[i]=v[i]-mu[i];n+=o[i]*o[i]}n=Math.sqrt(n)||1;for(i=0;i<d;i++)o[i]/=n;return o}
+      var out={mu:mu,cen:cen,ex:{}};Object.keys(byI).forEach(function(k){out.ex[k]=byI[k].map(cen)});return out;
+    }
+    return function(t){
+      if(!cache)cache=build();if(!cache.cen)return null;
+      var v=vec(t);if(!v)return null;var q=cache.cen(v),r={};
+      Object.keys(cache.ex).forEach(function(k){var best=-1;cache.ex[k].forEach(function(e){var d=0;for(var i=0;i<e.length;i++)d+=e[i]*q[i];if(d>best)best=d});r[k]=best});
+      return r;
+    };
+  }
+  return {create:create,makeSim:makeSim,INTENTS:INTENTS,EXAMPLES:EXAMPLES,GSYN:GSYN};
 })();
+/*NLU-END*/
+
+/* ---------- On-device AI Copilot (works with or without Claude) ---------- */
+var CP=(function(){
+  var nlu=null,TL=null;
+  function tools(){if(!TL){TL={};aiTools().forEach(function(t){TL[t.name]=t.execute})}return TL}
+  function engine(){
+    if(!nlu){
+      var sim=null;
+      try{sim=RGNLU.makeSim(embed,tokenize,Array.isArray(STOP)?STOP:String(STOP).split(" "))}catch(e){}
+      nlu=RGNLU.create({locs:LOCS,sim:sim});
+    }
+    return nlu;
+  }
+  function inrs(n){return "₹"+Math.round(n).toLocaleString("en-IN")}
+  function gname(id){var g=gradeById(id);return g?g.n:id}
+  function chipRow(ent){
+    var c=[];
+    (ent.items||[]).forEach(function(i){c.push(["material",gname(i.grade)]);if(i.kg!=null)c.push(["weight",(i.kg>=1000?(i.kg/1000)+" t":i.kg+" kg")+(i.assumed?" (assumed)":"")])});
+    if(ent.kg!=null&&!(ent.items||[]).length)c.push(["weight",ent.kg+" kg"]);
+    if(ent.condition)c.push(["condition",ent.condition]);
+    if(ent.place)c.push(["area",ent.place]);
+    if(ent.placeType)c.push(["place type",PTYPE[ent.placeType]?PTYPE[ent.placeType][0]:ent.placeType]);
+    if(ent.metal)c.push(["metal",ent.metal]);
+    if(ent.months)c.push(["horizon",ent.months+" months"]);
+    if(ent.product){var p=PRODUCTS.filter(function(x){return x.id===ent.product})[0];c.push(["item",p?p.n:ent.product])}
+    if(ent.age!=null)c.push(["age",ent.age+" yr"]);
+    if(ent.faults)c.push(["state",ent.faults]);
+    if(ent.use)c.push(["usage",ent.use]);
+    if(ent.materialWord)c.push(["material",ent.materialWord]);
+    return c.map(function(x){return '<span class="tag">'+esc(x[0])+': <b>'+esc(x[1])+'</b></span>'}).join(" ")||'<span class="small">nothing specific found</span>';
+  }
+  function how(r,tool){
+    var pct=Math.round(r.conf*100);
+    return '<details class="cphow"><summary>How I understood this</summary><div class="cpgrid">'+
+      '<div><span class="small">Intent</span><br><b>'+esc(RGNLU.INTENTS[r.intent]||"Not sure")+'</b></div>'+
+      '<div><span class="small">Match strength</span><br><b>'+pct+'%</b> <span class="small">(rule score '+r.strength.toFixed(1)+')</span></div>'+
+      '<div><span class="small">Tool I ran</span><br><b>'+esc(tool||"none")+'</b></div></div>'+
+      '<p class="small" style="margin:8px 0 4px">What I picked out of your sentence:</p><div class="tags">'+chipRow(r.entities)+'</div>'+
+      (Object.keys(r.assumed).length?'<p class="small" style="margin-top:8px"><b>Assumed:</b> '+esc(Object.keys(r.assumed).map(function(k){return r.assumed[k]}).join("; "))+'</p>':'')+
+      '<p class="small" style="margin-top:8px">This is an on-device assistant made of keyword rules, unit and place parsing, and word-vector similarity. It is not a large language model, and "match strength" is a rule score, not a calibrated probability.</p></details>';
+  }
+  function act(label,key,arg){return '<button type="button" class="btn ghost sm cpact" data-act="'+key+'" data-arg="'+esc(JSON.stringify(arg||{}))+'">'+esc(label)+'</button>'}
+  /* ---- answer builders: each returns {html, tool} ---- */
+  var A={
+    quote:function(r){
+      var e=r.entities,T=tools(),items=e.items,cond=e.condition||"clean",door=e.doorstep!==false;
+      var per=items.map(function(i){return {i:i,q:T.compare_quotes({grade:i.grade,kg:i.kg,condition:cond,doorstep:door})}}).filter(function(x){return Array.isArray(x.q)&&x.q.length});
+      if(!per.length)return {html:"<p>I could not find a price for that material in the sample data.</p>",tool:"compare_quotes"};
+      var h="";
+      per.forEach(function(x){
+        var g=gradeById(x.i.grade),top=x.q.slice(0,3);
+        h+='<p><b>'+esc(g.n)+', '+x.i.kg+' kg</b> <span class="small">('+esc(cond)+', '+(door?"doorstep pickup":"you drop it off")+')</span></p>'+
+          '<div class="tbl"><table><thead><tr><th>Collector</th><th>Rate</th><th>You receive</th></tr></thead><tbody>'+top.map(function(q,k){return '<tr><td>'+(k===0?'<b>':'')+esc(q.collector)+' <span class="small">'+esc(q.area)+'</span>'+(k===0?'</b>':'')+(q.meets_minimum?'':' <span class="tag bad">below their '+q.minimum_kg+' kg minimum</span>')+'</td><td>'+inrs(q.rate)+'/kg</td><td>'+(k===0?'<b>':'')+inrs(q.net_inr)+(k===0?'</b>':'')+'</td></tr>'}).join("")+'</tbody></table></div>'+
+          '<p class="small">Rate basis: '+esc(basisText(g))+'.</p>';
+      });
+      if(per.length>1){
+        var tot={};per.forEach(function(x){x.q.forEach(function(q){tot[q.collector]=tot[q.collector]||{n:q.collector,a:q.area,t:0,c:0};tot[q.collector].t+=q.net_inr;tot[q.collector].c++})});
+        var all=Object.keys(tot).map(function(k){return tot[k]}).filter(function(x){return x.c===per.length}).sort(function(a,b){return b.t-a.t});
+        if(all.length)h+='<p><b>Best single pickup for everything:</b> '+esc(all[0].n)+' ('+esc(all[0].a)+') would pay about <b>'+inrs(all[0].t)+'</b> in total.</p>';
+      }
+      var f=items[0];
+      h+='<div class="btnrow">'+act("Open these quotes in Sell scrap","market",{grade:f.grade,kg:f.kg,cond:cond})+'</div>';
+      return {html:h,tool:"compare_quotes"+(per.length>1?" ×"+per.length:"")};
+    },
+    rate:function(r){
+      var e=r.entities,T=tools();
+      if(e.items.length){
+        var h="";e.items.forEach(function(i){var x=T.get_scrap_rate({grade:i.grade});if(x.error)return;
+          h+='<p><b>'+esc(x.grade)+'</b>: '+(x.reference_inr_per_kg!=null?'reference <b>'+inrs(x.reference_inr_per_kg)+'/kg</b>, ':'')+'sample collector offers '+inrs(x.offers_low)+' to '+inrs(x.offers_high)+'/kg.<br><span class="small">Basis: '+esc(x.basis)+'.'+(x.co2e_kg_per_kg?' Recycling avoids about '+x.co2e_kg_per_kg+' kg CO₂e per kg.':'')+'</span></p>'});
+        return {html:h+'<div class="btnrow">'+act("See all collector rates","market",{grade:e.items[0].grade,kg:25,cond:"clean"})+'</div>',tool:"get_scrap_rate"};
+      }
+      return {html:'<p>The price board only covers scrap grades such as copper, aluminium, newspaper or PET bottles. For world metal prices try the forecast tool.</p><div class="btnrow">'+act("Open Price forecast","forecast",{metal:e.metal||"Copper",months:6})+'</div>',tool:"none"};
+    },
+    places:function(r){
+      var e=r.entities,x=tools().find_places({near:e.place,type:e.placeType,limit:5});
+      if(x.error)return {html:"<p>I do not know that area. Try Saket, Dwarka, Rohini, Noida, Gurugram and similar.</p>",tool:"find_places"};
+      if(!x.results.length)return {html:"<p>No matching places in the map data near "+esc(e.place)+".</p>",tool:"find_places"};
+      return {html:'<p>Nearest '+(e.placeType?esc(PTYPE[e.placeType][0].toLowerCase())+'s':'places')+' to <b>'+esc(e.place)+'</b>:</p><ol class="steps">'+x.results.map(function(p){return '<li><b>'+esc(p.name)+'</b> <span class="small">'+esc(p.type)+' · '+esc(p.where)+' · about '+p.km+' km straight-line</span></li>'}).join("")+'</ol><p class="small">'+esc(x.note)+'. Call ahead to confirm they accept your item.</p><div class="btnrow">'+act("Open the map","centres",{place:e.place})+'</div>',tool:"find_places"};
+    },
+    credits:function(r){
+      var e=r.entities,T=tools(),mat=null,kg=e.kg||1000;
+      if(e.items.length){var g=gradeById(e.items[0].grade);mat=g&&g.co2;if(e.items[0].kg!=null)kg=e.items[0].kg}
+      if(!mat&&e.materialWord)mat=e.materialWord;
+      if(!mat||!FACTORS[mat])return {html:"<p>I have no CO₂e factor for that material. I cover aluminium, steel, paper, cardboard, plastic, glass and e-waste.</p>",tool:"estimate_credits"};
+      var x=T.estimate_credits({material:mat,kg:kg});
+      if(e.kg==null&&!(e.items.length&&e.items[0].kg!=null))return {html:'<p>About <b>'+x.kg_needed_for_one_credit.toLocaleString("en-IN")+' kg</b> of '+esc(x.material.toLowerCase())+' recycled avoids 1 tonne of CO₂e, which is one carbon credit&#39;s worth.</p><p>A household cannot sell credits alone: credits need a registered project, an approved method and independent verification, and recycling programmes usually pool many tonnes.</p><p class="small">'+esc(x.note)+'.</p><div class="btnrow">'+act("Open the credit calculator","credits",{})+'</div>',tool:"estimate_credits"};
+      return {html:'<p><b>'+kg+' kg of '+esc(x.material.toLowerCase())+'</b> avoids about <b>'+(x.tonnes_co2e*1000).toFixed(1)+' kg CO₂e</b> ('+x.tonnes_co2e.toFixed(3)+' t), which is <b>'+x.share_of_one_credit_pct.toFixed(1)+'%</b> of one carbon credit.</p><p>One credit is 1 tonne CO₂e, so you would need about <b>'+x.kg_needed_for_one_credit.toLocaleString("en-IN")+' kg</b> of this material. A household cannot sell credits alone: it needs a registered project, a method and verification.</p><p class="small">'+esc(x.note)+'.</p><div class="btnrow">'+act("Open the credit calculator","credits",{})+'</div>',tool:"estimate_credits"};
+    },
+    forecast:function(r){
+      var e=r.entities,x=tools().forecast_metal({metal:e.metal,months:e.months});
+      if(x.error)return {html:"<p>"+esc(x.error)+"</p>",tool:"forecast_metal"};
+      return {html:'<p><b>'+esc(x.metal)+'</b>: last known price <b>$'+x.latest.toLocaleString("en-US")+'</b>/t ('+esc(x.latestMonth)+'). Looking '+x.horizonMonths+' months ahead, my central estimate is <b>$'+x.centre.toLocaleString("en-US")+'</b> with an 80% range of $'+x.range80[0].toLocaleString("en-US")+' to $'+x.range80[1].toLocaleString("en-US")+'. On this series the typical backtest error at that horizon is about '+x.typicalAbsErrorPct+'%.</p><p class="small"><b>Read this carefully:</b> the data ends in June 2017, so this demonstrates the method (rolling-origin backtests of naive, Holt and ridge models) and is not a current price view.</p><div class="btnrow">'+act("Open the forecast chart","forecast",{metal:x.metal,months:x.horizonMonths})+'</div>',tool:"forecast_metal"};
+    },
+    life:function(r){
+      var e=r.entities,p=PRODUCTS.filter(function(x){return x.id===e.product})[0];
+      if(!p)return {html:"<p>Tell me what the item is.</p>",tool:"lifespan"};
+      var use=e.use||"normal",care=e.care||"average",cond=e.faults||"good",res=lifespan(p,e.age,use,care,cond),pct=Math.round(res.used*100);
+      var head={keep:"Keep using it",repair:"Repair it",plan:"Plan its replacement","end":"Time to recycle or reuse it"}[res.verdict];
+      var why={keep:"About "+res.lo.toFixed(1)+" to "+res.hi.toFixed(1)+" years of useful life left.",repair:"It has used only "+pct+"% of its expected life, so a repair is worth it.",plan:"It has used "+pct+"% of its expected life. Keep it while it works and budget for a replacement.","end":"It is at or past its expected life, or the fault is major. "+(ROUTE[p.cat]||"")+"."}[res.verdict];
+      return {html:'<p><b>'+esc(p.n)+', '+e.age+' years old</b> (usage '+esc(use)+', care '+esc(care)+', condition '+esc(cond==="good"?"working well":cond==="minor"?"minor issues":"major fault")+')</p><div class="panel" style="padding:12px"><h3>'+esc(head)+'</h3><p style="margin-top:6px">'+esc(why)+'</p><p class="small" style="margin-top:6px">Expected life with this usage: '+res.eff.toFixed(1)+' years. Life used: '+pct+'%. This is a rule of thumb from typical lifespans, not a diagnosis.</p></div><div class="btnrow">'+act("Open Repair or recycle?","life",{product:p.id,age:e.age,use:use,care:care,cond:cond})+'</div>',tool:"lifespan (rule model)"};
+    },
+    reuse:function(r){
+      var x=tools().search_reuse_ideas({query:r.text}),list=(Array.isArray(x)?x:[]).filter(function(i){return i.match>=15}).map(function(i){return {title:i.idea,steps:i.steps||[],score:i.match/100}});
+      if(!list.length)return {html:"<p>Nothing in the library matches that well. Name the material and the item, for example “plastic bottle” or “old jeans”.</p>",tool:"search_reuse_ideas"};
+      return {html:list.slice(0,3).map(function(i){return '<p><b>'+esc(i.title||i.t)+'</b>'+(i.score!=null?' <span class="small">('+Math.round(i.score*100)+'% match)</span>':'')+'</p>'+((i.steps||[]).length?'<ol class="steps">'+i.steps.slice(0,4).map(function(s){return '<li>'+esc(s)+'</li>'}).join("")+'</ol>':'')}).join("")+'<div class="btnrow">'+act("Open Reuse ideas","reuse",{q:r.text})+'</div>',tool:"search_reuse_ideas"};
+    },
+    cases:function(r){
+      var toks=tokenize(r.text).filter(function(w){return STOP.indexOf(w)<0&&w.length>2}).map(lemma);
+      var sc=CASES.map(function(c){var txt=tokenize(c.t+" "+c.what+" "+c.who+" "+c.tag).map(lemma),s=0;toks.forEach(function(w){if(txt.indexOf(w)>-1)s++});return {c:c,s:s}}).sort(function(a,b){return b.s-a.s});
+      var top=sc.filter(function(x){return x.s>0}).slice(0,2);if(!top.length)top=sc.slice(0,2).map(function(x){return {c:x.c,s:0}});
+      return {html:top.map(function(x){return '<p><b>'+esc(x.c.t)+'</b> <span class="small">'+esc(x.c.y)+'</span><br>'+esc(x.c.what)+'<br><span class="small"><b>Lesson:</b> '+esc(x.c.lesson)+'</span></p>'}).join("")+'<p class="small">Case file entries are summaries of public reporting. Sources are linked in Carbon credits, then Integrity and cases.</p><div class="btnrow">'+act("Open the case file","credits",{})+'</div>',tool:"case file search"};
+    },
+    classify:function(){return {html:'<p>Open <b>Identify waste</b>, choose or take a photo, and the in-browser neural network will name the material, show a heat-map of where it looked, and say how sure it is. You can then tell it when it was wrong and it will learn from you on this device.</p><div class="btnrow">'+act("Open Identify waste","classify",{})+'</div>',tool:"none"}},
+    help:function(){return {html:'<p>I understand plain requests and use this site\'s own data. Try:</p><ul class="steps">'+EXAMPLES.map(function(t){return '<li><a href="#" class="cpex">'+esc(t)+'</a></li>'}).join("")+'</ul>',tool:"none"}}
+  };
+  var EXAMPLES=["Sell 25 kg copper wire and 40 kg newspaper","Is my 6-year-old phone worth repairing?","Where is the nearest e-waste recycler to Saket?","How many kg of plastic make one carbon credit?","Will aluminium go up in the next 6 months?","What can I make from an empty glass jar?","Why did Verra suspend cookstove projects?"];
+  var ACT={
+    market:function(a){var i=GRADES.map(function(g){return g.id}).indexOf(a.grade);if(i>-1)mg.value=a.grade;$("mqty").value=Math.max(1,Math.round(a.kg||25));var ci={clean:0,dirty:1,wet:2}[a.cond||"clean"];$("mcond").value=ci;show("market");findCollectors()},
+    centres:function(a){var i=LOCS.map(function(l){return l[0]}).indexOf(a.place);if(i>-1){$("cloc").value=String(i);$("cloc").dispatchEvent(new Event("change"))}show("centres")},
+    forecast:function(a){var o=Array.prototype.filter.call($("fcs").options,function(x){return x.value.toLowerCase()===String(a.metal).toLowerCase()})[0];if(o)$("fcs").value=o.value;$("fch").value=a.months||6;show("forecast");$("fcgo").click()},
+    life:function(a){var i=PRODUCTS.map(function(p){return p.id}).indexOf(a.product);if(i>-1)lp.value=String(i);$("la").value=a.age;$("lu").value=a.use;$("lc").value=a.care;$("ld").value=a.cond;show("life");runLife()},
+    reuse:function(a){$("rq").value=a.q;$("rm").value="";runReuse();show("reuse")},
+    credits:function(){show("credits")},
+    classify:function(){show("classify")}
+  };
+  function log(){return $("chatlog")}
+  function addMe(q){var d=document.createElement("div");d.className="msg me";d.textContent=q;log().appendChild(d)}
+  function addBot(html){var d=document.createElement("div");d.className="msg bot rich";d.innerHTML=html;log().appendChild(d);log().scrollTop=log().scrollHeight;
+    d.querySelectorAll(".cpact").forEach(function(b){b.onclick=function(){var f=ACT[b.dataset.act];if(f)f(JSON.parse(b.dataset.arg||"{}"))}});
+    d.querySelectorAll(".cpex").forEach(function(a){a.onclick=function(ev){ev.preventDefault();ask(a.textContent)}});
+    return d}
+  function answer(q){
+    var r=engine().parse(q),html,tool;
+    if(r.intent==="unknown"){
+      return {r:r,unknown:true,html:'<p>I am not sure what you mean by that. I can compare scrap quotes, find recycling places, size carbon credits, forecast metal prices, judge repair or recycle, and suggest reuse ideas.</p><ul class="steps">'+EXAMPLES.slice(0,4).map(function(t){return '<li><a href="#" class="cpex">'+esc(t)+'</a></li>'}).join("")+'</ul>'+how(r,"none")};
+    }
+    if(r.missing.length){
+      return {r:r,html:'<p>I understood this as <b>'+esc(RGNLU.INTENTS[r.intent])+'</b>, but I still need to know <b>'+esc(r.missing.join(" and "))+'</b>. Add it and ask again.</p>'+how(r,"none")};
+    }
+    var out;try{out=A[r.intent](r)}catch(e){out={html:"<p>Something went wrong while running that: "+esc(e.message)+"</p>",tool:"error"}}
+    var a=Object.keys(r.assumed).length?'<p class="small">I assumed: '+esc(Object.keys(r.assumed).map(function(k){return r.assumed[k]}).join("; "))+'.</p>':"";
+    return {r:r,html:'<p class="cptag"><span class="tag ok">On-device AI</span> <span class="tag">'+esc(RGNLU.INTENTS[r.intent])+'</span></p>'+out.html+a+how(r,out.tool)};
+  }
+  function ask(q){
+    q=String(q||"").trim();if(!q)return;
+    if(AI.busy)return;
+    show("ai");
+    if(AI.ok&&$("cpmode")&&$("cpmode").value==="claude"){chatAsk(q);return}
+    addMe(q);
+    var a=answer(q);
+    if(a.unknown&&AI.ok){addBot('<p class="small">The on-device assistant did not recognise this, so I passed it to Claude.</p>');chatAsk(q,true);return}
+    addBot(a.html);
+  }
+  function init(){
+    var sug=$("chatsug");sug.innerHTML="";
+    EXAMPLES.forEach(function(t){var b=document.createElement("button");b.type="button";b.className="chip";b.textContent=t;b.onclick=function(){ask(t)};sug.appendChild(b)});
+    $("chatform").onsubmit=function(e){e.preventDefault();var q=$("chatq").value;$("chatq").value="";ask(q)};
+    var hf=$("homeask");if(hf)hf.onsubmit=function(e){e.preventDefault();var q=$("homeq").value;$("homeq").value="";ask(q)};
+    document.querySelectorAll(".homeex").forEach(function(b){b.onclick=function(){ask(b.dataset.q)}});
+  }
+  return {init:init,ask:ask,answer:answer,engine:engine};
+})();
+
+CP.init();
+$("chatstop").onclick=function(){if(AI.ctl)AI.ctl.abort()};
+$("toinside").onclick=function(){show("aiinside")};
 /* photo second opinion */
 function aiVision(){
   var out=$("aivisout");
