@@ -91,7 +91,7 @@ var ACTS=[
  {t:"Find recycling centres near me",k:"map delhi ncr dpcc",f:function(){show("centres")}},
  {t:"Log recycling",k:"habit tracker streak",f:function(){show("impact")}},
  {t:"Ask the AI assistant",k:"chat claude question ai",f:function(){show("ai");if(AI.ok)$("chatq").focus()}},
- {t:"Start the interviewer tour",k:"guide walkthrough demo tour",f:function(){tourGo(0)}},
+ {t:"Start the user tour",k:"guide walkthrough demo tour",f:function(){tourGo(0)}},
  {t:"Switch theme",k:"dark light",f:function(){$("thbtn").click()}}
 ];
 var palItems=VIEWS.map(function(v){return {t:"Go to "+v[1],k:v[2].toLowerCase(),f:function(){show(v[0])}}}).concat(ACTS),palSel=0,palList=[];
