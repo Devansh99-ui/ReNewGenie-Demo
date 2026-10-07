@@ -2232,6 +2232,75 @@ aiInit();
   }).catch(function(){});
 })();
 
+
+/* AUTH-START */
+var AUTH=(function(){
+  var UK="rg_users_v1",SK="rg_session_v1",GK="rg_guest_v1";
+  function $(i){return document.getElementById(i)}
+  function lj(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}}
+  function sj(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}
+  var enc=new TextEncoder();
+  function hex(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return("0"+x.toString(16)).slice(-2)}).join("")}
+  function hash(pw,salt){
+    var c=window.crypto&&crypto.subtle;
+    if(!c)return Promise.reject(new Error("nocrypto"));
+    return c.importKey("raw",enc.encode(pw),"PBKDF2",false,["deriveBits"]).then(function(k){
+      return c.deriveBits({name:"PBKDF2",salt:enc.encode(salt),iterations:100000,hash:"SHA-256"},k,256)}).then(hex)
+  }
+  function salt(){var a=new Uint8Array(12);crypto.getRandomValues(a);return hex(a)}
+  var mode="in";
+  function setMode(m){
+    mode=m;$("atin").setAttribute("aria-selected",m==="in");$("atup").setAttribute("aria-selected",m==="up");
+    $("anamel").hidden=m==="in";$("asub").textContent=m==="in"?"Sign in":"Create account";
+    $("apass").autocomplete=m==="in"?"current-password":"new-password";$("aerr").textContent=""}
+  function user(){var s=lj(SK,null);return s&&s.email?s:null}
+  function paint(){
+    var u=user(),b=$("authbtn");
+    b.textContent=u?(u.name||u.email.split("@")[0])+" · Log out":"Sign in";
+    document.documentElement.setAttribute("data-user",u?"in":"guest")}
+  function open(m){setMode(m||"in");$("auth").hidden=false;setTimeout(function(){$(m==="up"?"aname":"aemail").focus()},30)}
+  function close(){$("auth").hidden=true}
+  function err(t){$("aerr").textContent=t}
+  function submit(e){
+    e.preventDefault();err("");
+    var email=$("aemail").value.trim().toLowerCase(),pw=$("apass").value,name=$("aname").value.trim();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))return err("Enter a valid email address.");
+    if(pw.length<6)return err("Password needs at least 6 characters.");
+    var users=lj(UK,[]);if(!Array.isArray(users))users=[];
+    var ex=users.filter(function(x){return x.email===email})[0];
+    if(mode==="up"){
+      if(!name)return err("Please enter your name.");
+      if(ex)return err("That email already has an account. Try signing in.");
+      var sl;try{sl=salt()}catch(x){return err("This browser cannot create accounts here. Use Continue as guest.")}
+      hash(pw,sl).then(function(h){
+        users.push({email:email,name:name,salt:sl,hash:h,created:new Date().toISOString()});
+        if(!sj(UK,users))return err("Could not save the account (browser storage is blocked). Use Continue as guest.");
+        sj(SK,{email:email,name:name});finish()
+      }).catch(function(){err("This browser cannot create accounts here. Use Continue as guest.")})
+    }else{
+      if(!ex)return err("No account with that email. Use Sign up first.");
+      hash(pw,ex.salt).then(function(h){
+        if(h!==ex.hash)return err("Wrong password.");
+        sj(SK,{email:email,name:ex.name});finish()
+      }).catch(function(){err("This browser cannot check passwords here. Use Continue as guest.")})
+    }
+  }
+  function finish(){$("apass").value="";try{sessionStorage.removeItem(GK)}catch(e){}paint();close();
+    if(window.toast)try{toast("Signed in as "+user().name)}catch(e){}}
+  function logout(){try{localStorage.removeItem(SK)}catch(e){}paint();open("in")}
+  $("atin").onclick=function(){setMode("in")};
+  $("atup").onclick=function(){setMode("up")};
+  $("aform").addEventListener("submit",submit);
+  $("aguest").onclick=function(){try{sessionStorage.setItem(GK,"1")}catch(e){}paint();close()};
+  $("authbtn").onclick=function(){user()?logout():open("in")};
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("auth").hidden){$("aguest").click()}});
+  paint();
+  var guest=false;try{guest=sessionStorage.getItem(GK)==="1"}catch(e){}
+  var skip=false;try{skip=localStorage.getItem("rg_noauth")==="1"}catch(e){}
+  if(!user()&&!guest&&!skip)open("in");
+  return{user:user,open:open,logout:logout,_hash:hash}
+})();
+/* AUTH-END */
 var h=location.hash.replace("#","");
 show(VIEWS.some(function(v){return v[0]===h})?h:"home");
 })();

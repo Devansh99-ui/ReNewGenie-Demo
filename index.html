@@ -18,7 +18,7 @@
     <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 3c7 4 11 10 9 17-1.500 5-6 8-9 9-3-1-7.500-4-9-9-2-7 2-13 9-17z" fill="var(--accent)"/><path d="M16 9v18M16 15l-5-3M16 20l5-3" stroke="var(--accent-fg)" stroke-width="1.800" stroke-linecap="round"/></svg>
     ReNewGenie
   </div>
-  <div class="navtools"><button class="tool" id="palbtn" type="button">Quick search <kbd>Ctrl K</kbd></button><button class="tool" id="thbtn" type="button" aria-label="Switch colour theme">Theme</button></div>
+  <div class="navtools"><button class="tool" id="palbtn" type="button">Quick search <kbd>Ctrl K</kbd></button><button class="tool" id="thbtn" type="button" aria-label="Switch colour theme">Theme</button><button class="tool" id="authbtn" type="button">Sign in</button></div>
   <div class="tabs" id="tabs"></div>
 </div></nav>
 
@@ -640,6 +640,19 @@
 
 
 </main>
+
+<div class="auth" id="auth" hidden role="dialog" aria-modal="true" aria-label="Sign in or create an account"><form class="authbox" id="aform" novalidate>
+<h2 id="atitle">Welcome to ReNewGenie</h2>
+<p>Sign in to keep your Teach-the-AI photos and impact log under your name, or just look around as a guest.</p>
+<div class="atabs" role="tablist"><button type="button" role="tab" id="atin" aria-selected="true">Sign in</button><button type="button" role="tab" id="atup" aria-selected="false">Sign up</button></div>
+<label id="anamel" hidden>Your name<input id="aname" autocomplete="name" maxlength="40"></label>
+<label>Email<input id="aemail" type="email" autocomplete="username" maxlength="80" placeholder="you@example.com"></label>
+<label>Password<input id="apass" type="password" autocomplete="current-password" maxlength="100" placeholder="at least 6 characters"></label>
+<div class="aerr" id="aerr" role="alert"></div>
+<button class="abtn" id="asub" type="submit">Sign in</button>
+<button class="aguest" id="aguest" type="button">Continue as guest</button>
+<div class="anote"><b>Demo account, kept on this device only.</b> There is no server: your details are saved in this browser (password is salted and hashed, never sent anywhere). Do not reuse a real password.</div>
+</form></div>
 <div class="pal" id="pal" hidden role="dialog" aria-modal="true" aria-label="Quick search"><div class="palbox"><input id="palq" type="search" placeholder="Jump to a tab or action" autocomplete="off" aria-label="Quick search"><ul id="pall" role="listbox"></ul></div></div>
 <footer>Ajay Kumar Garg Engineering College, Ghaziabad (Dr. A.P.J. Abdul Kalam Technical University, Lucknow). Source code: github.com/mrgauravshukla81/ReNewGenie</footer>
 
