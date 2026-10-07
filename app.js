@@ -71,7 +71,7 @@ function tourGo(i){
   if(!tourEl){tourEl=document.createElement("div");tourEl.className="tour";tourEl.setAttribute("role","dialog");tourEl.setAttribute("aria-label","Guided tour");document.body.appendChild(tourEl);document.addEventListener("keydown",tourKey,true)}
   tourEl.innerHTML='<div class="tn">Step '+(i+1)+' of '+TOUR.length+'</div><h4>'+esc(st.h)+'</h4><p>'+esc(st.t)+'</p><div class="tb"><button class="btn ghost sm" id="tr_b"'+(i?'':' disabled')+'>Back</button><button class="btn sm" id="tr_n">'+(i===TOUR.length-1?'Finish':'Next')+'</button><span class="sp"></span><button class="btn ghost sm" id="tr_x">End tour (Esc)</button></div>';
   $("tr_b").onclick=function(){tourGo(tourI-1)};$("tr_n").onclick=function(){tourGo(tourI+1)};$("tr_x").onclick=tourStop;
-  setTimeout(function(){if(tourI!==i)return;var el=document.querySelector(st.sel);if(el){tourHl=el;el.classList.add("tour-hl");try{el.scrollIntoView({block:"center",behavior:"smooth"})}catch(e){}}},st.pre?400:80);
+  setTimeout(function(){if(tourI!==i)return;var el=document.querySelector(st.sel);if(el){revealSec(el);tourHl=el;el.classList.add("tour-hl");try{el.scrollIntoView({block:"center",behavior:"smooth"})}catch(e){}}},st.pre?400:80);
 }
 $("tourbtn").onclick=function(){tourGo(0)};
 
@@ -86,8 +86,8 @@ var ACTS=[
  {t:"Sell plastic scrap",k:"pet bottles market",f:function(){openMarketFor("Plastic")}},
  {t:"Compare aluminium quotes",k:"metal cans scrap",f:function(){mg.value="aluminium";show("market");findCollectors()}},
  {t:"Compare e-waste quotes",k:"laptop electronics",f:function(){mg.value="laptop";show("market");findCollectors()}},
- {t:"Build a carbon credit term sheet",k:"deal sell credits",f:function(){show("credits");$("dinst").scrollIntoView({behavior:"smooth",block:"center"})}},
- {t:"Which carbon credit route fits me?",k:"ccts epr verra",f:function(){show("credits");$("cwho").scrollIntoView({behavior:"smooth",block:"center"})}},
+ {t:"Build a carbon credit term sheet",k:"deal sell credits",f:function(){show("credits");revealSec($("dinst"));$("dinst").scrollIntoView({behavior:"smooth",block:"center"})}},
+ {t:"Which carbon credit route fits me?",k:"ccts epr verra",f:function(){show("credits");revealSec($("cwho"));$("cwho").scrollIntoView({behavior:"smooth",block:"center"})}},
  {t:"Find recycling centres near me",k:"map delhi ncr dpcc",f:function(){show("centres")}},
  {t:"Log recycling",k:"habit tracker streak",f:function(){show("impact")}},
  {t:"Ask the AI assistant",k:"chat claude question ai",f:function(){show("ai");if(AI.ok)$("chatq").focus()}},
@@ -439,6 +439,37 @@ Object.keys(WHAT).forEach(function(id){var v=$("v-"+id);if(!v||v.querySelector("
   });
   $("trynow").onclick=function(){var h=$("homedemo");try{h.scrollIntoView({behavior:"smooth",block:"center"})}catch(e){}if(th.firstChild)th.firstChild.click()};
 })();
+
+/* section tabs: split long pages into focused sections */
+var SECS={
+ market:[["Get quotes",[3,4,5,6]],["Rate board",[7]],["Market prices",[8]],["Trading tools",[9]],["Community board",[10],"cboard"]],
+ credits:[["Your route",[3,4]],["Credit calculator",[5]],["Deal simulator",[6]],["Integrity and cases",[7,8,9]],["Portfolio risk",[10]]],
+ centres:[["Map and list",[3,4,5,6]],["About the data",[7,8]]],
+ report:[["Overview",[2,3,4]],["Models and training",[5,6,7,8]],["Security and limits",[9,10]],["Team and extras",[11,12,13]]],
+ impact:[["Log recycling",[3,4]],["Badges and history",[5,6]],["How it is calculated",[7]]]
+};
+var SECMAP={};
+function secShow(id,k){
+  var d=SECMAP[id];if(!d)return;
+  d.groups.forEach(function(g,i){g.els.forEach(function(e){e.classList.toggle("sec-off",i!==k)});d.btns[i].setAttribute("aria-selected",i===k)});
+}
+function revealSec(el){
+  if(!el)return;Object.keys(SECMAP).forEach(function(id){SECMAP[id].groups.forEach(function(g,i){if(g.els.some(function(e){return e===el||e.contains(el)}))secShow(id,i)})});
+}
+Object.keys(SECS).forEach(function(id){
+  var v=$("v-"+id);if(!v)return;var kids=Array.prototype.slice.call(v.children),d={groups:[],btns:[]};
+  var bar=document.createElement("div");bar.className="sectabs";bar.setAttribute("role","tablist");
+  SECS[id].forEach(function(g,i){
+    var els=g[1].map(function(n){return kids[n]}).filter(Boolean),b=document.createElement("button");b.type="button";b.setAttribute("role","tab");b.textContent=g[0];
+    b.onclick=function(){secShow(id,i);try{bar.scrollIntoView({block:"nearest"})}catch(e){}};
+    bar.appendChild(b);d.groups.push({els:els});d.btns.push(b);
+    if(g[2]){var tg=$(g[2]);b.hidden=tg.hidden;new MutationObserver(function(){b.hidden=tg.hidden}).observe(tg,{attributes:true,attributeFilter:["hidden"]})}
+  });
+  var anchor=null;kids.forEach(function(c,i){if(i<=2&&(c.classList.contains("note")||c.classList.contains("what")))anchor=c});
+  if(anchor)anchor.after(bar);else v.insertBefore(bar,v.children[1]||null);
+  SECMAP[id]=d;secShow(id,0);
+});
+document.querySelectorAll(".view>div:first-child h2").forEach(function(h){var v=h.closest(".view");var m={classify:"Waste AI",guide:"Waste AI",market:"Sell and earn",credits:"Sell and earn",forecast:"Sell and earn",centres:"Sell and earn",impact:"Reduce and reuse",analytics:"Reduce and reuse",reuse:"Reduce and reuse",life:"Reduce and reuse",ai:"AI",report:"About"}[v.id.slice(2)];if(m)h.setAttribute("data-kicker",m)});
 /* ---------- Vision tools: tile scan, batch, camera ---------- */
 function runModels(img,crop,tta){
   var sw=img.naturalWidth||img.width,sh=img.naturalHeight||img.height,sx=0,sy=0;
@@ -599,6 +630,18 @@ $("go").onclick=function(){
     var truth="";
     if(curNote){var m1=/true label is (\w+)/.exec(curNote);truth='<p class="small">'+esc(curNote)+(m1?(m1[1].toLowerCase()===pick.toLowerCase()?' The model got it right.':' The model got it wrong.'):'')+'</p>'}
     out.innerHTML='<div class="result"><div><span class="small">Ensemble prediction</span><br><span class="pill">'+(unsure?'Not sure · maybe '+esc(pick):esc(pick))+'</span></div>'+warn+truth+'<div style="display:grid;gap:6px">'+probs+'</div>'+rel+'<div class="camwrap"><canvas id="camc" width="256" height="192" aria-label="Photo with heat-map of the regions the CNN used"></canvas><div class="btnrow" style="margin-top:6px"><button class="btn ghost sm" id="camt" aria-pressed="true">Hide heat-map</button></div><p class="small"><b>What the CNN looked at.</b> Red areas pushed the CNN toward its own top answer, '+esc(cnnPick)+(cnnPick===pick?'':' (the ensemble answer differs)')+'. It is a coarse 6×4 map from the CNN only, shown as the model saw the photo (squeezed to 4:3). Treat it as a hint, not proof.</p></div><p class="small">CNN: '+mt(Pc)+' · Feature MLP: '+mt(Pm)+'. Weighted 60/40, with the CNN also run on the mirrored photo.</p><p>'+esc(w.d)+'</p><div><h3>How to recycle it'+(unsure?' (if it is '+esc(pick)+')':'')+'</h3><ol class="steps">'+w.steps.map(function(s){return '<li>'+esc(s)+'</li>'}).join("")+'</ol></div><div><h3>Environmental impact</h3><p>'+esc(w.impact)+'</p></div><div><h3>Better still</h3><p>'+esc(w.alt)+'</p></div><div class="btnrow" style="margin-top:0"><a class="btn ghost sm" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v='+w.v[0]+'">Video 1</a><a class="btn ghost sm" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v='+w.v[1]+'">Video 2</a><button class="btn sm" id="tomk">Sell it in the marketplace</button><button class="btn ghost sm" id="tolog">Log to impact tracker</button><button class="btn ghost sm" id="toreuse">Reuse ideas</button><button class="btn ghost sm aionly" id="aivis" hidden>Second opinion from Claude</button></div><div id="aivisout"></div></div>';
+
+    (function(){
+      var res=out.querySelector(".result"),d=document.createElement("div");d.className="fbk";
+      var FBK=[];try{FBK=JSON.parse(localStorage.getItem("rg_fb")||"[]")}catch(e){}
+      function draw(){
+        d.innerHTML='<h3>Was this right?</h3><p class="small">Your answers build a labelled list you can export. This is how a model gets better on photos from your own city.</p><div class="btnrow" style="margin-top:6px"><button class="btn sm" id="fb_y">Yes, '+esc(pick)+'</button><select id="fb_c" aria-label="Correct label"><option value="">No, it is actually…</option>'+RG_MODEL.cls.map(function(c){return '<option>'+c+'</option>'}).join("")+'</select></div><p class="small" id="fb_n" style="margin-top:6px">'+FBK.length+' label'+(FBK.length===1?"":"s")+' saved in this browser'+(FBK.length?' · <a href="#" id="fb_e">export CSV</a>':'')+'</p>';
+        var q=function(i){return d.querySelector("#"+i)};q("fb_y").onclick=function(){add(pick)};q("fb_c").onchange=function(){if(this.value)add(this.value)};
+        if(q("fb_e"))q("fb_e").onclick=function(e){e.preventDefault();var csv="time,source,predicted,confidence,true_label,correct\n"+FBK.map(function(r){return [r.t,r.src,r.p,r.c,r.l,r.ok].join(",")}).join("\n");saveText("renewgenie_labels.csv",csv,"text/csv");try{navigator.clipboard.writeText(csv).then(function(){q("fb_n").textContent="CSV downloaded and copied to your clipboard."})}catch(x){}};
+      }
+      function add(l){FBK.push({t:new Date().toISOString(),src:(curNote?"trashnet-sample":"user-photo"),p:pick,c:conf.toFixed(3),l:l,ok:l===pick});try{localStorage.setItem("rg_fb",JSON.stringify(FBK))}catch(e){}draw();d.querySelector("#fb_n").insertAdjacentHTML("afterbegin","Thanks. ")}
+      draw();res.insertBefore(d,res.querySelector("#aivisout"));
+    })();
     var camOn=true,ccv=$("camc");drawCam(ccv,curImg,cm,true);
     $("camt").onclick=function(){camOn=!camOn;drawCam(ccv,curImg,cm,camOn);this.textContent=camOn?"Hide heat-map":"Show heat-map";this.setAttribute("aria-pressed",camOn)};
     var m={Glass:2,Metal:3,Paper:0,Plastic:1,Cardboard:0};
@@ -1170,7 +1213,7 @@ function quotes(){
   L.sort(function(a,b){return (b.ok-a.ok)||(b.net-a.net)});
   return {g:g,qty:qty,cd:cd,door:door,L:L};
 }
-function findCollectors(){
+function findCollectors(){if(typeof secShow==="function"&&SECMAP.market)secShow("market",0);
   var out=$("mout"),qty=parseFloat($("mqty").value);$("mbook").innerHTML="";curOrder=null;
   if(!(qty>0)){out.innerHTML='<p class="small">Enter a weight of at least 1 kg.</p>';$("msum").innerHTML="";return}
   var q=quotes();curQ=q;

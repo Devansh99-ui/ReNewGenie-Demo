@@ -4,6 +4,17 @@ Interactive demo page for **ReNewGenie: AI-Powered Assistant for Smart Recycling
 
 Main project code: https://github.com/mrgauravshukla81/ReNewGenie
 
+## See it
+
+![Guided tour](docs/img/tour.gif)
+
+| | |
+|---|---|
+| ![Home](docs/img/01-home.png) | ![Live demo on Home](docs/img/02-home-live-demo.png) |
+| ![Classifier with heat-map](docs/img/03-classifier.png) | ![Marketplace](docs/img/04-marketplace.png) |
+| ![Trading tools](docs/img/05-trading-tools.png) | ![Carbon credit portfolio](docs/img/06-carbon-portfolio.png) |
+| ![Price forecast](docs/img/07-forecast.png) | ![Centre map](docs/img/08-centres-map.png) |
+
 ## What is in the demo
 A static site (`index.html`, `style.css`, `app.js`, `data/`; no build step):
 - **Classifier** (Module 1): two real models read your photo in the browser (86.8% on 380 held-out TrashNet photos), with a **heat-map** of what the CNN looked at, a **"not sure"** state below 60% confidence, and a note on how reliable each confidence level was on held-out photos
@@ -20,7 +31,7 @@ A static site (`index.html`, `style.css`, `app.js`, `data/`; no build step):
 - **AI assistant** and AI helpers (inside Claude only)
 - **Project report**: architecture, tools, training results with confusion matrix and learning curve, security, SDGs, limitations
 
-See `docs/ARCHITECTURE.md` for how it fits together, `tests/` for the tests, and `notebooks/` for the Colab notebooks (VGG16 transfer learning with Grad-CAM; YOLO multi-item detection). The notebooks were written without a GPU; run them and report only the numbers they print.
+Docs: `docs/MODEL_REPORT.md` (results, confusion matrix, honest limits), `docs/DATA_COLLECTION.md` (how to collect Indian waste photos), `docs/BACKEND.md` + `backend/supabase_schema.sql` (adding real accounts; schema not yet run). The classifier also has **Was this right?** buttons that save corrections as an exportable CSV. See `docs/ARCHITECTURE.md` for how it fits together, `tests/` for the tests, and `notebooks/` for the Colab notebooks (VGG16 transfer learning with Grad-CAM; YOLO multi-item detection; fine-tuning on your own photos). The notebooks were written without a GPU; run them and report only the numbers they print.
 
 ## Prototype features
 Impact tracker, Reuse ideas and Lifespan are prototypes built for this demo from the report's section 5.2.3. They are not in the original GitHub code. CO2e factors are indicative US EPA WARM values (via Nebraska DWEE 2025 analysis), not India-specific. Sample log entries are flagged "sample". No accuracy or BLEU/ROUGE scores are claimed for them.

@@ -25,63 +25,62 @@
 <main class="wrap">
 
 <section class="view" id="v-home">
-  <div class="hero">
-    <div>
-      <span class="badge">DEMO · B.Tech CSE (AI/ML) final-year project</span>
-      <h1 style="margin-top:14px">AI-powered assistant for smart recycling, reuse and carbon reduction</h1>
-      <p class="lead">Photograph a waste item, learn how to recycle it, compare scrap quotes from collectors, find the closest recycling centre across Delhi NCR, and see whether your recycling could ever earn carbon credits. All in one web platform.</p>
+  <div class="hero2">
+    <div class="h2l">
+      <span class="eyebrow">Final-year project · B.Tech CSE (AI/ML) · AKGEC Ghaziabad</span>
+      <h1>Turn waste into value.<br><span class="grad">Snap it, sort it, sell it.</span></h1>
+      <p class="lead">ReNewGenie is a web app that looks at a photo of waste and tells you <b>what it is</b>, <b>how to recycle it</b>, <b>what scrap dealers would pay</b> and <b>where to drop it off</b> in Delhi NCR. It also shows how recycling could earn carbon credits.</p>
       <div class="btnrow">
-        <button class="btn" data-go="classify">Start the demo</button>
-        <button class="btn ghost" id="tourbtn">Interviewer tour (2 min)</button>
-        <button class="btn ghost" data-go="report">Project report</button>
+        <button class="btn big" id="trynow">Try it now</button>
+        <button class="btn ghost big" id="tourbtn">Take the 2-minute tour</button>
       </div>
-      <div class="meta">Ajay Kumar Garg Engineering College, Ghaziabad<br>Group ID 26CSEAIML/1/GID-16 · Supervisor: Dr. Jaishree Jain</div>
+      <ul class="proof">
+        <li><b>86.8%</b><span>accuracy on 380 unseen photos</span></li>
+        <li><b>182</b><span>recycling places mapped</span></li>
+        <li><b>17</b><span>scrap grades priced</span></li>
+        <li><b>0</b><span>servers: runs in your browser</span></li>
+      </ul>
     </div>
-    <div class="cats" aria-label="The six classes the model predicts">
-      <div class="cat"><b>Cardboard</b><span>class 0</span></div>
-      <div class="cat"><b>Glass</b><span>class 1</span></div>
-      <div class="cat"><b>Metal</b><span>class 2</span></div>
-      <div class="cat"><b>Paper</b><span>class 3</span></div>
-      <div class="cat"><b>Plastic</b><span>class 4</span></div>
-      <div class="cat"><b>Trash</b><span>class 5</span></div>
+    <div class="h2r panel demo" id="homedemo">
+      <div class="demohead"><span class="live">LIVE</span><b>Pick a photo. The AI reads it right here.</b></div>
+      <div class="dthumbs" id="dthumbs"></div>
+      <div class="dview" id="dview"><div class="dempty">Tap any photo above. These are real test photos the model never saw during training, so some answers will be wrong, and that is shown honestly.</div></div>
+    </div>
+  </div>
+
+  <div>
+    <h2 class="sec">How it works</h2>
+    <div class="how">
+      <div class="hw"><span class="n">1</span><h3>Identify</h3><p>Upload a photo. Two neural networks trained on 2,527 photos name the material and show where they looked.</p></div>
+      <div class="hw"><span class="n">2</span><h3>Decide</h3><p>Get disposal steps, reuse ideas, a repair-or-recycle verdict and live scrap quotes from collectors.</p></div>
+      <div class="hw"><span class="n">3</span><h3>Act and track</h3><p>Find the nearest centre, book a pickup, log it, and see the CO₂ you avoided and whether credits are possible.</p></div>
+    </div>
+  </div>
+
+  <div>
+    <h2 class="sec">Explore the features</h2>
+    <div class="grid4 fgrid2">
+      <button class="feat" data-go="classify"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><h3>Identify waste</h3><p>Photo in, material out. Heat-map, multi-item scan, batch mode.</p></button>
+      <button class="feat" data-go="market"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9l1-5h14l1 5M4 9v11h16V9M4 9h16"/><path d="M9 20v-6h6v6"/></svg><h3>Sell scrap</h3><p>Real Delhi rates, collector quotes, auction and route tools.</p></button>
+      <button class="feat" data-go="credits"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8 12l3 3 5-6"/></svg><h3>Carbon credits</h3><p>Which route fits you, term sheets and a risk simulator.</p></button>
+      <button class="feat" data-go="centres"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><h3>Find a centre</h3><p>182 places across Delhi NCR on one map.</p></button>
+      <button class="feat" data-go="forecast"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-9"/></svg><h3>Price forecast</h3><p>Three methods, back-tested, with honest uncertainty.</p></button>
+      <button class="feat" data-go="reuse"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg><h3>Reuse ideas</h3><p>Describe an item, get ranked ideas by meaning.</p></button>
+      <button class="feat" data-go="impact"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg><h3>My impact</h3><p>Log recycling, streaks, badges and analytics.</p></button>
+      <button class="feat" data-go="life"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><h3>Repair or recycle?</h3><p>Estimate remaining life of a product and decide.</p></button>
     </div>
   </div>
 
   <div class="panel" id="dash"></div>
 
-  <div>
-    <h2 style="margin-bottom:6px">Four modules</h2>
-    <p class="small" style="margin-bottom:14px">As described in Chapter 4 of the project report.</p>
-    <div class="grid4">
-      <button class="feat" data-go="classify"><span class="mod">MODULE 1</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.500"/></svg><h3>AI Waste Classification</h3><p>Upload a photo. A VGG16 model names the waste category.</p></button>
-      <button class="feat" data-go="guide"><span class="mod">MODULE 2</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M9 8h6M9 12h6"/></svg><h3>Recycling Education Hub</h3><p>Disposal steps, impact facts and videos for each material.</p></button>
-      <button class="feat" data-go="market"><span class="mod">MODULE 3</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9l1-5h14l1 5M4 9v11h16V9M4 9h16"/><path d="M9 20v-6h6v6"/></svg><h3>Waste-Collector Marketplace</h3><p>Sell recyclables to verified local collectors at posted rates.</p></button>
-      <button class="feat" data-go="centres"><span class="mod">MODULE 4</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.500"/></svg><h3>Recycling Centre Map</h3><p>Find drop-off points near you with Google Maps.</p></button>
+  <div class="panel review">
+    <h2 class="sec" style="margin-bottom:10px">For reviewers: what is real and what is a simulation</h2>
+    <div class="two">
+      <div><h3>Built and measured</h3><ul class="chk"><li>CNN written from scratch in JavaScript, plus a feature MLP, trained on TrashNet</li><li>86.8% on 380 held-out photos, with a confidence table</li><li>Reuse search (TF-IDF plus word vectors), forecast back-tests</li><li>Unit tests and a browser smoke test in the repo</li></ul></div>
+      <div><h3>Illustrative or limited</h3><ul class="chk warn"><li>Region scan is a classifier on crops, not a trained object detector</li><li>Auction and carbon portfolio are teaching simulations</li><li>Forecast data ends in 2017</li><li>AI assistant and shared board need Claude, so they are off on the public link</li></ul></div>
     </div>
-  </div>
-
-  <div>
-    <h2 style="margin-bottom:6px">Smart tools</h2>
-    <p class="small" style="margin-bottom:14px">Features listed in section 5.2.3 of the report, built as working prototypes for this demo.</p>
-    <div class="grid4">
-      <button class="feat" data-go="impact"><span class="mod">HABIT TRACKER + CARBON</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg><h3>Impact tracker</h3><p>Log recycling, build streaks, earn badges and see CO₂e avoided.</p></button>
-      <button class="feat" data-go="reuse"><span class="mod">NLP</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.500c.700.700 1 1.500 1 2.500h6c0-1 .300-1.800 1-2.500A6 6 0 0 0 12 3z"/></svg><h3>Reuse ideas</h3><p>Describe an item and get ranked reuse projects with steps.</p></button>
-      <button class="feat" data-go="life"><span class="mod">LIFESPAN PREDICTION</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><h3>Lifespan estimator</h3><p>Estimate remaining life and decide: keep, repair or recycle.</p></button>
-      <button class="feat" data-go="credits"><span class="mod">CARBON CREDITS</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8 12l3 3 5-6"/></svg><h3>Carbon credit desk</h3><p>Find your route (CCTS, EPR, Verra), size the money, and draft a deal.</p></button>
-    </div>
-  </div>
-
-  <div>
-    <h2 style="margin-bottom:6px">Two-minute demo path</h2>
-    <p class="small" style="margin-bottom:14px">A suggested order for presenting.</p>
-    <div class="steps3">
-      <div class="step"><span>STEP 1</span><h3>Classify an item</h3><p class="small">Upload any photo and run the classifier.</p><button class="btn ghost sm" data-go="classify">Open</button></div>
-      <div class="step"><span>STEP 2</span><h3>Sell the recyclables</h3><p class="small">Compare grade quotes, book a pickup, get a receipt.</p><button class="btn ghost sm" data-go="market">Open</button></div>
-      <div class="step"><span>STEP 3</span><h3>Track the impact</h3><p class="small">Log it and watch CO₂e and streak update.</p><button class="btn ghost sm" data-go="impact">Open</button></div>
-      <div class="step"><span>STEP 4</span><h3>Reuse or repair</h3><p class="small">Get reuse ideas, or estimate remaining life.</p><button class="btn ghost sm" data-go="reuse">Open</button></div>
-      <div class="step"><span>STEP 5</span><h3>Check carbon credits</h3><p class="small">Find your route and draft a term sheet.</p><button class="btn ghost sm" data-go="credits">Open</button></div>
-      <div class="step"><span>STEP 6</span><h3>Explain the build</h3><p class="small">Architecture, tools, results, SDGs.</p><button class="btn ghost sm" data-go="report">Open</button></div>
-    </div>
+    <div class="btnrow"><button class="btn ghost sm" data-go="report">Read the project report</button><a class="btn ghost sm" href="https://github.com/mrgauravshukla81/ReNewGenie" target="_blank" rel="noopener">Source code on GitHub</a></div>
+    <p class="small" style="margin-top:12px">Ajay Kumar Garg Engineering College, Ghaziabad · Group ID 26CSEAIML/1/GID-16 · Supervisor: Dr. Jaishree Jain</p>
   </div>
 </section>
 
@@ -90,7 +89,7 @@
     <h2>Module 1: AI waste classification</h2>
     <p class="small" style="margin-top:6px">Upload, classify, read the result. Same flow as the real page.</p>
   </div>
-  <div class="note"><b>Real models, not your VGG16.</b> This page classifies your photo in the browser with two models trained here on all 2,527 TrashNet photos: a small convolutional neural network (CNN, trained from scratch) and a feature-based neural network. Together they score about 87% on 380 held-out photos (details in the Project report tab). Your VGG16 file is not in the GitHub repo, so it cannot run here. Plain TrashNet-style photos work best; cluttered phone photos will do worse.</div>
+  <div class="note"><b>Real models running in your browser.</b> Two models trained on all 2,527 TrashNet photos: a small convolutional neural network (CNN, trained from scratch) and a feature-based neural network. Together they score about 87% on 380 held-out photos (details in the Project report). The report describes a VGG16 transfer-learning model whose weights are not in the repo, so this demo uses these instead. Plain TrashNet-style photos work best; cluttered phone photos will do worse.</div>
   <div class="two">
     <div class="panel">
       <div class="drop" id="drop"><div><b>Drop a photo here</b><p class="small">or choose a file. It stays in your browser.</p></div></div>
@@ -117,7 +116,7 @@
 
 <section class="view" id="v-market" hidden>
   <div><h2>Module 3: Waste-collector marketplace</h2><p class="small" style="margin-top:6px">Choose a grade, weight and condition. The page compares what each collector would pay after deductions, books a pickup, tracks the order and issues a receipt.</p></div>
-  <div class="note"><b>Real reference rates, sample collectors.</b> Quotes start from public Delhi rates (scraprates.in, 6 Oct 2026, 20 materials). Grades with no published rate are estimated from a related one and tagged. Each collector then adds a small premium or discount taken from your project's sample data. Names, ratings, deductions and fees are demo values. Nothing is sent anywhere.</div>
+  <div class="note"><b>Real reference rates, sample collectors.</b> Quotes start from public Delhi rates (scraprates.in, 6 Oct 2026, 20 materials). Grades with no published rate are estimated from a related one and tagged. Each collector then adds a small premium or discount from the demo's sample data. Names, ratings, deductions and fees are demo values. Nothing is sent anywhere.</div>
   <div class="panel">
     <div class="fgrid4">
       <label for="mgrade">Material grade<select id="mgrade"></select></label>
@@ -325,7 +324,7 @@
 
   <div class="panel">
     <h3 style="margin-bottom:6px">Classifier used in this demo</h3>
-    <p class="small" style="margin-bottom:12px">Your VGG16 file (classifyWaste.h5) is not in the repo, so this demo ships two smaller models I trained here on the same TrashNet photos. They are not a re-creation of your 84.29% model.</p>
+    <p class="small" style="margin-bottom:12px">The original project describes a VGG16 model (classifyWaste.h5) whose weights are not in the repo, so this demo ships two smaller models trained on the same TrashNet photos. They are not a re-creation of the reported 84.29% model.</p>
     <div class="kpis"><div class="kpi"><b>86.8%</b><span>ensemble, 380 held-out photos</span></div><div class="kpi"><b>83.4%</b><span>CNN alone</span></div><div class="kpi"><b>81.8%</b><span>feature network alone</span></div><div class="kpi"><b>0.84</b><span>macro F1, ensemble</span></div></div>
     <div class="tscroll" style="margin-top:14px"><table>
       <tr><th>Model</th><th>What it is</th><th>Size</th><th>Test accuracy</th></tr>
@@ -344,10 +343,10 @@
     <ol class="steps" style="margin-top:14px">
       <li>The split is by photo: 70% train, 15% validation, 15% test, random seed 7. A photo and its mirror always stay on the same side.</li>
       <li>The CNN checkpoint with the best validation accuracy was kept. The test set was used once, at the end.</li>
-      <li>Training ran on a 2-core CPU in about 20 minutes. No pretrained weights were available, so there is no transfer learning here, unlike your VGG16.</li>
+      <li>Training ran on a 2-core CPU in about 20 minutes. No pretrained weights were available, so there is no transfer learning here, unlike the VGG16 approach in the original report (see the Colab notebook in the repo).</li>
       <li>Both models run in your browser in plain JavaScript. I checked that it gives the same probabilities as the Python code.</li>
     </ol>
-    <p class="small" style="margin-top:12px">Limits: one split, and only 16 Trash photos in the test set, so the Trash numbers are noisy. TrashNet photos are single objects on plain backgrounds, so cluttered phone photos will score lower. Your report's 84.29% is a validation figure for a different model; the numbers are not directly comparable.</p>
+    <p class="small" style="margin-top:12px">Limits: one split, and only 16 Trash photos in the test set, so the Trash numbers are noisy. TrashNet photos are single objects on plain backgrounds, so cluttered phone photos will score lower. The report's 84.29% is a validation figure for a different model, so the numbers are not directly comparable.</p>
   </div>
 
   <div class="two">
