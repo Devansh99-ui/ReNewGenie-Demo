@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="style.css">
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#1f7a4d">
+<meta name="theme-color" content="#4a4de8">
 <link rel="icon" href="icon-192.png">
 </head>
 <body>
@@ -29,7 +29,9 @@
     <div class="h2l">
       <span class="eyebrow">Final-year project · B.Tech CSE (AI/ML) · AKGEC Ghaziabad</span>
       <h1>Turn waste into value.<br><span class="grad">Snap it, sort it, sell it.</span></h1>
-      <p class="lead">ReNewGenie is a web app that looks at a photo of waste and tells you <b>what it is</b>, <b>how to recycle it</b>, <b>what scrap dealers would pay</b> and <b>where to drop it off</b> in Delhi NCR. It also shows how recycling could earn carbon credits.</p>
+      <p class="lead">ReNewGenie is a web app that looks at a photo of waste and tells you <b>what it is</b>, <b>how to recycle it</b>, <b>what scrap dealers would pay</b> and <b>where to drop it off</b> in Delhi NCR. It also shows how recycling could earn carbon credits. Ask it anything in plain words: an on-device <b>AI Copilot</b> understands the request and runs the right tool.</p>
+      <form class="askbar" id="homeask"><input id="homeq" type="text" placeholder="Ask the AI: sell 25 kg copper wire" autocomplete="off" aria-label="Ask the AI Copilot"><button class="btn" type="submit">Ask AI</button></form>
+      <div class="askrow"><button type="button" class="chip homeex" data-q="Is my 6-year-old phone worth repairing?">Is my 6-year-old phone worth repairing?</button><button type="button" class="chip homeex" data-q="Where is the nearest e-waste recycler to Saket?">Nearest e-waste recycler</button><button type="button" class="chip homeex" data-q="Sell 40 kg newspaper and 10 kg copper wire">Sell 40 kg newspaper</button></div>
       <div class="btnrow">
         <button class="btn big" id="trynow">Try it now</button>
         <button class="btn ghost big" id="tourbtn">User tour (2 min)</button>
@@ -77,7 +79,7 @@
     <h2 class="sec" style="margin-bottom:10px">For reviewers: what is real and what is a simulation</h2>
     <div class="two">
       <div><h3>Built and measured</h3><ul class="chk"><li>CNN written from scratch in JavaScript, plus a feature MLP, trained on TrashNet</li><li>86.8% on 380 held-out photos, with a confidence table</li><li>Reuse search (TF-IDF plus word vectors), forecast back-tests</li><li>Unit tests and a browser smoke test in the repo</li></ul></div>
-      <div><h3>Illustrative or limited</h3><ul class="chk warn"><li>Region scan is a classifier on crops, not a trained object detector</li><li>Auction and carbon portfolio are teaching simulations</li><li>Forecast data ends in 2017</li><li>AI assistant and shared board need Claude, so they are off on the public link</li></ul></div>
+      <div><h3>Illustrative or limited</h3><ul class="chk warn"><li>Region scan is a classifier on crops, not a trained object detector</li><li>Auction and carbon portfolio are teaching simulations</li><li>Forecast data ends in 2017</li><li>Claude-only extras (chat with Claude, photo second opinion, shared board) are off on the public link; the on-device Copilot works everywhere</li></ul></div>
     </div>
     <div class="btnrow"><button class="btn ghost sm" data-go="report">Read the project report</button><a class="btn ghost sm" href="https://github.com/mrgauravshukla81/ReNewGenie" target="_blank" rel="noopener">Source code on GitHub</a></div>
     <p class="small" style="margin-top:12px">Ajay Kumar Garg Engineering College, Ghaziabad · Group ID 26CSEAIML/1/GID-16 · Supervisor: Dr. Jaishree Jain</p>
@@ -598,18 +600,44 @@
 </section>
 
 <section class="view" id="v-ai" hidden>
-  <div><h2>AI assistant</h2><p class="small" style="margin-top:6px">Ask in plain language. The assistant calls this page's own data: Delhi scrap rates, collector quotes, the 182-place map, CO₂e factors and the credit case file.</p></div>
-  <div class="note ainote" hidden><b>Not available in this view.</b> The AI features need to be opened inside Claude with access allowed. Everything else on the page works without them.</div>
-  <div class="panel aionly" hidden>
-    <div class="chat" id="chatlog" aria-live="polite"><div class="msg bot">Hi. I can compare scrap quotes, find places near you, size a carbon credit, or review a credit deal. What would you like to know?</div></div>
+  <div><h2>AI Copilot <span class="aibadge">runs in your browser</span></h2><p class="small" style="margin-top:6px">Ask in plain language: “sell 25 kg copper wire”, “is my 6-year-old phone worth repairing?”, “nearest e-waste recycler to Saket”. The Copilot works out what you want, picks out the numbers, runs the right tool on this site's data and shows how it understood you.</p></div>
+  <div class="note"><b>What this is.</b> An on-device assistant built from keyword rules, unit and place parsing, and word-vector similarity. It is <b>not</b> a large language model, so it only handles the six or seven kinds of request it knows, and it says so when it is unsure. <span class="aionly" hidden>Claude is connected here: requests the Copilot does not recognise are passed to Claude, which can call the same tools.</span></div>
+  <div class="panel">
+    <div class="aionly" hidden style="margin-bottom:10px"><label class="small" for="cpmode">Answer with <select id="cpmode"><option value="local">On-device Copilot (Claude for requests it does not recognise)</option><option value="claude">Claude for everything</option></select></label></div>
+    <div class="chat" id="chatlog" aria-live="polite"><div class="msg bot rich"><p>Hi, I am the ReNewGenie Copilot. Tell me what you want to do with your waste, in your own words. I show what I understood and which tool I ran.</p></div></div>
     <div class="chips" id="chatsug" style="margin-top:12px"></div>
-    <form id="chatform" class="chatform"><input id="chatq" type="text" placeholder="Ask about prices, places, credits…" autocomplete="off" aria-label="Ask the assistant"><button class="btn" id="chatgo" type="submit">Send</button><button class="btn ghost" id="chatstop" type="button" hidden>Stop</button></form>
-    <p class="small" style="margin-top:8px">Your question and the data it needs are sent to Claude. Answers can be wrong; check figures against the sources linked on each tab.</p>
+    <form id="chatform" class="chatform"><input id="chatq" type="text" placeholder="For example: sell 25 kg copper wire and 40 kg newspaper" autocomplete="off" aria-label="Ask the Copilot"><button class="btn" id="chatgo" type="submit">Ask</button><button class="btn ghost" id="chatstop" type="button" hidden>Stop</button></form>
+    <p class="small" style="margin-top:8px">On-device answers never leave your browser. Prices are reference data from scraprates.in (6 Oct 2026) and sample collectors, not live quotes. <span class="aionly" hidden>Questions passed to Claude are sent to Claude together with the data they need, and Claude's answers can be wrong.</span></p>
   </div>
-  <div class="panel"><h3 style="margin-bottom:8px">How the AI features work</h3>
-    <ol class="steps"><li>The assistant is a language model with tools. When you ask for a quote or a place, it calls a function in this page and reads the real numbers instead of guessing.</li><li>The photo second opinion on the Classifier tab sends your image to a vision model and compares its answer with the local CNN.</li><li>The credit project reviewer checks a pasted description against the documented cases on the Carbon credits tab.</li><li>Prices and credit figures always come from the page's data, with sources. The model explains; it does not set the numbers.</li></ol>
+  <div class="panel"><h3 style="margin-bottom:8px">Three steps, every time</h3>
+    <ol class="steps"><li><b>Understand.</b> Score your sentence against ten kinds of request, then pull out weights (kg, quintal, tonne), materials, places, products, ages and conditions.</li><li><b>Act.</b> Call one of this site's own tools (collector quotes, scrap rates, the 182-place map, CO₂e factors, the forecast models, the reuse library) so the numbers come from data, not from a guess.</li><li><b>Explain.</b> Show the answer, then “How I understood this”: the intent, how strong the match was, what I picked out, and what I assumed.</li></ol>
+    <div class="btnrow" style="margin-top:10px"><button class="btn ghost" type="button" id="toinside">See every AI component and how well it works</button></div>
   </div>
 </section>
+<section class="view" id="v-aiinside" hidden>
+  <div><h2>How the AI works</h2><p class="small" style="margin-top:6px">Every AI component in ReNewGenie, what it is built from, how it was measured and where it breaks. Where I have not measured something I say so.</p></div>
+  <div class="aigrid">
+    <div class="panel aicard"><h3>Waste classifier <span class="aibadge">neural network</span></h3><p class="small">A convolutional network (8 conv layers, about 210,000 weights) written in plain JavaScript, plus a second model on 453 colour, edge and texture features. Their probabilities are averaged 0.6 / 0.4.</p>
+      <dl><dt>Trained on</dt><dd>TrashNet: 2,527 photos, 6 classes, split by photo</dd><dt>Measured</dt><dd><b>86.8%</b> on 380 unseen photos (CNN alone 83.4%, features alone 81.8%); margin about ±3.5 points</dd><dt>Runs</dt><dd>In your browser, no upload</dd><dt>Breaks when</dt><dd>Photos are cluttered, dark or far from the plain backgrounds TrashNet used. Not measured on phone photos.</dd></dl></div>
+    <div class="panel aicard"><h3>Heat-map <span class="aibadge">explainability</span></h3><p class="small">Class activation mapping: because the last layer averages feature maps and adds one dense layer, the map of where the network looked can be computed exactly, without gradients.</p>
+      <dl><dt>Trained on</dt><dd>Nothing extra: reuses the classifier</dd><dt>Measured</dt><dd>Exactness checked in unit tests; usefulness is a visual aid, not a scored result</dd><dt>Breaks when</dt><dd>The network is right for the wrong reason: the map shows that, it does not fix it</dd></dl></div>
+    <div class="panel aicard"><h3>Confidence calibration <span class="aibadge">statistics</span></h3><p class="small">A table of how often the ensemble was right at each confidence level on the test photos, so “70% sure” can be read against what actually happened.</p>
+      <dl><dt>Measured</dt><dd>On the 380 test photos: at 90–100% confidence it was right 99% of the time, below 40% only 42%</dd><dt>Breaks when</dt><dd>Photos differ from the test set: the table then over-states trust</dd></dl></div>
+    <div class="panel aicard"><h3>Teach the AI <span class="aibadge">learns on your device</span></h3><p class="small">When the classifier is wrong you can say what the item really was. The page stores a 96-number fingerprint of that photo (the network's own features) and later compares new photos with your corrections, nudging the answer toward your labels.</p>
+      <dl><dt>Technique</dt><dd>k-nearest neighbours on cosine similarity of standardised CNN features, blended with the ensemble only when a close match exists</dd><dt>Measured</dt><dd id="teachmeasure">In simulation (no real user photos yet): about 0 points change on normal photos, and +1 to +8 points on deliberately altered photos after 3 to 10 corrections per class. Small, and not yet tested on real users.</dd><dt>Stored</dt><dd>Fingerprints and labels in this browser only (about 0.6 KB each, at most 200); never the photo</dd><dt>Breaks when</dt><dd>You label wrongly, or the new photo looks nothing like the corrected ones: then it stays out of the way</dd></dl></div>
+    <div class="panel aicard"><h3>Copilot <span class="aibadge">language understanding</span></h3><p class="small">Keyword rules, regular expressions for quantities and units, a place and product lexicon, and similarity of your sentence to example phrases using 64-dimension word vectors. Not a large language model.</p>
+      <dl><dt>Measured</dt><dd>On 24 new phrasings I wrote after tuning the rules: <b>20 of 24</b> intents correct with rules alone, <b>22 of 24</b> with word vectors. A tiny, developer-written test: expect lower on real users.</dd><dt>Runs</dt><dd>In your browser</dd><dt>Breaks when</dt><dd>You ask something outside its ten request types, use Hindi or heavy slang, or spell materials unusually. It then says it is unsure.</dd></dl></div>
+    <div class="panel aicard"><h3>Reuse search <span class="aibadge">semantic search</span></h3><p class="small">TF-IDF keyword scoring blended with word-vector similarity (spaCy en_core_web_md, reduced to 64 dimensions) over a library of reuse ideas.</p>
+      <dl><dt>Measured</dt><dd>The gain from word vectors over keywords alone is small; the Reuse ideas page shows the comparison</dd><dt>Breaks when</dt><dd>The library has no idea for your item: it shows a “weak match” warning</dd></dl></div>
+    <div class="panel aicard"><h3>Price forecast <span class="aibadge">time-series ML</span></h3><p class="small">Naive, Holt exponential smoothing and a ridge autoregression compete in rolling-origin backtests; the page reports the winner's typical error and an 80% range.</p>
+      <dl><dt>Data</dt><dd>World metal prices ending June 2017</dd><dt>Breaks when</dt><dd>Used for today's prices: the data is old, so it demonstrates the method only</dd></dl></div>
+    <div class="panel aicard"><h3>Route, auction and risk tools <span class="aibadge">algorithms</span></h3><p class="small">Exact search for pickup routes up to 8 stops, nearest-neighbour plus 2-opt beyond that, and Monte Carlo simulations for the deal and portfolio tools. These are classic algorithms, not learned models.</p>
+      <dl><dt>Measured</dt><dd>Heuristic route length checked against the exact optimum on small cases</dd><dt>Breaks when</dt><dd>Assumptions (road factor, speeds, probabilities) differ from your reality: they are stated on the page</dd></dl></div>
+    <div class="panel aicard"><h3>Claude features <span class="aibadge">language model</span></h3><p class="small">Only when this page is opened inside Claude with access allowed: a chat assistant that calls the same tools, a photo second opinion, a reuse-idea writer and a credit-project reviewer.</p>
+      <dl><dt>Measured</dt><dd>Not benchmarked here; its numbers always come from the page's tools</dd><dt>On the public link</dt><dd>Not available. Everything above still works.</dd></dl></div>
+  </div>
+</section>
+
 
 </main>
 <div class="pal" id="pal" hidden role="dialog" aria-modal="true" aria-label="Quick search"><div class="palbox"><input id="palq" type="search" placeholder="Jump to a tab or action" autocomplete="off" aria-label="Quick search"><ul id="pall" role="listbox"></ul></div></div>
