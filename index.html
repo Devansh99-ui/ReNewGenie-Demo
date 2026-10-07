@@ -6,6 +6,9 @@
 <title>ReNewGenie Demo</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1f7a4d">
+<link rel="icon" href="icon-192.png">
 </head>
 <body>
 
@@ -29,6 +32,7 @@
       <p class="lead">Photograph a waste item, learn how to recycle it, compare scrap quotes from collectors, find the closest recycling centre across Delhi NCR, and see whether your recycling could ever earn carbon credits. All in one web platform.</p>
       <div class="btnrow">
         <button class="btn" data-go="classify">Start the demo</button>
+        <button class="btn ghost" id="tourbtn">Interviewer tour (2 min)</button>
         <button class="btn ghost" data-go="report">Project report</button>
       </div>
       <div class="meta">Ajay Kumar Garg Engineering College, Ghaziabad<br>Group ID 26CSEAIML/1/GID-16 · Supervisor: Dr. Jaishree Jain</div>
@@ -94,9 +98,16 @@
       <p class="small" style="margin-top:14px">No photo handy? Try a random held-out TrashNet photo (never used for training). Some will be wrong; that is real.</p>
       <div class="samples" id="samples"></div>
       <div class="btnrow"><button class="btn" id="go">Classify</button><button class="btn ghost" id="clear">Reset</button></div>
+      <div class="btnrow" style="margin-top:8px"><button class="btn ghost sm" id="scan" title="Run the classifier on 14 overlapping crops">Scan for several items</button><button class="btn ghost sm" id="camopen" hidden>Use camera</button></div>
+      <input type="hidden" id="scanthr" value="0.75">
+      <div id="campanel" hidden style="margin-top:10px"><video id="camvid" playsinline muted style="width:100%;border-radius:10px;background:#000"></video><div class="btnrow" style="margin-top:6px"><button class="btn sm" id="camcap">Capture</button><button class="btn ghost sm" id="camclose">Close camera</button></div><p class="small" id="cammsg"></p></div>
+      <p class="small" style="margin-top:14px"><b>Batch mode.</b> Choose up to 40 photos to classify them all and get a table.</p>
+      <input type="file" id="batchin" accept="image/*" multiple style="max-width:100%">
     </div>
     <div class="panel" id="out"><p class="small">The result appears here.</p></div>
   </div>
+  <div class="panel" id="scanout" hidden></div>
+  <div class="panel" id="batchout" hidden></div>
 </section>
 
 <section class="view" id="v-guide" hidden>
@@ -124,6 +135,19 @@
     <p class="small" style="margin-bottom:12px">Two public Delhi lists for the same materials. Both are online price lists, not audited quotes. <a href="https://scraprates.in/delhi" target="_blank" rel="noopener">List A</a> is dated 6 October 2026 and says Delhi rates closely follow MCX commodity prices and sit about 3 to 5% above the national average. <a href="https://www.delhikabadiwala.com/rate-list/" target="_blank" rel="noopener">List B</a> has no date.</p>
     <div class="tscroll"><table id="mintel"></table></div>
     <ul class="small" style="margin:12px 0 0;padding-left:18px;display:grid;gap:4px"><li>Metals vary most between the lists: B asks 25% to 50% more for aluminium, brass and copper yet 23% less for iron. That spread is why the demo compares several collectors before you book.</li><li>Paper and plastic agree within about 7%, and e-waste within about 13%, so those quotes are the most dependable here.</li><li>Prices follow metal markets and moisture, dirt and mixing. Treat any list as a starting point and ask for a weighing slip.</li></ul>
+  </div>
+  <div class="panel" id="mtools">
+    <h3 style="margin-bottom:4px">Trading tools</h3>
+    <p class="small" style="margin-bottom:12px">Three decision aids that use the grade and weight chosen above.</p>
+    <h3 style="font-size:1rem;margin:0 0 6px">1. Sell now or in lots? (price risk)</h3><div id="mt_risk"></div>
+    <h3 style="font-size:1rem;margin:18px 0 6px">2. Sealed-bid auction simulator</h3>
+    <div class="fgrid"><label for="mt_sd">How much collectors' private values differ from their quote: <b>±<span id="mt_sdv">8</span>%</b><input id="mt_sd" type="range" min="2" max="25" value="8" oninput="document.getElementById('mt_sdv').textContent=this.value"></label></div>
+    <div class="btnrow"><button class="btn sm" id="mt_auc">Simulate auction</button></div><div id="mt_aucout" style="margin-top:10px"></div>
+    <h3 style="font-size:1rem;margin:18px 0 6px">3. Pickup route planner</h3>
+    <p class="small" style="margin-bottom:8px">A collector doing several pickups in one trip. Pick the depot and up to 10 stops; it finds the shortest round trip.</p>
+    <label for="mt_depot" style="display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--muted);max-width:280px">Depot<select id="mt_depot"></select></label>
+    <div class="chips" id="mt_stops"></div><p class="small" id="mt_cnt"></p>
+    <div class="btnrow"><button class="btn sm" id="mt_go">Find shortest route</button><button class="btn ghost sm" id="mt_rand">Try 7 random stops</button></div><div id="mt_rout" style="margin-top:12px"></div>
   </div>
   <div class="panel" id="cboard" hidden>
     <h3 style="margin-bottom:4px">Community board</h3>
@@ -175,6 +199,26 @@
   </div>
   <div id="fcout" style="display:flex;flex-direction:column;gap:16px"></div>
   <div class="note"><b>Method.</b> Naive repeats the last price. Damped Holt fits a level and a fading trend to log prices. The ridge model regresses the next h-month return on the last six monthly returns. The shaded range is the 10th to 90th percentile of each method's own backtest errors at that horizon, so it reflects real past misses, not a textbook formula. I did not add a neural network: with one price per month and about 450 points it would overfit.</div>
+</section>
+
+<section class="view" id="v-analytics" hidden>
+  <div><h2>Analytics</h2><p class="small" style="margin-top:6px">Your impact log as charts, plus a simulator that scales it to a year, a street or a city.</p></div>
+  <div class="kpis" id="an_kpis"></div>
+  <div class="two">
+    <div class="panel"><h3 style="margin-bottom:8px">Cumulative CO₂e avoided (kg)</h3><div id="an_trend"></div></div>
+    <div class="panel"><h3 style="margin-bottom:8px">CO₂e avoided by material (kg)</h3><div id="an_mix"></div><p class="small" id="an_ins" style="margin-top:8px"></p></div>
+  </div>
+  <div class="panel"><div class="btnrow" style="margin-top:0"><button class="btn sm" id="an_csv">Download log as CSV</button><button class="btn ghost sm" id="an_copy">Copy summary</button></div><p class="small" id="an_msg" style="margin-top:8px"></p></div>
+  <div class="panel">
+    <h3 style="margin-bottom:4px">What-if simulator</h3>
+    <p class="small" style="margin-bottom:12px">Set a weekly habit and scale it. CO₂e uses indicative US EPA WARM factors; scrap value uses the Delhi reference rates from the Marketplace (glass and organics have no list price, so they earn ₹0 here). Tree-years use about 21 kg CO₂ per tree per year, a rough rule of thumb.</p>
+    <div class="fgrid4" id="sc_inputs"></div>
+    <div class="fgrid" style="margin-top:12px">
+      <label for="sc_y">Time: <span id="sc_y_v"></span><input id="sc_y" type="range" min="1" max="10" value="1"></label>
+      <label for="sc_h">Scale: <span id="sc_h_v"></span><input id="sc_h" type="range" min="0" max="5" step="0.1" value="0"></label>
+    </div>
+    <div id="sc_out" style="margin-top:14px"></div><div id="sc_bars" style="margin-top:10px;display:grid;gap:6px"></div>
+  </div>
 </section>
 
 <section class="view" id="v-report" hidden>
@@ -337,6 +381,8 @@
       <li>Optimise the ML pipeline to cut response time.</li>
       <li>Add product condition assessment and marketplace recommendations.</li>
       <li>Add blockchain traceability for reusable goods.</li>
+      <li>Fine-tune the original VGG16 with transfer learning (Colab notebook in the repo) and add multi-item detection with YOLO.</li>
+      <li>Move the shared marketplace to a real backend with accounts, payments and verified collectors.</li>
     </ol></div>
   </div>
 
@@ -543,6 +589,13 @@
       <li>The first two are trade explainers, not the legal texts. Read the official notifications before relying on any figure.</li>
     </ul>
   </div>
+  <div class="panel">
+    <h3 style="margin-bottom:4px">Step 5. Portfolio risk simulator</h3>
+    <p class="small" style="margin-bottom:12px">If you held a basket of different credits, how much of its face value would survive? Each credit may be invalidated (worth ₹0) and its price drifts. Change the numbers and watch the spread.</p>
+    <div class="tscroll"><table><tr><th>Credit type</th><th>Tonnes</th><th>₹ per tonne</th><th>Price swing %</th><th>Chance invalidated %</th></tr><tbody id="pf_rows"></tbody></table></div>
+    <div class="btnrow"><button class="btn sm" id="pf_go">Re-run with new random draws</button></div>
+    <div id="pf_out" style="margin-top:12px"></div>
+  </div>
 </section>
 
 <section class="view" id="v-ai" hidden>
@@ -570,5 +623,6 @@
 <script src="embeddings.js"></script>
 <script src="forecast_data.js"></script>
 <script src="app.js"></script>
+<script>try{if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol))window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}catch(e){}</script>
 </body>
 </html>

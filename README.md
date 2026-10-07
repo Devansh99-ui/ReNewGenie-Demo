@@ -7,9 +7,13 @@ Main project code: https://github.com/mrgauravshukla81/ReNewGenie
 ## What is in the demo
 A static site (`index.html`, `style.css`, `app.js`, `data/`; no build step):
 - **Classifier** (Module 1): two real models read your photo in the browser (86.8% on 380 held-out TrashNet photos), with a **heat-map** of what the CNN looked at, a **"not sure"** state below 60% confidence, and a note on how reliable each confidence level was on held-out photos
+- **Vision tools**: region scan (the classifier on 14 overlapping crops, merged; a pseudo-detector, not a trained one), batch mode for up to 40 photos with CSV export, and live camera
 - **Guide** (Module 2): recycling education hub
 - **Marketplace** (Module 3): 17 scrap grades priced from real Delhi reference rates, condition deductions, fees, collector profiles, booking, order tracker, receipt, market intelligence, and (inside Claude) a **shared community board**
 - **Carbon credits**: route finder (CCTS, plastic and e-waste EPR, Verra), credit calculator, EPR value band, deal simulator, project integrity scorecard and a case file of documented failures
+- **Trading tools**: price-risk card, sealed-bid auction simulator, exact shortest pick-up route (brute force up to 8 stops, otherwise nearest-neighbour + 2-opt) and a Monte Carlo carbon-credit portfolio simulator (all teaching simulations on illustrative assumptions)
+- **Analytics**: impact log as charts, plus a scenario simulator
+- **Interviewer tour**: a 9-step guided walkthrough (button on Home, or Ctrl K)
 - **Price forecast**: three methods with rolling backtests and honest ranges, on real world metal prices or your own series
 - **Centres** (Module 4): 182 Delhi-NCR places on one map
 - **Impact tracker**, **Reuse ideas** (keyword + meaning search over 36 ideas), **Lifespan**

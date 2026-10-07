@@ -30,8 +30,8 @@ var $=function(i){return document.getElementById(i)};
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 
 /* ---------- app shell: nav groups, theme, quick search, home dashboard ---------- */
-var ICON={forecast:"M3 17l5-5 4 4 8-9M15 7h5v5",home:"M3 11l9-8 9 8v10H3z",classify:"M4 8h3l2-3h6l2 3h3v11H4zM12 11a3 3 0 1 0 .01 0",guide:"M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z",market:"M4 9l1-5h14l1 5M4 9v11h16V9M4 9h16",credits:"M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8 12l3 3 5-6",centres:"M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11zM12 12a2 2 0 1 0 .01 0",impact:"M4 20V10M10 20V4M16 20v-8M22 20H2",reuse:"M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z",life:"M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2",ai:"M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8zM18 15l.9 2.1L21 18l-2.1.9L18 21l-.9-2.1L15 18l2.1-.9z",report:"M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h7"};
-var VIEWS=[["home","Home","Start"],["classify","Classifier","Waste AI"],["guide","Guide","Waste AI"],["market","Marketplace","Trade"],["credits","Carbon credits","Trade"],["forecast","Price forecast","Trade"],["centres","Centres","Trade"],["impact","Impact","Footprint"],["reuse","Reuse ideas","Footprint"],["life","Lifespan","Footprint"],["ai","AI assistant","AI"],["report","Project report","About"]];
+var ICON={analytics:"M4 20V10M10 20V4M16 20v-7M22 20H2",forecast:"M3 17l5-5 4 4 8-9M15 7h5v5",home:"M3 11l9-8 9 8v10H3z",classify:"M4 8h3l2-3h6l2 3h3v11H4zM12 11a3 3 0 1 0 .01 0",guide:"M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z",market:"M4 9l1-5h14l1 5M4 9v11h16V9M4 9h16",credits:"M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8 12l3 3 5-6",centres:"M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11zM12 12a2 2 0 1 0 .01 0",impact:"M4 20V10M10 20V4M16 20v-8M22 20H2",reuse:"M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z",life:"M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2",ai:"M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8zM18 15l.9 2.1L21 18l-2.1.9L18 21l-.9-2.1L15 18l2.1-.9z",report:"M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h7"};
+var VIEWS=[["home","Home","Start"],["classify","Identify waste","Waste AI"],["guide","How to recycle","Waste AI"],["market","Sell scrap","Sell and earn"],["credits","Carbon credits","Sell and earn"],["forecast","Price forecast","Sell and earn"],["centres","Find a centre","Sell and earn"],["impact","My impact","Reduce and reuse"],["analytics","Analytics","Reduce and reuse"],["reuse","Reuse ideas","Reduce and reuse"],["life","Repair or recycle?","Reduce and reuse"],["ai","AI assistant","AI"],["report","Project report","About"]];
 var tabs=$("tabs"),lastG="";
 VIEWS.forEach(function(v){
   if(v[2]!==lastG){var gl=document.createElement("div");gl.className="tgroup";gl.textContent=v[2];tabs.appendChild(gl);lastG=v[2]}
@@ -48,6 +48,33 @@ function show(id){
   window.scrollTo(0,0);
 }
 bindGo();
+/* guided tour */
+var TOUR=[
+ {v:"home",sel:"#homedemo",h:"What this is",t:"A final-year project turned into a working demo: every module from the report runs here, in the browser, on real data. Press Next or the right arrow key to walk through it."},
+ {v:"classify",sel:"#out",pre:function(){var b=$("samples").children[0];if(b)b.click();setTimeout(function(){$("go").click()},50)},h:"Real trained models",t:"A CNN written from scratch in JavaScript plus an MLP, trained on TrashNet. 86.8% on 380 held-out photos, shown with a heat-map of where the CNN looked. Wrong answers happen and are shown honestly."},
+ {v:"classify",sel:"#scan",h:"Region scan",t:"Runs the same classifier on 14 overlapping crops and merges them. This is a pseudo-detector, not a trained object detector, and the page says so."},
+ {v:"market",sel:"#mtools",h:"Marketplace and trading tools",t:"Real Delhi scrap rates, a sealed-bid auction simulator, an exact shortest pick-up route for up to 8 stops, and a price-risk card. The auction is a teaching simulation."},
+ {v:"credits",sel:"#pf_go",h:"Carbon credit portfolio",t:"Monte Carlo over credit price swings and the chance a credit is invalidated. Inputs are illustrative assumptions, not market quotes."},
+ {v:"forecast",sel:"#v-forecast .panel",h:"Price forecast lab",t:"Naive, damped Holt and a ridge autoregression, back-tested on the past. The data is World Bank metal prices to 2017, and no method here reliably beats the naive baseline. That result is reported, not hidden."},
+ {v:"reuse",sel:"#v-reuse .panel",h:"Reuse ideas",t:"TF-IDF text matching blended with word-vector similarity, so related words can match. The gain from the word vectors is small and measured."},
+ {v:"analytics",sel:"#an_kpis",h:"Analytics",t:"Your impact log as charts and a scenario simulator that scales it to a year, a street or a city."},
+ {v:"report",sel:"#v-report h2",h:"Project report",t:"The original report content, mapped to what runs in this demo. Thank you for watching."}
+];
+var tourI=-1,tourEl=null,tourHl=null;
+function tourClear(){if(tourHl){tourHl.classList.remove("tour-hl");tourHl=null}}
+function tourStop(){tourClear();if(tourEl){tourEl.remove();tourEl=null}tourI=-1;document.removeEventListener("keydown",tourKey,true)}
+function tourKey(e){if(tourI<0)return;if(e.key==="Escape"){e.preventDefault();tourStop()}else if(e.key==="ArrowRight"){e.preventDefault();tourGo(tourI+1)}else if(e.key==="ArrowLeft"){e.preventDefault();tourGo(tourI-1)}}
+function tourGo(i){
+  if(i<0||i>=TOUR.length){if(i>=TOUR.length)tourStop();return}
+  tourClear();tourI=i;var st=TOUR[i];
+  show(st.v);if(st.pre)try{st.pre()}catch(e){}
+  if(!tourEl){tourEl=document.createElement("div");tourEl.className="tour";tourEl.setAttribute("role","dialog");tourEl.setAttribute("aria-label","Guided tour");document.body.appendChild(tourEl);document.addEventListener("keydown",tourKey,true)}
+  tourEl.innerHTML='<div class="tn">Step '+(i+1)+' of '+TOUR.length+'</div><h4>'+esc(st.h)+'</h4><p>'+esc(st.t)+'</p><div class="tb"><button class="btn ghost sm" id="tr_b"'+(i?'':' disabled')+'>Back</button><button class="btn sm" id="tr_n">'+(i===TOUR.length-1?'Finish':'Next')+'</button><span class="sp"></span><button class="btn ghost sm" id="tr_x">End tour (Esc)</button></div>';
+  $("tr_b").onclick=function(){tourGo(tourI-1)};$("tr_n").onclick=function(){tourGo(tourI+1)};$("tr_x").onclick=tourStop;
+  setTimeout(function(){if(tourI!==i)return;var el=document.querySelector(st.sel);if(el){tourHl=el;el.classList.add("tour-hl");try{el.scrollIntoView({block:"center",behavior:"smooth"})}catch(e){}}},st.pre?400:80);
+}
+$("tourbtn").onclick=function(){tourGo(0)};
+
 /* theme */
 var THEME=null;try{THEME=localStorage.getItem("rg_theme")}catch(e){}
 function applyTheme(){if(THEME)document.documentElement.setAttribute("data-theme",THEME);else document.documentElement.removeAttribute("data-theme");$("thbtn").innerHTML="Theme <kbd>"+(THEME||"system")+"</kbd>"}
@@ -64,6 +91,7 @@ var ACTS=[
  {t:"Find recycling centres near me",k:"map delhi ncr dpcc",f:function(){show("centres")}},
  {t:"Log recycling",k:"habit tracker streak",f:function(){show("impact")}},
  {t:"Ask the AI assistant",k:"chat claude question ai",f:function(){show("ai");if(AI.ok)$("chatq").focus()}},
+ {t:"Start the interviewer tour",k:"guide walkthrough demo tour",f:function(){tourGo(0)}},
  {t:"Switch theme",k:"dark light",f:function(){$("thbtn").click()}}
 ];
 var palItems=VIEWS.map(function(v){return {t:"Go to "+v[1],k:v[2].toLowerCase(),f:function(){show(v[0])}}}).concat(ACTS),palSel=0,palList=[];
@@ -93,7 +121,7 @@ document.addEventListener("keydown",function(e){
 /* home dashboard */
 function renderHome(){
   var s=statsOf(LOG),lv=levelOf(s.pts),t=s.co2/1000,n=Object.keys(FACTORS).length;
-  $("dash").innerHTML='<div class="dashgrid"><div><h3>Your impact so far</h3><div class="kpis">'+
+  $("dash").innerHTML='<div class="dashgrid"><div><h3>Your impact log</h3><div class="kpis">'+
    [[f1(s.kg)+" kg","recycled"],[f1(s.co2)+" kg","CO₂e avoided"],[s.pts.toLocaleString("en-IN"),"points · "+lv.name],[s.streak+(s.streak===1?" day":" days"),"streak"]].map(function(x){return '<div class="kpi"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>'}).join("")+
    '</div><p class="small" style="margin-top:12px">Carbon-credit readiness: '+(t*100).toFixed(1)+'% of one tonne CO₂e. Credits are earned at scale, so the Carbon credits tab shows how small collectors join a project.</p><div class="prog" style="margin-top:6px"><i style="width:'+Math.min(100,t*100)+'%"></i></div><div class="qa"><button class="btn sm" data-go="classify">Classify a photo</button><button class="btn ghost sm" data-go="market">Compare scrap quotes</button><button class="btn ghost sm" data-go="credits">Explore carbon credits</button><button class="btn ghost sm" data-go="impact">Log recycling</button></div></div>'+
    '<div><h3>What is inside</h3><div class="mini"><div><b>'+PLACES.length+'</b><span>Delhi NCR places mapped</span></div><div><b>'+GRADES.length+'</b><span>scrap grades with live quotes</span></div><div><b>'+KB.length+'</b><span>reuse ideas searched with TF-IDF</span></div><div><b>86.8%</b><span>classifier accuracy, held-out photos</span></div></div></div></div>';
@@ -372,6 +400,167 @@ var drop=$("drop");
 ["dragleave","drop"].forEach(function(t){drop.addEventListener(t,function(e){e.preventDefault();drop.classList.remove("over")})});
 drop.addEventListener("drop",function(e){preview(e.dataTransfer.files[0])});
 $("clear").onclick=function(){curImg=null;curNote="";$("file").value="";Array.prototype.forEach.call($("samples").children,function(c){c.setAttribute("aria-pressed","false")});$("drop").innerHTML='<div><b>Drop a photo here</b><p class="small">or choose a file. It stays in your browser.</p></div>';$("out").innerHTML='<p class="small">The result appears here.</p>'};
+/* plain-language intro on every page */
+var WHAT={
+ classify:"Upload or pick a photo of waste. The AI names the material (cardboard, glass, metal, paper, plastic or trash) and shows how sure it is.",
+ guide:"Step-by-step disposal advice and facts for each material.",
+ market:"Pick a scrap grade to see what collectors in Delhi would pay, then compare, book a pickup and try the trading tools.",
+ credits:"Explains whether recycling can earn carbon credits, which scheme fits you, and what a deal could be worth.",
+ forecast:"Where might scrap metal prices go? Three forecasting methods, tested on past data, with an honest range.",
+ centres:"A map and list of 182 recycling centres, scrap hubs and collectors across Delhi NCR.",
+ impact:"Log what you recycle and see the CO₂ you avoided, with streaks and badges.",
+ analytics:"Your impact log as charts, plus a simulator that scales it to a year, a street or a city.",
+ reuse:"Describe an old item and get ranked ideas for giving it a second life.",
+ life:"Enter a product's age and condition to see whether to keep, repair or recycle it.",
+ ai:"Ask questions in plain words. Only available inside Claude.",
+ report:"The written project report: how the system is built, what was measured, limits and SDG links."
+};
+Object.keys(WHAT).forEach(function(id){var v=$("v-"+id);if(!v||v.querySelector(".what"))return;var d=document.createElement("div");d.className="what";d.innerHTML="<span><b>What is this?</b> "+esc(WHAT[id])+"</span>";v.insertBefore(d,v.firstElementChild&&v.firstElementChild.nextSibling||null)});
+/* live demo on Home */
+(function(){
+  var th=$("dthumbs"),dv=$("dview");if(!th)return;
+  RG_SAMPLES.slice(0,6).forEach(function(x){
+    var b=document.createElement("button");b.type="button";b.setAttribute("aria-pressed","false");b.setAttribute("aria-label","Classify test photo "+x.f);
+    var im=document.createElement("img");im.src=x.u;im.alt="";b.appendChild(im);
+    b.onclick=function(){
+      Array.prototype.forEach.call(th.children,function(c){c.setAttribute("aria-pressed",c===b)});
+      dv.innerHTML='<p><span class="spin"></span> &nbsp;Reading the photo…</p>';
+      var img=new Image();img.onload=function(){setTimeout(function(){
+        var R=runModels(img,null,false),P=R.P,o=P.map(function(v,i){return i}).sort(function(a,c){return P[c]-P[a]}),pk=RG_MODEL.cls[o[0]],conf=P[o[0]];
+        var ok=pk.toLowerCase()===String(x.c).toLowerCase();
+        dv.innerHTML='<div class="dres"><img alt="" src="'+x.u+'"><div><span class="small">The AI says</span><br><span class="pill">'+(conf<0.6?"Not sure · maybe ":"")+esc(pk)+'</span><p class="small" style="margin-top:6px">True label: <b>'+esc(x.c)+'</b> · '+(ok?'correct':'<b>wrong</b>')+'</p></div></div>'+
+         o.slice(0,3).map(function(i,k){return '<div class="prob'+(k?'':' top')+'"><span>'+RG_MODEL.cls[i]+'</span><div class="track"><div class="fill" style="width:'+(P[i]*100).toFixed(1)+'%"></div></div><b>'+(P[i]*100).toFixed(0)+'%</b></div>'}).join("")+
+         '<p class="small">'+esc(WASTE[pk].impact)+'</p><div class="btnrow" style="margin-top:2px"><button class="btn sm" id="dfull">Open full classifier</button>'+(pk!=="Trash"?'<button class="btn ghost sm" id="dsell">See scrap prices</button>':'')+'</div>';
+        $("dfull").onclick=function(){show("classify");var m=$("samples").children,i=RG_SAMPLES.indexOf(x);if(m[i])m[i].click()};
+        if($("dsell"))$("dsell").onclick=function(){openMarketFor(pk)};
+      },30)};img.src=x.u;
+    };
+    th.appendChild(b);
+  });
+  $("trynow").onclick=function(){var h=$("homedemo");try{h.scrollIntoView({behavior:"smooth",block:"center"})}catch(e){}if(th.firstChild)th.firstChild.click()};
+})();
+/* ---------- Vision tools: tile scan, batch, camera ---------- */
+function runModels(img,crop,tta){
+  var sw=img.naturalWidth||img.width,sh=img.naturalHeight||img.height,sx=0,sy=0;
+  if(crop){sx=crop[0]*sw;sy=crop[1]*sh;sw=crop[2]*sw;sh=crop[3]*sh}
+  var cv=document.createElement("canvas");cv.width=256;cv.height=192;
+  var cx=cv.getContext("2d",{willReadFrequently:true});cx.imageSmoothingEnabled=true;cx.imageSmoothingQuality="high";
+  cx.fillStyle="#fff";cx.fillRect(0,0,256,192);cx.drawImage(img,sx,sy,sw,sh,0,0,256,192);
+  var Pm=CLF.predict(CLF.fromRGBA(cx.getImageData(0,0,256,192).data));
+  var c2=document.createElement("canvas");c2.width=192;c2.height=144;var x2=c2.getContext("2d",{willReadFrequently:true});
+  x2.imageSmoothingEnabled=true;x2.imageSmoothingQuality="high";x2.fillStyle="#fff";x2.fillRect(0,0,192,144);x2.drawImage(img,sx,sy,sw,sh,0,0,192,144);
+  var rg=CNN.fromRGBA(x2.getImageData(0,0,192,144).data),Pc=CNN.predict(rg,tta!==false);
+  var P=Pm.map(function(v,i){return 0.6*Pc[i]+0.4*v});
+  return {Pm:Pm,Pc:Pc,P:P,rg:rg};
+}
+function topOf(P){var j=0;P.forEach(function(v,i){if(v>P[j])j=i});return j}
+var CLS_COL={Cardboard:"#b9803a",Glass:"#2a9d8f",Metal:"#6c7a89",Paper:"#d4a017",Plastic:"#2f7fd1",Trash:"#a23b72"};
+function iou(a,b){var x1=Math.max(a[0],b[0]),y1=Math.max(a[1],b[1]),x2=Math.min(a[0]+a[2],b[0]+b[2]),y2=Math.min(a[1]+a[3],b[1]+b[3]);var i=Math.max(0,x2-x1)*Math.max(0,y2-y1);return i/(a[2]*a[3]+b[2]*b[3]-i)}
+/* keep the most confident tile per overlapping region (non-maximum suppression) */
+function nms(tiles,thr){
+  var s=tiles.slice().sort(function(a,b){return b.conf-a.conf}),keep=[];
+  s.forEach(function(t){
+    var ok=keep.every(function(k){var o=iou(k.box,t.box);return k.cls===t.cls?o<0.3:o<0.5});
+    if(ok)keep.push(t);
+  });
+  return keep;
+}
+var TILES=(function(){var a=[1];var out=[[0,0,1,1]];[0,0.3,0.6].forEach(function(y){[0,0.3,0.6].forEach(function(x){out.push([x,y,0.4,0.4])})});[0,0.45].forEach(function(y){[0,0.45].forEach(function(x){out.push([x,y,0.55,0.55])})});return out})();
+function scanTiles(img,done){
+  var res=[],i=0;
+  (function step(){
+    if(i>=TILES.length){done(res);return}
+    var R=runModels(img,TILES[i],false),j=topOf(R.P);
+    res.push({box:TILES[i],cls:RG_MODEL.cls[j],conf:R.P[j],P:R.P});i++;
+    setTimeout(step,0);
+  })();
+}
+function drawScan(cv,img,kept){
+  var W=cv.width,H=cv.height,g=cv.getContext("2d");
+  g.fillStyle="#fff";g.fillRect(0,0,W,H);g.drawImage(img,0,0,W,H);
+  g.lineWidth=2.5;g.font="bold 13px system-ui,sans-serif";
+  kept.forEach(function(t){
+    var x=t.box[0]*W,y=t.box[1]*H,w=t.box[2]*W,h=t.box[3]*H,c=CLS_COL[t.cls]||"#333",lab=t.cls+" "+Math.round(t.conf*100)+"%";
+    g.strokeStyle=c;g.strokeRect(x,y,w,h);
+    var tw=g.measureText(lab).width+8;g.fillStyle=c;g.fillRect(x,Math.max(0,y-18),tw,18);g.fillStyle="#fff";g.fillText(lab,x+4,Math.max(13,y-5));
+  });
+}
+$("scan").onclick=function(){
+  if(!curImg){$("scanout").hidden=false;$("scanout").innerHTML='<p class="small">Choose or drop a photo first.</p>';return}
+  var box=$("scanout");box.hidden=false;box.innerHTML='<p><span class="spin"></span> &nbsp;Scanning '+TILES.length+' regions…</p>';
+  var img=curImg;
+  scanTiles(img,function(res){
+    var thr=parseFloat($("scanthr").value||0.75),good=res.filter(function(t){return t.conf>=thr&&t.box[2]<1}),kept=nms(good,thr),whole=res[0];
+    var counts={};kept.forEach(function(t){counts[t.cls]=(counts[t.cls]||0)+1});
+    var kinds=Object.keys(counts);
+    box.innerHTML='<h3>Region scan</h3><p class="small" style="margin:4px 0 10px">The classifier is run on '+TILES.length+' overlapping crops of your photo. Crops it is at least <b>'+Math.round(thr*100)+'%</b> sure about are kept, and overlapping duplicates are merged. This is <b>not a trained object detector</b>: boxes are coarse, and a crop of empty background can be labelled wrongly.</p>'+
+      '<div class="two"><div><canvas id="scancv" width="480" height="360" style="width:100%;border-radius:10px;border:1px solid var(--line)" aria-label="Photo with region labels"></canvas></div><div id="scanlist"></div></div>';
+    drawScan($("scancv"),img,kept);
+    $("scanlist").innerHTML=(kept.length?'<p><b>'+kept.length+' region'+(kept.length>1?'s':'')+' found, '+kinds.length+' material type'+(kinds.length>1?'s':'')+'.</b></p><ul style="margin:8px 0 0;padding-left:18px">'+kept.map(function(t){return '<li>'+esc(t.cls)+' · '+Math.round(t.conf*100)+'% sure</li>'}).join("")+'</ul>':'<p><b>No region passed the '+Math.round(thr*100)+'% bar.</b> Lower the bar below, or use a closer, plainer photo.</p>')+
+      '<p class="small" style="margin-top:10px">Whole photo: '+esc(whole.cls)+' '+Math.round(whole.conf*100)+'%. '+(kinds.length>1?'Several materials found, so sort this pile before recycling.':kinds.length===1?'Only one material found.':'')+'</p>'+
+      '<label class="small" style="display:block;margin-top:10px">Minimum confidence: <b id="scanthrv">'+Math.round(thr*100)+'%</b><input id="scanthr2" type="range" min="50" max="95" value="'+Math.round(thr*100)+'" style="width:100%"></label>';
+    $("scanthr2").oninput=function(){$("scanthr").value=this.value/100;$("scanthrv").textContent=this.value+"%"};
+    $("scanthr2").onchange=function(){$("scan").click()};
+  });
+};
+/* batch classify */
+var BATCH=[];
+function csvEsc(v){v=String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}
+function batchCsv(){return ["file,prediction,confidence_pct,second_choice,flag"].concat(BATCH.map(function(r){return [r.name,r.cls,Math.round(r.conf*100),r.second,r.conf<0.6?"not sure":""].map(csvEsc).join(",")})).join("\n")}
+function saveText(name,text,type){
+  try{var b=new Blob([text],{type:type||"text/plain"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500);return true}catch(e){return false}
+}
+function copyText(t,btn){
+  var ok=function(){var o=btn.textContent;btn.textContent="Copied";setTimeout(function(){btn.textContent=o},1500)};
+  try{navigator.clipboard.writeText(t).then(ok,function(){window.prompt&&0})}catch(e){}
+}
+$("batchin").onchange=function(e){
+  var files=Array.prototype.filter.call(e.target.files,function(f){return /^image\//.test(f.type)}).slice(0,40);
+  var box=$("batchout");box.hidden=false;BATCH=[];
+  if(!files.length){box.innerHTML='<p class="small">No images chosen.</p>';return}
+  var i=0;box.innerHTML='<p><span class="spin"></span> &nbsp;Classifying <b id="bn">0</b> of '+files.length+'…</p>';
+  (function next(){
+    if(i>=files.length){showBatch();return}
+    var f=files[i];var r=new FileReader();
+    r.onload=function(){
+      var im=new Image();
+      im.onload=function(){
+        var R=runModels(im,null,false),o=R.P.map(function(v,k){return k}).sort(function(a,b){return R.P[b]-R.P[a]});
+        var t=document.createElement("canvas");t.width=48;t.height=36;t.getContext("2d").drawImage(im,0,0,48,36);
+        BATCH.push({name:f.name,cls:RG_MODEL.cls[o[0]],conf:R.P[o[0]],second:RG_MODEL.cls[o[1]],thumb:t.toDataURL("image/jpeg",0.6)});
+        i++;var bn=$("bn");if(bn)bn.textContent=i;setTimeout(next,0);
+      };
+      im.onerror=function(){i++;setTimeout(next,0)};im.src=r.result;
+    };
+    r.readAsDataURL(f);
+  })();
+};
+function showBatch(){
+  var box=$("batchout"),counts={};BATCH.forEach(function(r){counts[r.cls]=(counts[r.cls]||0)+1});
+  var unsure=BATCH.filter(function(r){return r.conf<0.6}).length;
+  box.innerHTML='<h3>Batch result: '+BATCH.length+' photos</h3><p class="small" style="margin:4px 0 10px">'+Object.keys(counts).map(function(k){return esc(k)+' '+counts[k]}).join(" · ")+(unsure?' · '+unsure+' marked not sure':'')+'</p>'+
+    '<div class="tscroll"><table><tr><th></th><th>File</th><th>Prediction</th><th>Sure</th><th>Next best</th></tr>'+BATCH.map(function(r){return '<tr><td><img alt="" src="'+r.thumb+'" width="48" height="36"></td><td>'+esc(r.name)+'</td><td><b>'+esc(r.cls)+'</b>'+(r.conf<0.6?' <span class="tag">not sure</span>':'')+'</td><td>'+Math.round(r.conf*100)+'%</td><td>'+esc(r.second)+'</td></tr>'}).join("")+'</table></div>'+
+    '<div class="btnrow" style="margin-top:10px"><button class="btn sm" id="bdl">Download CSV</button><button class="btn ghost sm" id="bcp">Copy CSV</button></div><p class="small" id="bmsg"></p>';
+  $("bdl").onclick=function(){if(!saveText("renewgenie-batch.csv",batchCsv(),"text/csv"))$("bmsg").textContent="Download is blocked in this view. Use Copy CSV instead."};
+  $("bcp").onclick=function(){copyText(batchCsv(),this)};
+}
+/* camera */
+var camStream=null;
+(function(){
+  if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)){return}
+  $("camopen").hidden=false;
+  function stop(){if(camStream){camStream.getTracks().forEach(function(t){t.stop()});camStream=null}$("campanel").hidden=true}
+  $("camopen").onclick=function(){
+    $("campanel").hidden=false;$("cammsg").textContent="Starting the camera…";
+    navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}}).then(function(s){camStream=s;$("camvid").srcObject=s;$("camvid").play();$("cammsg").textContent="Point at the item and press Capture. The photo stays in your browser."},function(){$("cammsg").textContent="The camera is not available here (blocked or no permission). Upload a photo instead.";});
+  };
+  $("camcap").onclick=function(){
+    var v=$("camvid");if(!v.videoWidth)return;
+    var c=document.createElement("canvas");c.width=v.videoWidth;c.height=v.videoHeight;c.getContext("2d").drawImage(v,0,0);
+    setImg(c.toDataURL("image/jpeg",0.9),"Photo taken with your camera.");stop();
+  };
+  $("camclose").onclick=stop;
+})();
 var CALIB=[[0,0.4,12,0.417],[0.4,0.5,30,0.533],[0.5,0.6,32,0.719],[0.6,0.7,34,0.794],[0.7,0.8,41,0.805],[0.8,0.9,60,0.95],[0.9,1.01,171,0.988]];
 var AGREE={yes:[0.787,0.946],no:[0.213,0.580]};
 function calibBand(c){for(var i=0;i<CALIB.length;i++)if(c>=CALIB[i][0]&&c<CALIB[i][1])return CALIB[i];return CALIB[CALIB.length-1]}
@@ -395,13 +584,7 @@ $("go").onclick=function(){
   btn.disabled=true;
   out.innerHTML='<p><span class="spin"></span> &nbsp;Running the model in your browser…</p>';
   setTimeout(function(){
-    var cv=document.createElement("canvas");cv.width=256;cv.height=192;
-    var cx=cv.getContext("2d",{willReadFrequently:true});cx.imageSmoothingEnabled=true;cx.imageSmoothingQuality="high";
-    cx.fillStyle="#fff";cx.fillRect(0,0,256,192);cx.drawImage(curImg,0,0,256,192);
-    var Pm=CLF.predict(CLF.fromRGBA(cx.getImageData(0,0,256,192).data));
-    var c2=document.createElement("canvas");c2.width=192;c2.height=144;var x2=c2.getContext("2d",{willReadFrequently:true});x2.imageSmoothingEnabled=true;x2.imageSmoothingQuality="high";x2.fillStyle="#fff";x2.fillRect(0,0,192,144);x2.drawImage(curImg,0,0,192,144);
-    var rg=CNN.fromRGBA(x2.getImageData(0,0,192,144).data);var Pc=CNN.predict(rg,true);
-    var P=Pm.map(function(v,i){return 0.6*Pc[i]+0.4*v});
+    var R=runModels(curImg,null,true),Pm=R.Pm,Pc=R.Pc,P=R.P,rg=R.rg;
     var mt=function(a){var j=0;a.forEach(function(v,i){if(v>a[j])j=i});return RG_MODEL.cls[j]+" "+(a[j]*100).toFixed(0)+"%"};
     var order=P.map(function(v,i){return i}).sort(function(a,b){return P[b]-P[a]});
     pick=RG_MODEL.cls[order[0]];var conf=P[order[0]];
@@ -433,6 +616,67 @@ $("go").onclick=function(){
   },900);
 };
 
+/*ALGO-START*/
+/* ---- Algorithms: routing, auction simulation, portfolio Monte Carlo (no DOM) ---- */
+function hav(a,b){var R=6371,r=Math.PI/180,dl=(b[0]-a[0])*r,dn=(b[1]-a[1])*r,x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.sin(dn/2)*Math.sin(dn/2);return 2*R*Math.asin(Math.sqrt(x))}
+function distMatrix(pts){return pts.map(function(a){return pts.map(function(b){return hav(a,b)})})}
+/* closed tour from index 0 (the depot) through every other point and back */
+function tourLen(order,D){var s=0,p=0;order.forEach(function(i){s+=D[p][i];p=i});return s+D[p][0]}
+function tspNN(D){
+  var n=D.length,left=[],i;for(i=1;i<n;i++)left.push(i);
+  var order=[],cur=0;
+  while(left.length){var bj=0;left.forEach(function(j,k){if(D[cur][j]<D[cur][left[bj]])bj=k});cur=left.splice(bj,1)[0];order.push(cur)}
+  return order;
+}
+function twoOpt(order,D){
+  var best=order.slice(),imp=true,n=best.length;
+  while(imp){imp=false;
+    for(var i=0;i<n-1;i++)for(var j=i+1;j<n;j++){
+      var cand=best.slice(0,i).concat(best.slice(i,j+1).reverse(),best.slice(j+1));
+      if(tourLen(cand,D)<tourLen(best,D)-1e-9){best=cand;imp=true}
+    }}
+  return best;
+}
+function tspHeuristic(D){return twoOpt(tspNN(D),D)}
+function tspExact(D){
+  var n=D.length,idx=[],i;for(i=1;i<n;i++)idx.push(i);
+  var best=null,bl=Infinity;
+  (function perm(a,k){
+    if(k===a.length){var l=tourLen(a,D);if(l<bl){bl=l;best=a.slice()}return}
+    for(var i=k;i<a.length;i++){var t=a[k];a[k]=a[i];a[i]=t;perm(a,k+1);t=a[k];a[k]=a[i];a[i]=t}
+  })(idx,0);
+  return best||[];
+}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function randn(r){var u=0,v=0;while(!u)u=r();while(!v)v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+/* sellers' view of a sealed-bid auction among collectors whose private values scatter around their posted rates */
+function auctionSim(means,sd,trials,seed){
+  var r=mulberry32(seed||1),m=means.length,wins=means.map(function(){return 0}),sp=0,fp=0,posted=Math.max.apply(null,means),t,i;
+  for(t=0;t<trials;t++){
+    var v=means.map(function(x){return x*(1+sd*randn(r))}),bi=0;
+    v.forEach(function(x,k){if(x>v[bi])bi=k});
+    var s=v.slice().sort(function(a,b){return b-a});
+    wins[bi]++;sp+=s[1]!==undefined?s[1]:s[0];
+    fp+=s[0]*(m>1?(m-1)/m:1);
+  }
+  return {posted:posted,secondPrice:sp/trials,firstPrice:fp/trials,wins:wins.map(function(w){return w/trials}),trials:trials};
+}
+/* Monte Carlo value of a basket of credits: each asset may be invalidated (value 0) and its price moves log-normally */
+function portfolioMC(assets,trials,seed){
+  var r=mulberry32(seed||1),tot=[],nominal=0,t;
+  assets.forEach(function(a){nominal+=a.units*a.price});
+  for(t=0;t<trials;t++){
+    var s=0;
+    assets.forEach(function(a){if(r()<a.p)return;s+=a.units*a.price*Math.exp(a.vol*randn(r)-a.vol*a.vol/2)});
+    tot.push(s);
+  }
+  tot.sort(function(a,b){return a-b});
+  function q(p){return tot[Math.min(tot.length-1,Math.floor(p*tot.length))]}
+  var mean=tot.reduce(function(a,b){return a+b},0)/tot.length;
+  var loss50=tot.filter(function(x){return x<0.5*nominal}).length/tot.length;
+  return {nominal:nominal,mean:mean,median:q(0.5),p5:q(0.05),p95:q(0.95),loss50:loss50,sorted:tot};
+}
+/*ALGO-END*/
 /*FC-START*/
 /* ---- Forecast lab: naive, damped Holt and ridge-AR on log prices, with rolling-origin backtest ---- */
 var FC=(function(){
@@ -1174,6 +1418,141 @@ drawIQ();drawCases();
   };
 })();
 
+
+/* ---------- Analytics tab ---------- */
+var SCRAP_MAP={aluminium:["aluminium"],steel:["iron"],paper:["newspaper"],cardboard:["cardboard"],plastic:["pet","hdpe","film"],glass:[],ewaste:["ewaste"],organic:[]};
+function scrapRate(m){var ids=SCRAP_MAP[m]||[],v=ids.map(function(i){var g=gradeById(i);return g&&g.ref!=null?g.ref:null}).filter(function(x){return x!=null});return v.length?v.reduce(function(a,b){return a+b},0)/v.length:0}
+var KG_PER_TREE_YR=21;
+function svgLine(pts,W,H,fmtY){
+  var pl=46,pr=12,pt=12,pb=26,mx=Math.max.apply(null,pts.map(function(p){return p.y}))||1,n=pts.length;
+  function X(i){return pl+(W-pl-pr)*(n>1?i/(n-1):0.5)}function Y(v){return H-pb-(H-pt-pb)*v/mx}
+  var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" style="width:100%;height:auto">';
+  for(var t=0;t<=4;t++){var v=mx*t/4;s+='<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+Y(v).toFixed(1)+'" y2="'+Y(v).toFixed(1)+'" stroke="var(--line)"/><text x="'+(pl-6)+'" y="'+(Y(v)+4).toFixed(1)+'" font-size="10" text-anchor="end" fill="var(--muted)">'+fmtY(v)+'</text>'}
+  var path=pts.map(function(p,i){return (i?"L":"M")+X(i).toFixed(1)+" "+Y(p.y).toFixed(1)}).join(" ");
+  s+='<path d="'+path+' L'+X(n-1).toFixed(1)+" "+Y(0)+' L'+X(0).toFixed(1)+" "+Y(0)+' Z" fill="var(--accent)" opacity="0.14"/><path d="'+path+'" fill="none" stroke="var(--accent)" stroke-width="2.4"/>';
+  var step=Math.max(1,Math.ceil(n/6));
+  pts.forEach(function(p,i){if(i%step===0||i===n-1)s+='<text x="'+X(i).toFixed(1)+'" y="'+(H-8)+'" font-size="10" text-anchor="middle" fill="var(--muted)">'+esc(p.x)+'</text>'});
+  return s+'</svg>';
+}
+function drawAnalytics(){
+  var log=LOG.slice().sort(function(a,b){return a.d<b.d?-1:1}),st=statsOf(log);
+  var byMat={};log.forEach(function(e){var o=byMat[e.m]||(byMat[e.m]={kg:0,co2:0,inr:0});o.kg+=e.kg;o.co2+=e.kg*FACTORS[e.m].f;o.inr+=e.kg*scrapRate(e.m)});
+  var inr=0;Object.keys(byMat).forEach(function(k){inr+=byMat[k].inr});
+  var cum=0,byDay={};log.forEach(function(e){cum+=e.kg*FACTORS[e.m].f;byDay[e.d]=cum});
+  var pts=Object.keys(byDay).sort().map(function(d){return {x:d.slice(5),y:byDay[d]}});
+  var trees=st.co2/KG_PER_TREE_YR;
+  $("an_kpis").innerHTML=[[f1(st.kg),"kg recycled"],[f1(st.co2),"kg CO₂e avoided"],[Math.round(trees*10)/10,"tree-years of CO₂ absorbed (indicative)"],[inr>0?inr<1000?"₹"+Math.round(inr):"₹"+Math.round(inr).toLocaleString("en-IN"):"₹0","scrap value at Delhi reference rates"],[st.streak,"day streak"]].map(function(k){return '<div class="kpi"><b>'+k[0]+'</b><span class="small">'+k[1]+'</span></div>'}).join("");
+  $("an_trend").innerHTML=pts.length?svgLine(pts,460,300,function(v){return Math.round(v)+" kg"}):'<p class="small">Log some recycling in the Impact tab to see a trend.</p>';
+  var mats=Object.keys(byMat).sort(function(a,b){return byMat[b].co2-byMat[a].co2}),mx=mats.length?byMat[mats[0]].co2:1;
+  $("an_mix").innerHTML=mats.length?mats.map(function(k){var o=byMat[k];return '<div class="prob"><span>'+esc(FACTORS[k].n)+'</span><div class="track"><div class="fill" style="width:'+(o.co2/mx*100).toFixed(1)+'%"></div></div><b>'+f1(o.co2)+'</b></div><p class="small" style="margin:-2px 0 6px 0">'+f1(o.kg)+' kg'+(o.inr>0?' · scrap value ≈ ₹'+Math.round(o.inr):' · no scrap list price')+'</p>'}).join(""):'<p class="small">Nothing logged yet.</p>';
+  var top=mats[0];
+  $("an_ins").textContent=top?"Biggest lever: "+FACTORS[top].n.toLowerCase()+" gave "+Math.round(byMat[top].co2/st.co2*100)+"% of your avoided CO₂e from "+Math.round(byMat[top].kg/st.kg*100)+"% of the weight. Metals like aluminium avoid far more CO₂e per kg than glass, so sorting them first matters most.":"";
+}
+function scenario(){
+  var kinds=Object.keys(FACTORS),wk={};
+  kinds.forEach(function(k){wk[k]=parseFloat($("sc_"+k).value)||0});
+  var yrs=parseFloat($("sc_y").value)||1,hh=Math.round(Math.pow(10,parseFloat($("sc_h").value)||0)),co2=0,inr=0,kg=0,rows=[];
+  kinds.forEach(function(k){var t=wk[k]*52*yrs*hh,c=t*FACTORS[k].f,v=t*scrapRate(k);kg+=t;co2+=c;inr+=v;rows.push({k:k,kg:t,co2:c})});
+  $("sc_y_v").textContent=yrs+(yrs===1?" year":" years");$("sc_h_v").textContent=hh.toLocaleString("en-IN")+(hh===1?" household":" households");
+  var t=co2/1000;
+  $("sc_out").innerHTML='<div class="kpis"><div class="kpi"><b>'+Math.round(kg).toLocaleString("en-IN")+' kg</b><span class="small">recycled</span></div><div class="kpi"><b>'+(t<10?t.toFixed(2):Math.round(t).toLocaleString("en-IN"))+' t</b><span class="small">CO₂e avoided</span></div><div class="kpi"><b>₹'+Math.round(inr).toLocaleString("en-IN")+'</b><span class="small">scrap value</span></div><div class="kpi"><b>'+Math.round(co2/KG_CO2_PER_KM).toLocaleString("en-IN")+' km</b><span class="small">of driving avoided</span></div></div>'+
+   '<p class="small" style="margin-top:10px">'+(t>=1?'That is '+t.toFixed(1)+' tonnes, or about '+t.toFixed(1)+' carbon credits <b>if</b> the activity were registered and verified, which household recycling almost never is (see the Carbon credits tab).':'Under one tonne, so far too small to be a carbon credit on its own.')+' Glass, organics and anything without a list price add CO₂e but no scrap income.</p>';
+  var mx=Math.max.apply(null,rows.map(function(r){return r.co2}))||1;
+  $("sc_bars").innerHTML=rows.filter(function(r){return r.co2>0}).sort(function(a,b){return b.co2-a.co2}).map(function(r){return '<div class="prob"><span>'+esc(FACTORS[r.k].n)+'</span><div class="track"><div class="fill" style="width:'+(r.co2/mx*100).toFixed(1)+'%"></div></div><b>'+(r.co2>=1000?(r.co2/1000).toFixed(1)+' t':Math.round(r.co2)+' kg')+'</b></div>'}).join("");
+}
+(function(){
+  var def={aluminium:0.1,steel:0.1,paper:1.5,cardboard:1.0,plastic:0.8,glass:1.0,ewaste:0.05,organic:2};
+  $("sc_inputs").innerHTML=Object.keys(FACTORS).map(function(k){return '<label for="sc_'+k+'">'+esc(FACTORS[k].n)+' (kg per week)<input id="sc_'+k+'" type="number" min="0" step="0.05" value="'+def[k]+'"></label>'}).join("");
+  Object.keys(FACTORS).forEach(function(k){$("sc_"+k).oninput=scenario});
+  $("sc_y").oninput=scenario;$("sc_h").oninput=scenario;scenario();
+  $("an_csv").onclick=function(){
+    var rows=["date,material,kg,co2e_kg_avoided"].concat(LOG.slice().sort(function(a,b){return a.d<b.d?-1:1}).map(function(e){return [e.d,FACTORS[e.m].n,e.kg,(e.kg*FACTORS[e.m].f).toFixed(2)].map(csvEsc).join(",")})).join("\n");
+    if(!saveText("renewgenie-impact.csv",rows,"text/csv"))$("an_msg").textContent="Download is blocked in this view. Use Copy summary instead.";
+  };
+  $("an_copy").onclick=function(){
+    var st=statsOf(LOG);copyText("ReNewGenie impact summary: "+f1(st.kg)+" kg recycled, "+f1(st.co2)+" kg CO2e avoided (about "+Math.round(st.km)+" km of driving), "+st.entries+" log entries, "+st.streak+"-day streak. CO2e factors: US EPA WARM, indicative.",this);
+  };
+  var _show=show;show=function(id){_show(id);if(id==="analytics")drawAnalytics()};
+})();
+
+/* ---------- Trading tools UI (marketplace) and portfolio simulator (credits) ---------- */
+(function(){
+  /* hold vs sell: historical swing of the matching world metal price */
+  var RISKMAP={copper:"Copper",aluminium:"Aluminium",battery:"Lead",brass:"Copper"};
+  function riskCard(){
+    var g=gradeById(mg.value),k=RISKMAP[g.id],box=$("mt_risk");
+    if(!k||!FC_DATA[k]){box.innerHTML='<p class="small">No long price history is bundled for '+esc(g.n)+'. This tool covers copper, aluminium and lead-acid batteries (lead).</p>';return}
+    var v=FC_DATA[k].v,bt=FC.backtest(v,{maxOrigins:60}),f=FC.forecast(v,3,bt).naive,mid=f.mid[2];
+    var lo=(f.lo[2]/mid-1)*100,hi=(f.hi[2]/mid-1)*100,e1=FC.mape(bt.res.naive[0])*100,e3=FC.mape(bt.res.naive[2])*100;
+    box.innerHTML='<p><b>'+esc(g.n)+'</b> follows world <b>'+k.toLowerCase()+'</b>. Over 1987 to 2017, three months out, the price landed within <b>'+lo.toFixed(0)+'% to +'+hi.toFixed(0)+'%</b> of today’s level 80% of the time (typical miss '+e1.toFixed(1)+'% after one month, '+e3.toFixed(1)+'% after three).</p><p class="small" style="margin-top:6px">Nobody could reliably predict the direction (see the Price forecast tab), so the swing is the lesson: for a large lot, selling in two or three instalments evens out timing luck. Delhi scrap rates also move with the rupee and local demand, which this history does not include.</p>';
+  }
+  /* auction */
+  $("mt_auc").onclick=function(){
+    var q=quotes(),ok=q.L.filter(function(x){return x.ok});
+    if(ok.length<2){$("mt_aucout").innerHTML='<p class="small">Pick a grade and weight above that at least two collectors will buy.</p>';return}
+    var means=ok.map(function(x){return x.net/q.qty}),sd=parseFloat($("mt_sd").value)/100;
+    var r=auctionSim(means,sd,4000,7),pct=function(x){return ((x/r.posted-1)*100).toFixed(1)};
+    $("mt_aucout").innerHTML='<div class="kpis"><div class="kpi"><b>₹'+r.posted.toFixed(2)+'</b><span class="small">best posted quote, per kg after deductions</span></div><div class="kpi"><b>₹'+r.secondPrice.toFixed(2)+'</b><span class="small">sealed-bid, second-price ('+pct(r.secondPrice)+'%)</span></div><div class="kpi"><b>₹'+r.firstPrice.toFixed(2)+'</b><span class="small">sealed-bid, first-price ('+pct(r.firstPrice)+'%)</span></div></div>'+
+     '<p class="small" style="margin-top:8px">Win share: '+ok.map(function(x,i){return esc(x.c.n)+' '+Math.round(r.wins[i]*100)+'%'}).join(" · ")+'. 4,000 simulated auctions. Each collector’s private value is its quote ±'+Math.round(sd*100)+'% (a made-up spread). First-price bids are shaded by (n−1)/n, exact only for uniform values. Real collectors here do not bid; this shows how auction rules, not sample data, would change your payout.</p>';
+  };
+  /* route planner */
+  var LP=LOCS.map(function(l){return [l[1],l[2]]}),sel={},depotSel=$("mt_depot"),chips=$("mt_stops");
+  LOCS.forEach(function(l,i){var o=document.createElement("option");o.value=i;o.textContent=l[0];depotSel.appendChild(o)});
+  depotSel.value=0;
+  function chipDraw(){
+    chips.innerHTML=LOCS.map(function(l,i){return '<button type="button" class="chip" data-i="'+i+'" aria-pressed="'+(!!sel[i])+'">'+esc(l[0])+'</button>'}).join("");
+    Array.prototype.forEach.call(chips.children,function(b){b.onclick=function(){var i=+b.dataset.i;if(sel[i])delete sel[i];else if(Object.keys(sel).length<10)sel[i]=1;chipDraw()}});
+    $("mt_cnt").textContent=Object.keys(sel).length+" of 10 stops chosen";
+  }
+  chipDraw();
+  $("mt_rand").onclick=function(){sel={};var r=mulberry32(Date.now()&0xffff);while(Object.keys(sel).length<7){var i=Math.floor(r()*LOCS.length);if(i!==+depotSel.value)sel[i]=1}chipDraw();$("mt_go").click()};
+  $("mt_go").onclick=function(){
+    var d=+depotSel.value,ids=Object.keys(sel).map(Number).filter(function(i){return i!==d});
+    if(ids.length<2){$("mt_rout").innerHTML='<p class="small">Choose at least two pickup stops.</p>';return}
+    var pts=[LP[d]].concat(ids.map(function(i){return LP[i]})),names=[LOCS[d][0]].concat(ids.map(function(i){return LOCS[i][0]})),D=distMatrix(pts);
+    var asIs=ids.map(function(_,k){return k+1}),heur=tspHeuristic(D),exact=ids.length<=8?tspExact(D):null;
+    var best=exact||heur,ROAD=1.3,SPEED=18,STOP_MIN=10,KMPL=12,FUEL=95;
+    function stats(o){var km=tourLen(o,D)*ROAD,h=km/SPEED+o.length*STOP_MIN/60;return {km:km,h:h,fuel:km/KMPL*FUEL}}
+    var a=stats(asIs),b=stats(best),hh=stats(heur);
+    function hm(h){return Math.floor(h)+" h "+Math.round((h%1)*60)+" min"}
+    function map(order){
+      var W=420,H=300,p=24,xs=pts.map(function(q){return q[1]}),ys=pts.map(function(q){return q[0]}),x0=Math.min.apply(null,xs),x1=Math.max.apply(null,xs),y0=Math.min.apply(null,ys),y1=Math.max.apply(null,ys);
+      function X(q){return p+(W-2*p)*(q[1]-x0)/((x1-x0)||1)}function Y(q){return H-p-(H-2*p)*(q[0]-y0)/((y1-y0)||1)}
+      var seq=[0].concat(order,[0]),s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Optimised pickup route" style="width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)">';
+      s+='<path d="'+seq.map(function(i,k){return (k?"L":"M")+X(pts[i]).toFixed(1)+" "+Y(pts[i]).toFixed(1)}).join(" ")+'" fill="none" stroke="var(--accent)" stroke-width="2.4"/>';
+      seq.slice(0,-1).forEach(function(i,k){var cx=X(pts[i]),cy=Y(pts[i]);s+='<circle cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="'+(k===0?9:8)+'" fill="'+(k===0?"var(--fg)":"var(--accent)")+'"/><text x="'+cx.toFixed(1)+'" y="'+(cy+4).toFixed(1)+'" font-size="10" text-anchor="middle" fill="var(--bg)" font-weight="700">'+(k===0?"D":k)+'</text>'});
+      return s+'</svg>';
+    }
+    $("mt_rout").innerHTML='<div class="two"><div>'+map(best)+'</div><div><div class="kpis"><div class="kpi"><b>'+b.km.toFixed(1)+' km</b><span class="small">optimised round trip</span></div><div class="kpi"><b>'+a.km.toFixed(1)+' km</b><span class="small">in the order chosen</span></div><div class="kpi"><b>'+Math.round((1-b.km/a.km)*100)+'%</b><span class="small">distance saved</span></div></div>'+
+      '<p style="margin-top:10px"><b>Order:</b> D '+esc(names[0])+' → '+best.map(function(i,k){return (k+1)+' '+esc(names[i])}).join(" → ")+' → back</p><p class="small" style="margin-top:6px">About '+hm(b.h)+' and ₹'+Math.round(b.fuel)+' of fuel (vs '+hm(a.h)+' and ₹'+Math.round(a.fuel)+').</p>'+
+      '<p class="small" style="margin-top:6px">Method: nearest neighbour then 2-opt on great-circle distances'+(exact?', checked against all '+(function(n){var f=1;for(var i=2;i<=n;i++)f*=i;return f})(ids.length)+' possible orders: the heuristic is '+(Math.abs(hh.km-b.km)<1e-6?'exactly optimal here':'within '+((hh.km/b.km-1)*100).toFixed(1)+'% of optimal')+'.':'.')+' Assumptions: roads are 1.3× straight-line, 18 km/h in traffic, 10 min per stop, 12 km/l at ₹95/l.</p></div></div>';
+  };
+  mg.addEventListener("change",riskCard);riskCard();
+})();
+/* ---- carbon portfolio simulator ---- */
+(function(){
+  var A=[
+   {n:"India CCTS credit (CCC)",units:200,price:1000,vol:35,p:2,note:"Trading was expected from about Oct 2026; price is a guess."},
+   {n:"Plastic EPR certificate",units:200,price:1300,vol:25,p:5,note:"Indicative ₹1,050–1,500/t; audit and portal risk."},
+   {n:"Verra plastic credit",units:200,price:1300,vol:40,p:12,note:"Verra suspended 27 plastic projects in the C-Quest case."},
+   {n:"Cookstove-type credit",units:200,price:800,vol:50,p:25,note:"ICVCM found 64% of cookstove credits on rejected methods."}
+  ];
+  $("pf_rows").innerHTML=A.map(function(a,i){return '<tr><td>'+esc(a.n)+'<br><span class="small">'+esc(a.note)+'</span></td><td><input id="pf_u'+i+'" type="number" min="0" step="10" value="'+a.units+'" aria-label="Tonnes of '+esc(a.n)+'"></td><td><input id="pf_p'+i+'" type="number" min="0" step="50" value="'+a.price+'" aria-label="Price per tonne"></td><td><input id="pf_v'+i+'" type="number" min="0" max="150" step="5" value="'+a.vol+'" aria-label="Price volatility percent"></td><td><input id="pf_x'+i+'" type="number" min="0" max="100" step="1" value="'+a.p+'" aria-label="Chance credits are invalidated, percent"></td></tr>'}).join("");
+  var seed=11;
+  function run(){
+    var as=A.map(function(a,i){return {units:+$("pf_u"+i).value||0,price:+$("pf_p"+i).value||0,vol:(+$("pf_v"+i).value||0)/100,p:(+$("pf_x"+i).value||0)/100}});
+    var r=portfolioMC(as,10000,seed),L=function(x){return "₹"+Math.round(x).toLocaleString("en-IN")};
+    var lo=r.sorted[0],hi=r.sorted[r.sorted.length-1],bins=24,cnt=[],i;for(i=0;i<bins;i++)cnt.push(0);
+    var top=r.p95*1.05||1;r.sorted.forEach(function(x){cnt[Math.min(bins-1,Math.floor(x/top*bins))]++});
+    var mx=Math.max.apply(null,cnt),W=480,H=160,bw=(W-20)/bins,s='<svg viewBox="0 0 '+W+' '+(H+22)+'" role="img" aria-label="Distribution of portfolio value" style="width:100%;height:auto">';
+    cnt.forEach(function(c,k){var h=c/mx*H;s+='<rect x="'+(10+k*bw).toFixed(1)+'" y="'+(H-h).toFixed(1)+'" width="'+(bw-1.5).toFixed(1)+'" height="'+h.toFixed(1)+'" fill="'+((k+0.5)/bins*top<r.p5?"#b3261e":"var(--accent)")+'" opacity="0.85"/>'});
+    [[r.nominal,"face value"],[r.median,"median"]].forEach(function(m,k){var x=10+Math.min(1,m[0]/top)*(W-20);s+='<line x1="'+x.toFixed(1)+'" x2="'+x.toFixed(1)+'" y1="0" y2="'+H+'" stroke="var(--fg)" stroke-dasharray="3 3"/><text x="'+x.toFixed(1)+'" y="'+(H+14)+'" font-size="10" text-anchor="'+(k?"end":"start")+'" fill="var(--muted)">'+m[1]+'</text>'});
+    $("pf_out").innerHTML='<div class="kpis"><div class="kpi"><b>'+L(r.nominal)+'</b><span class="small">face value if nothing goes wrong</span></div><div class="kpi"><b>'+L(r.mean)+'</b><span class="small">average outcome</span></div><div class="kpi"><b>'+L(r.p5)+'</b><span class="small">bad case (5% of runs are worse)</span></div><div class="kpi"><b>'+Math.round(r.loss50*100)+'%</b><span class="small">chance of losing over half</span></div></div><div style="margin-top:12px">'+s+'</svg></div><p class="small">10,000 simulated years. Red bars are the worst 5%. The gap between face value and the average is the price of integrity risk. Probabilities and volatilities are <b>my illustrative assumptions</b> tied to the cases in the case file; change them to test your own view. This is a teaching simulation, not investment advice.</p>';
+  }
+  A.forEach(function(_,i){["u","p","v","x"].forEach(function(k){$("pf_"+k+i).oninput=run})});
+  $("pf_go").onclick=function(){seed=Math.floor(Math.random()*1e6);run()};
+  run();
+})();
 
 /* ---------- AI features (Claude via the page's sample capability) ---------- */
 var AI={s:null,ok:false,busy:false,ctl:null,hist:[]};
